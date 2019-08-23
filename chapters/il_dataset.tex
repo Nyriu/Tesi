@@ -7,56 +7,131 @@
 Innanzitutto si specifica che con la parola Scarto si indica l'immagine di una carcasse che presenta colla sul fondo, pezzo che, quindi, dovrà essere scartato.
 Invece con la parola Conforme si indica l'immagine di una carcassa nella quale la colla è stata depositata correttamente, quindi con fondo pulito.
 
-Il dataset fornito e' fortemente sbilanciato, comprende 1749 immagini di cui:
+TODO recap capitolo
+In questo capitolo verrà descritto il dataset e quali.
+
+
+\section{Problematiche Principali}
+
+La prima difficoltà insorge ancora prima di ispezionare le immagini del dataset.
+Infatti il dataset fornito è fortemente sbilanciato, comprende 1749 immagini di cui:
 \begin{itemize}
     \item 1719 sono Conformi;
     \item 30 sono Scarti.
 \end{itemize}
-I risultati illustrati in questo documento sono stati ottenuti utilizzando esclusivamente le immagini fornite o loro elaborazioni
-Va fatto notare pero' che, qualora fosse stato necessario, si sarebbero potuti ottenere un numero arbitrariamente grande di Conformi, mentre il numero di Scarti sarebbe rimasto comunque esiguo.
+
+A questo punto è corretto chiedersi se le quasi duemila immagini del dataset siano sufficienti ai nostri scopi.
+Nel campo del \textit{Machine Learning}, ed ancora di più in quello del \textit{Deep Learning}, non è raro che il numero di elementi in un dataset sia dell'ordine delle decine di migliaia se non di quello delle centinaia di migliaia.
+% TODO aggiungere refs ai dataset
+Basti pensare ai dataset più famosi ed usati:
+\begin{itemize}
+  \item MNIST è un dataset molto famoso contenente $70000$ cifre disegnate a mano appartenenti a $10$ classi in totale.
+    È alla stesso tempo sia il punto di partenza dei principianti, perché di facile manipolazione, sia il campo di prova degli esperti, sul quale vengono allenati nuovi modelli prima di passare a compiti più complessi;
+  \item CIFAR-10 contiene TODO descrivere 
+  \item ImageNet contiene TODO descrivere 
+\end{itemize}
+
+Ciascuno di questi dataset è stato etichettato\footnote{in inglese \textit{labeled} da \textit{label}, etichetta} a mano.
+Ciò significa che ad ogni immagine è stata assegnata, a mano, una classe di appartenenza.
+Prendendo in esempio MNIST, se un'immagine raffigura la cifra $7$ allora sarà etichettata con il label \textit{seven} ed apparterrà alla classe di immagini in cui compare la cifra $7$.
+Allo stesso modo le immagini di ImageNet hanno etichette come \textit{dog}, \textit{cat}, \textit{bird}, \textit{car}, \textit{bike}, ecc... %TODO forma corretta??
+Il nostro dataset, come già illustrato, contiene due classi: Conforme e Scarto.
+
+A questo punto sembrerebbe che possedere 2000 immagini appena renda impossibile applicare algoritmi di \textit{Machine Learning}.
+In realtà osservando i Conformi, in figura TODO sono stati riportati alcuni esemplari significativi, ci si accorge che i pezzi non sono molto simili.
+Le differenze principali riguardano la posizione delle balze, la luminosità e le imperfezioni (graffi, macchie, \dots) superficiali.
+
+%TODO dire meglio
+Si coglie l'occasione per commentare la colorazione delle immagini rispetto ai veri colori delle carcasse e della colla.
+In figura~\ref{fig:carc} a pagina \pageref{fig:carc} abbiamo visto che la superficie del pezzo è di colore grigio ma nella foto risulta di colore verdastro.
+Allo stesso modo anche la colla, in realtà di colore bianco sporco, nella fotografia assume tonalità verdognole.
+% TODO questo e' un problema ma neanche tanto
+
+
+
+
+Se già la statistica ci lascia sospettare che $30$ esemplari non possono ritenersi significativi, allora questo sospetto diventa certezza quando si analizzano le caratteristiche della colla nelle immagini Scarto.  
+Come si vede in figura TODO
+la colla può presentarsi in forma di gocce più o meno circolari oppure come sbaffi di grossezza e lunghezza variabili.
+Anche la quantità di superficie coperta dalla colla può variare notevolmente, passando da aree ridotte e localizzate ad aree estese e conformazioni singolari.
+Infine notiamo che la posizione del rimasuglio di colla all'interno della carcassa non è in relazione con la posizione delle balze e che la presenza dei gradini sul fondo non la obbliga in alcun modo a scivolare fino al centro.
+
+Per analizzare meglio le modalità con cui potrebbe essere generato uno Scarto si supponga che il macchinario abbia commesso un errore: dall'ugello è uscita un certa quantità di colla in esubero.
+A seconda della posizione dell'ugello rispetto alla carcassa si può immaginare che la colla raggiunga il fondo in vari modi, proviamo ora ad esplorarne due:
+\begin{itemize}
+  \item nel primo caso si immagina che il braccio abbia già depositato l'anello di colla e che si stia allontanando dalla carcassa.
+    La colla in esubero cadrebbe sotto forma si goccia fino a raggiungere il fondo del pezzo.
+    Questo potrebbe esse il caso per la figura TODO ref immagine con colla a goccia;
+  \item nel secondo caso si immagina che la colla in esubero faccia parte dell'anello appena depositato e che, a causa delle vibrazioni o di altri fattori simili, coli raggiungendo il fondo della carcassa.
+    Questo potrebbe esse il caso per la figura TODO ref immagine con colla "sbaffata" dal bordo.
+\end{itemize}
+
+
+
+
+
+
+%I risultati illustrati in questo documento sono stati ottenuti utilizzando esclusivamente le immagini fornite o loro elaborazioni
+%Va fatto notare però che, qualora fosse stato necessario, si sarebbero potuti ottenere un numero arbitrariamente grande di Conformi, mentre il numero di Scarti sarebbe rimasto comunque esiguo.
+%Infatti, all'occorrenza, si sarebbero potute raccogliere svariate fotografie dal macchinario ma, ricordando i dati numerici del capitolo precedente, soltanto una frazione minima, se non addirittura nulla, sarebbe stata del tipo Scarto.
+%Si fa notare che gli Scarti presenti nel dataset sono stati raccolti a distanza di mesi l'uno dall'altro.
+%%TODO si può parlare al lettore?
+%Il lettore potrebbe chiedersi per quale motivo si sia deciso di non ampliare il dataset almeno per quanto riguarda le carcasse Conformi, ma come verrà mostrato più avanti ampliare il dataset non avrebbe portato alcun valore aggiunto.
+%%TODO ref a "più avanti" e dire che son bastati
+
+
+%Nel campo del \textit{Machine Learning}, ed ancora di più in quello del \textit{Deep Learning}, la dimensione del dataset è una variabile da non sottovalutare.
+%Anzi, nonostante 
+
+%TODO inserire ref ad articolo riguardo argomento
+
+%e la sua capacità di contenere abbastanza informazioni da 
+%Ci chiediamo se sono in numero 
+
+
+
+
+
+
 %, inoltre gli Scarti forniti, per la natura della colla, non possono ritenersi esaustivi
 
-TODO
-Dimensioni immagini
-qualità generali
- - cerchi concentrici
- - colori omogenei
- - la colla ha texture differente
- - la colla e' localizzata
- - Scarti sono asimmetrici
+%TODO
+%% Fortemente sbilanciato, falsi colori, contrasti differenti, centramenti
+%Osservando le immagini in figura, ci si accorge che le foto acquisite possono differire per vari motivi; verranno ora elencati in ordine di variabilità partendo dalle proprietà certe.
+%Dimensioni immagini
+%qualità generali
+% - cerchi concentrici
+% - colori omogenei
+% - la colla ha texture differente
+% - la colla è localizzata
+% - Scarti sono asimmetrici
+%% TODO 3 immagini conformi vicine il più diverse possibile
+% - La distanza dal fondo è sempre quella (quindi le dimensioni relative degli anelli)
+% - La superficie del pezzo varia ma bene o male è sempre quello
+% - centratura (varia ma sappiamo che non può essere completamente fuori)
+% - luminosità (ci possiamo basare sul più e sul meno luminoso)
+% - riflessività del centro molto fastidiosa
+% - posizione delle balze (possono capitare a 360 gradi)
 
 
 
 
-\cleardoublepage
-%\section{Metriche di Valutazione} % TODO ??
 
-
-\section{Problematiche Principali}
-% Fortemente sbilanciato, falsi colori, contrasti differenti, centramenti
-Osservando le immagini in figura, ci si accorge che le foto acquisite possono differire per vari motivi; verranno ora elencati in ordine di variabilita' partendo dalle proprieta' certe.
-% TODO 3 immagini conformi vicine il piu' diverse possibile
- - La distanza dal fondo e' sempre quella (quindi le dimensioni relative degli anelli)
- - La superficie del pezzo varia ma bene o male e' sempre quello
- - centratura (varia ma sappiamo che non puo' esere completamente fuori)
- - luminosita' (ci possiamo basare sul piu' e sul meno luminoso)
- - riflessivita' del centro motlo fastidiosa
- - posizione delle balze (possono capitare a 360 gradi)
 
 \section{Importanza Preprocessing}
 % specificare librerie usate ??
 % specificare bene che quelli che ora sono passaggi ben ordinati sono il risultato di mesi di trial and error
 % Processo di modifica delle immagini ed euristiche applicate per ottenerne di "buone"
 
-Si illustra il Preprocessing che ha portato ai migliori risultati
-
-- centramento fondametale per aiutare la rete
-    - decrizione funzione di centramento (passaggio BW, negativo, houghCirc media e matrice affine)
-- passaggio da RGB a Grayscale perche non c'e' una grande perdita di informazione
-- bilateralFilter per smoothare via la texture "sale e pepe" tipica delle carcasse
-- il masking per rimovere le balze e l'area corrispondente alla zona verticale della carcassa
-- crop per levare l'area nera (in proporzione ho molta piu' informazione)
-- resize ad 224x224 perche' si e' dimostrata essere una buona dimensione (magari mostrare come sotto il 200 e' difficile vedere la colla, quelle piccole spariscono)
+%Si illustra il Preprocessing che ha portato ai migliori risultati
+%
+%- centramento fondametale per aiutare la rete
+%    - descrizione funzione di centramento (passaggio BW, negativo, houghCirc media e matrice affine)
+%- passaggio da RGB a Grayscale perché non c'è una grande perdita di informazione
+%- bilateralFilter per smoothare via la texture "sale e pepe" tipica delle carcasse
+%- il masking per rimuovere le balze e l'area corrispondente alla zona verticale della carcassa
+%- crop per levare l'area nera (in proporzione ho molta più informazione)
+%- resize ad 224x224 perché si è dimostrata essere una buona dimensione (magari mostrare come sotto il 200 è difficile vedere la colla, quelle piccole spariscono)
 
 \subsection {Centramento mediante Hough Circles}
 \subsection {Passaggio da RGB a GrayScale}
@@ -87,8 +162,8 @@ Rotazione è metodo standard e largamente usato e bla bla
 Scarti Sintetici
  I ritagli non sono stati semplicemente incollati sui conformi:
 
- la luminosita' della colla e' stata modificata per avvicinarsi a quella del pezzo conforme;
- dopo aver aggiunto la colla e' stato praticato uno smooth lungo il contorno, per evitare che ci fosse una transizione netta fra sofndo ed inizio bordo della colla.
+ la luminosità della colla è stata modificata per avvicinarsi a quella del pezzo conforme;
+ dopo aver aggiunto la colla è stato praticato uno smooth lungo il contorno, per evitare che ci fosse una transizione netta fra sofndo ed inizio bordo della colla.
 
 
 
@@ -128,9 +203,9 @@ Scarti Sintetici
 
 
 
-% TODO in caso sarebe un Chapter a se'
+% TODO in caso sarebe un Chapter a sé
 %\section {La strada proposta}
 % Simile a quanto detto in considerazioni_pixelwise_diff
-%Mostrare qual'e' l'obbiettivo che si vuole raggiungere con gli AE
+%Mostrare qual'è l'obbiettivo che si vuole raggiungere con gli AE
 %Spiegare che sono elastici e facili da allenare
 %Il dataset non richiede dispendioso labeling
