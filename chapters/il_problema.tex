@@ -1,0 +1,116 @@
+%!TEX TS-program = pdflatex
+%!TEX root = tesi.tex
+%!TEX encoding = UTF-8 Unicode
+
+\chapter{Il Problema}
+
+% OCCHIO!! Le immagini in questa sezione NO dal dataset!
+
+% TODO dire che ci sono 2 controlli su ogni pezzo ma noi siamo interessati a controllare solo il fondo
+
+In questo documento si affronta il problema di rilevare la presenza di colla all'interno di carcasse per motori elettrici, per mezzo di fotografie digitali.
+Dopo alcune considerazioni sulla forma e sul fine ultimo di tali pezzi seguirà una descrizione sommaria del processo industriale e delle macchine che manipolano e depositano la colla all'interno dei pezzi, nonché del sistema di acquisizione immagini.
+Si conclude la sezione con una formalizzazione del problema da risolvere e le metriche con cui valutare la soluzione proposta.
+
+\section{Le Carcasse per Motori Elettrici}
+
+\begin{figure}[h]
+  \includegraphics[width=3cm]{carcassa_da_sopra}
+  \includegraphics[width=3cm]{carcassa_di_lato}
+  \label{fig:carc}
+  \caption{Visioni laterale e superiore di una carcassa}
+\end{figure}
+
+Osservando le fotografie in figura, possono essere definite le caratteristiche principali delle carcasse:
+\begin{itemize}
+  \item il pezzo ha una struttura cilindrica cava;
+  \item il fondo presenta tre gradini;
+  \item sono presenti due balze (nella foto laterale se ne vede soltanto una), posizionate, una di fronte all'altra, prima del primo gradino;
+  \item i supporti alla bocca della carcassa presentano due fori;
+\end{itemize}
+Il pezzo è stato pensato per avvolgere e proteggere motori elettrici.
+Nello specifico quelle in foto, sulle quali è stato svolto lo studio, sono carcasse per motori elettrici per tergicristalli.
+I due fori aiuteranno a fissare con delle viti il pezzo su dei supporti in plastica.
+Il motore alloggerà interamente nella cavità, nella quale verrà depositata della colla.
+La colla verrà poi cotta in modo che il motore non possa vibrare all'interno della carcassa, evitando che eventuali urti possano danneggiarlo.
+Dalla foto si può notare che la colla è distribuita in modo da formare un anello ad una altezza di circa $4cm$ dal fondo della carcassa.
+La colla è stata depositata correttamente se:
+\begin{enumerate}
+  \item l'anello non presenta né sbavature né discontinuità;
+  \item sul fondo non c'è presenza di colla.
+\end{enumerate}
+In questo documento, come si vedrà nella sezione sul dataset, ci concentreremo esclusivamente sul secondo punto.
+La presenza di colla sul sul fondo della carcassa causerà il malfunzionamento del motorino dopo un limitato tempo d'utilizzo, molto inferiore al tempo di vita atteso.
+Per questo motivo e' fondamentale che la colla sia depositata correttamente.
+
+
+\section{Il Processo di Produzione}
+Chiarire le modalità con cui le carcasse vengono manipolate, la colla viene depositata e le foto vengono acquisite risulta fondamentale.
+Senza queste informazioni mancherebbe la base sulla quale costruire ipotesi e considerazioni riguardo le immagini del dataset.
+Analizzando le condizioni in cui le foto vengono scattate, si definiscono i vincoli ed i confini entro i quali le soluzioni proposte possono considerarsi verosimili ed applicabili al mondo reale.
+Le carcasse, già presenti in grandi quantità in magazzino, raggiungono il macchinario e vengono caricate, con la concavità rivolta verso l'alto, su un disco rotante.
+%TODO termini giusti sotto?
+%TODO il processo e' giusto?
+Ad ogni ciclo macchina la colla, tramite due ugelli, viene simultaneamente depositata su due carcasse distinte.
+Al contempo due sonde dotate di luce scendono, fino ad una distanza di circa $3cm$ dal fondo, nelle due carcasse su cui la colla era stata depositata il ciclo precedente.
+Le carcasse ritenute conformi procedono lungo un rullo trasportatore, mentre quelle che non idonee vengono scartate.
+
+Vanno precisati vari aspetti.
+Le carcasse, nonostante siano tutte dello stesso tipo, possono differire per quanto riguarda colore, graffi superficiali, sporco, incrostazioni oppure macchie.
+Inoltre non vengono orientate tutte allo stesso modo rispetto all'asse verticale: questo ha delle ripercussioni dirette sulle foto raccolte, infatti le due balze non si presenteranno in posizioni fisse.
+
+Il sistema assicura che le foto vengano scattate sempre alla stesso profondità e che la sonda sia centrata rispetto al pezzo (considerando come centro il centro della cavità cilindrica).
+La distanza fissa è condizione sufficiente per garantire la messa a fuoco di ognuno dei tre gradini sul fondo.
+Purtroppo non sono stati specificati dei vincoli riguardo l'illuminazione.
+
+Si fa notare che il processo appena descritto è eseguito su almeno due macchinari distinti, ovviamente questo aggiunge un ulteriore grado di sfida: non si può supporre che i macchinari siano sempre calibrati esattamente allo stesso modo.
+
+In conclusione le foto che saranno da analizzare vengono raccolte da un totale di quattro fotocamere distinte, delle quali si assicura
+\begin{itemize}
+  \item con un grado di precisione soddisfacente la distanza dal fondo;
+  \item con un grado di precisione accettabile la centratura delle immagini.
+\end{itemize}
+
+
+\section{Gli Obiettivi da Raggiungere}
+% TODO confrontarsi per veridicità
+Di seguito sono riportati alcuni dati numerici riguardo i processi appena descritti.
+
+La colla viene depositata su 5000 pezzi al giorno, la probabilità che gocce di colla cadano sul fondo delle carcasse è estremamente bassa.
+Purtroppo non esistono dati numerici esatti ma si stima che il macchinario abbia un \textit{fault rate} di una carcassa al mese o poco più.
+Questi dati possono essere trasformati in probabilità approssimative osservando che:
+
+\begin{center}
+  \begin{tabular}{ l c r }
+    colla depositata al mese: & $5000 * 31 =$& $155000$ \\
+    colla mal depositata al mese: && $2$
+  \end{tabular}
+\end{center}
+Quindi la probabilità che il macchinario sbagli e pari allo $0.00001\%$.
+%Tenendo ben presente questa probabilità, si vorrebbe riconoscere, e quindi scartare, le carcasse che presentano colla sul fondo.
+Il sistema di intelligenza artificiale deve riconoscere i pezzi non conformi ma soprattutto, tenendo conto della probabilità di cui sopra, deve generare un numero bassissimo di falsi positivi.
+Per falsi positivi (riferiti anche come FP o False Positive) si intendono tutte le carcasse che il sistema considera non conformi ma che in realtà non presentano difetti.
+Una AI troppo rigida, che, quando indecisa, propende per scartare il pezzo, inciderebbe negativamente sulla produzione.
+Si rischierebbe, infatti di creare un enorme danno economico, andando a scartare molte più carcasse del necessario.
+% usare teorema di bayes per dim che un modello aggressivo e' peggio di uno che lascia passare
+
+E accettabile che il sistema generi un falso positivo del $2\%$.
+
+
+
+
+
+
+
+
+
+% L'obbiettivo e' riconoscere i pezzi che presentano colla sul fondo
+% Acc sugli scarti $100\%$
+% fp sui conformi $2\%$
+
+
+% \section {L'attuale soluzione}
+% " Tutti i vecchi metodi si arenavano causa differenze di tinta e luminosita' e rumorosita'"
+
+\cleardoublepage
+% Riassunto sul dominio, obiettivi, strade già provate

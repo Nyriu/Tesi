@@ -1,0 +1,67 @@
+%!TEX TS-program = pdflatex
+%!TEX root = tesi.tex
+%!TEX encoding = UTF-8 Unicode
+
+\chapter{Gli Autoencoder}
+
+\section{La Struttura di un Autoencoder}
+% https://en.wikipedia.org/wiki/Autoencoder
+% Struttura di un AE e differenze principali con CONV NN
+TODO quote from wikipedia\\
+Un Autoencoder (AE) è un particolare tipo di rete neurale il cui scopo è codificare efficacemente l'informazione fornita in input con modalità unsupervised.
+Gli Autoencoder sono stati largamente utilizzati come tecniche per la dimensionality reduction, dimostrando capacità paragonabili a quelle di algoritmi come PCA o t-sne.
+Un Autoencoder è formato da due componenti principali:
+\begin{itemize}
+    \item l'encoder, ottimizzato per generare una version compressa del dato;
+    \item il decoder, ottimizzato per ricostruire l'informazione originale a partire dalla versione compressa.
+\end{itemize}
+Durante l'allenamento (training) la rete cerca di fornire un output il più simile possibile all'input ricevuto.
+Potrebbe sembrare che l'obiettivo % TODO
+dell'Autoencoder sia simulare la funzione identità, cioè quella funzione che fornisce in output esattamente l'input ricevuto.
+In realtà all'interno della rete accade molto di più.
+Prendiamo in esempio il più semplice degli AE: due layer fully-connected messi in sequenza.
+Sappiamo che il numero di feature \footnote{TODO spiegare cosa si intende per feature} in ingresso nel primo layer deve combaciare con il numero di feature in uscita, altrimenti non potremmo confrontare l'input con la ricostruzione generata dalla rete.
+Se si immaginano le feature in ingresso come dei punti, vettori, in un spazio n-dimensionale, con n pari al numero delle feature fornite, il compito dell'Autoencoder è generare dei punti che siano molto vicini ai punti osservati.
+In altre parole si vuole che l'Autoencoder catturi la distribuzione probabilistica dei vettori forniti.
+Stabilito, quindi, che la rete riceve e restituisce vettori di dimensionalità n si può definire la dimensionalità dello spazio latente, cioè di quello spazio di dimensione m, con $m < n$, in cui tutti i  vettori in input vengono mappati durante l'encoding.
+Viene chiamato spazio latente perché non è conosciuto a priori.
+Infatti sarà proprio la rete stessa, durante il training, a trovarlo, selezionandolo tra gli infiniti spazi m-dimensionali.
+La dimensione dello spazio latente deve essere sufficientemente grande da permettere di mantenere le informazioni che caratterizzano l'input, ed allo stesso tempo sufficientemente piccolo così da rimuovere eventuale rumore o dati superflui.
+Poco fa abbiamo definito due layer fully-connected, specificando soltanto le dimensioni in input del primo e le dimensioni in output del secondo.
+Ora sappiamo che le feature in uscita dal primo layer dovranno essere accettate, in entrata, dal secondo.
+Sappiamo anche che la dimensione della feature, in quanto vettore dello spazio latente, dovrà essere pari ad $m$.
+La rete appena definita e raffigurata in %TODO figura
+con la tipica forma a clessidra.
+La parte più stretta di un Autoencoder è detta bottleneck (in italiano: collo di bottiglia) e corrisponde con la compressione massima del dato.
+
+%TODO aggiungere formulazione matematica
+
+\subsection{Variazioni dell'architettura}
+Breve descrizione diconvAE stacked SAE DAE VAE
+
+
+\subsection{Applicazioni principali}
+
+La capacità degli Autoencoder di ricostruire l'input, quindi di mantenerne la struttura, privandolo di eventuale rumore o addirittura rimpiazzando il rumore con valori verosimili, si è rilevata utile in molti campi.
+
+% TODO link ad anomaly detection
+Quando il rumore incide notevolmente
+
+% TODO link a paper image restoration
+In questo paper si usano gli AE per colorare immagini un bg
+
+Anche in questo documento la rimozione del rumore sarà un tema centrale, l'applicazione nel nostro caso verrà analizzato nel dettaglio nei prossimi capitoli.
+
+
+
+
+
+
+
+
+
+\section {Convoluzioni e Convoluzioni Trasposte}
+% Spiegazione dettagliata dei Conv Layers e dei Conv Transpose Layers
+\section {Spazi Latenti}
+% Sfruttabilità degli spazi latenti ed esempi di applicazioni
+

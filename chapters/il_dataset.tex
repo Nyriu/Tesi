@@ -1,0 +1,136 @@
+%!TEX TS-program = pdflatex
+%!TEX root = tesi.tex
+%!TEX encoding = UTF-8 Unicode
+
+\chapter{Il Dataset}
+
+Innanzitutto si specifica che con la parola Scarto si indica l'immagine di una carcasse che presenta colla sul fondo, pezzo che, quindi, dovrà essere scartato.
+Invece con la parola Conforme si indica l'immagine di una carcassa nella quale la colla è stata depositata correttamente, quindi con fondo pulito.
+
+Il dataset fornito e' fortemente sbilanciato, comprende 1749 immagini di cui:
+\begin{itemize}
+    \item 1719 sono Conformi;
+    \item 30 sono Scarti.
+\end{itemize}
+I risultati illustrati in questo documento sono stati ottenuti utilizzando esclusivamente le immagini fornite o loro elaborazioni
+Va fatto notare pero' che, qualora fosse stato necessario, si sarebbero potuti ottenere un numero arbitrariamente grande di Conformi, mentre il numero di Scarti sarebbe rimasto comunque esiguo.
+%, inoltre gli Scarti forniti, per la natura della colla, non possono ritenersi esaustivi
+
+TODO
+Dimensioni immagini
+qualità generali
+ - cerchi concentrici
+ - colori omogenei
+ - la colla ha texture differente
+ - la colla e' localizzata
+ - Scarti sono asimmetrici
+
+
+
+
+\cleardoublepage
+%\section{Metriche di Valutazione} % TODO ??
+
+
+\section{Problematiche Principali}
+% Fortemente sbilanciato, falsi colori, contrasti differenti, centramenti
+Osservando le immagini in figura, ci si accorge che le foto acquisite possono differire per vari motivi; verranno ora elencati in ordine di variabilita' partendo dalle proprieta' certe.
+% TODO 3 immagini conformi vicine il piu' diverse possibile
+ - La distanza dal fondo e' sempre quella (quindi le dimensioni relative degli anelli)
+ - La superficie del pezzo varia ma bene o male e' sempre quello
+ - centratura (varia ma sappiamo che non puo' esere completamente fuori)
+ - luminosita' (ci possiamo basare sul piu' e sul meno luminoso)
+ - riflessivita' del centro motlo fastidiosa
+ - posizione delle balze (possono capitare a 360 gradi)
+
+\section{Importanza Preprocessing}
+% specificare librerie usate ??
+% specificare bene che quelli che ora sono passaggi ben ordinati sono il risultato di mesi di trial and error
+% Processo di modifica delle immagini ed euristiche applicate per ottenerne di "buone"
+
+Si illustra il Preprocessing che ha portato ai migliori risultati
+
+- centramento fondametale per aiutare la rete
+    - decrizione funzione di centramento (passaggio BW, negativo, houghCirc media e matrice affine)
+- passaggio da RGB a Grayscale perche non c'e' una grande perdita di informazione
+- bilateralFilter per smoothare via la texture "sale e pepe" tipica delle carcasse
+- il masking per rimovere le balze e l'area corrispondente alla zona verticale della carcassa
+- crop per levare l'area nera (in proporzione ho molta piu' informazione)
+- resize ad 224x224 perche' si e' dimostrata essere una buona dimensione (magari mostrare come sotto il 200 e' difficile vedere la colla, quelle piccole spariscono)
+
+\subsection {Centramento mediante Hough Circles}
+\subsection {Passaggio da RGB a GrayScale}
+\subsection {Equalizzazione}
+\subsection {Bilateral Filtering}
+\subsection {Masking}
+\subsection {Crop e Resizing}
+
+
+
+
+
+
+
+\section {Data Augmentation}
+% Com'è stato sfruttato la Data Aug
+% Colle sintetiche
+Due metodi principali:
+ - rotazione
+ - generazione degli scarti sintetici
+
+\subsection {Rotazione}
+Rotazione è metodo standard e largamente usato e bla bla
+
+\subsection {Generazione Scarti Sintetici}
+
+
+Scarti Sintetici
+ I ritagli non sono stati semplicemente incollati sui conformi:
+
+ la luminosita' della colla e' stata modificata per avvicinarsi a quella del pezzo conforme;
+ dopo aver aggiunto la colla e' stato praticato uno smooth lungo il contorno, per evitare che ci fosse una transizione netta fra sofndo ed inizio bordo della colla.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+% TODO in caso sarebe un Chapter a se'
+%\section {La strada proposta}
+% Simile a quanto detto in considerazioni_pixelwise_diff
+%Mostrare qual'e' l'obbiettivo che si vuole raggiungere con gli AE
+%Spiegare che sono elastici e facili da allenare
+%Il dataset non richiede dispendioso labeling
