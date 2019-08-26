@@ -13,11 +13,12 @@ In questo capitolo verrà descritto il dataset e quali.
 
 \section{Problematiche Principali}
 
+\subsection{Dataset Piccolo e Sbilanciato}
 La prima difficoltà insorge ancora prima di ispezionare le immagini del dataset.
-Infatti il dataset fornito è fortemente sbilanciato, comprende 1749 immagini di cui:
+Infatti il dataset non solo comprende solamente 1719 immagini ma è anche fortemente sbilanciato:
 \begin{itemize}
-    \item 1719 sono Conformi;
-    \item 30 sono Scarti.
+    \item 1719 immagini sono Conformi;
+    \item 30 immagini sono Scarti.
 \end{itemize}
 
 A questo punto è corretto chiedersi se le quasi duemila immagini del dataset siano sufficienti ai nostri scopi.
@@ -30,6 +31,7 @@ Basti pensare ai dataset più famosi ed usati:
   \item CIFAR-10 contiene TODO descrivere 
   \item ImageNet contiene TODO descrivere 
 \end{itemize}
+%TODO aggiungere immagini esempio??
 
 Ciascuno di questi dataset è stato etichettato\footnote{in inglese \textit{labeled} da \textit{label}, etichetta} a mano.
 Ciò significa che ad ogni immagine è stata assegnata, a mano, una classe di appartenenza.
@@ -37,23 +39,17 @@ Prendendo in esempio MNIST, se un'immagine raffigura la cifra $7$ allora sarà e
 Allo stesso modo le immagini di ImageNet hanno etichette come \textit{dog}, \textit{cat}, \textit{bird}, \textit{car}, \textit{bike}, ecc... %TODO forma corretta??
 Il nostro dataset, come già illustrato, contiene due classi: Conforme e Scarto.
 
-A questo punto sembrerebbe che possedere 2000 immagini appena renda impossibile applicare algoritmi di \textit{Machine Learning}.
-In realtà osservando i Conformi, in figura TODO sono stati riportati alcuni esemplari significativi, ci si accorge che i pezzi non sono molto simili.
-Le differenze principali riguardano la posizione delle balze, la luminosità e le imperfezioni (graffi, macchie, \dots) superficiali.
+Sembrerebbe che possedere 2000 immagini appena renda impossibile applicare algoritmi di \textit{Machine Learning}.
+In realtà osservando i Conformi, in figura TODO sono stati riportati alcuni esemplari significativi, ci si accorge che i pezzi sono molto simili.
+Le differenze principali tra un'immagine e l'altra riguardano la posizione delle balze, la luminosità e le imperfezioni superficiali (graffi, macchie, \dots), ciascuna di queste differenze verrà analizzata nel dettaglio tra poco.
+Quindi, come ci si poteva aspettare essendo pezzi creati meccanicamente, la loro distribuzione è nell'intorno del pezzo progettato. TODO dire meglio.
+Concludiamo che il numero di Conformi a nostra disposizione è sufficiente
 
-%TODO dire meglio
-Si coglie l'occasione per commentare la colorazione delle immagini rispetto ai veri colori delle carcasse e della colla.
-In figura~\ref{fig:carc} a pagina \pageref{fig:carc} abbiamo visto che la superficie del pezzo è di colore grigio ma nella foto risulta di colore verdastro.
-Allo stesso modo anche la colla, in realtà di colore bianco sporco, nella fotografia assume tonalità verdognole.
-% TODO questo e' un problema ma neanche tanto
-
-
-
-
+Purtroppo non possiamo dire lo stesso per gli Scarti.
 Se già la statistica ci lascia sospettare che $30$ esemplari non possono ritenersi significativi, allora questo sospetto diventa certezza quando si analizzano le caratteristiche della colla nelle immagini Scarto.  
 Come si vede in figura TODO
 la colla può presentarsi in forma di gocce più o meno circolari oppure come sbaffi di grossezza e lunghezza variabili.
-Anche la quantità di superficie coperta dalla colla può variare notevolmente, passando da aree ridotte e localizzate ad aree estese e conformazioni singolari.
+Anche la quantità di superficie coperta dalla colla può variare notevolmente, passando da aree ridotte e localizzate ad aree estese e di conformazioni singolari.
 Infine notiamo che la posizione del rimasuglio di colla all'interno della carcassa non è in relazione con la posizione delle balze e che la presenza dei gradini sul fondo non la obbliga in alcun modo a scivolare fino al centro.
 
 Per analizzare meglio le modalità con cui potrebbe essere generato uno Scarto si supponga che il macchinario abbia commesso un errore: dall'ugello è uscita un certa quantità di colla in esubero.
@@ -66,39 +62,33 @@ A seconda della posizione dell'ugello rispetto alla carcassa si può immaginare 
     Questo potrebbe esse il caso per la figura TODO ref immagine con colla "sbaffata" dal bordo.
 \end{itemize}
 
+Concludiamo che gli esemplari forniti per la classe Scarto descrivono soltanto in modo parziale la distribuzione della classe (TODO dire meglio) e che quindi non possono essere utilizzati per allenare un modello veramente generale.
+Infatti se, per esempio, venissero usati per il train di una rete convolutiva, di cui poi verrà illustrata brevemente la struttura, si rischierebbe di creare un modello con forte \textit{overfit} rispetto a quelle specifiche macchie di colla fornite.
+Con il termine overfit si intende TODO.
+%Dopo queste osservazioni siamo convinti che il problema deve essere affrontato com e un problema di anomaly detection... Piccola introduzione? Meglio parlarne vicino agli AE
 
 
+Prima di proseguire con le prossime problematiche dobbiamo spendere alcune parole per commentare la colorazione delle immagini rispetto ai veri colori delle carcasse e della colla.
+In figura~\ref{fig:carc} a pagina \pageref{fig:carc} abbiamo visto che la superficie del pezzo è di colore grigio ma nella foto risulta di colore verdastro.
+Allo stesso modo anche la colla, in realtà di colore bianco sporco, nella fotografia assume tonalità verdognole.
+Per certi compiti possedere immagini in falsi colori può risultare problematico ma fortunatamente non è questo il caso: l'importante è che venga mantenuta l'informazione che ci permette di distinguere la colla dalla superficie della carcassa.
+Come vedremo poi le immagini verranno trasformate in scala di grigi quindi, nonostante sarebbe stato preferibile avere immagini a colori reali, i falsi colori non sono da considerarsi problematici.
 
+\subsection{Differenze tra Immagini}
+Ora che abbiamo una visione d'insieme sul dataset possiamo concentrare la nostra attenzione sulle proprietà principali delle immagini.
+%TODO verificare dimensione immagine
+Innanzitutto ogni immagine ha una risoluzione di $896$x$896$ pixel, dimensione che ci permette di esplorare varie possibilità.
+Ad esempio si può pensare di ridurre l'immagine ad una dimensione tale da: occupare meno spazio in memoria, quindi in RAM durante il training, ed allo stesso tempo di mantenere un livello di dettaglio sufficiente ai nostri scopi, risultando quindi in un boost in velocità di train. TODO dire meglio.
+Oppure di suddividere l'immagine in quadranti da analizzare singolarmente così da mantenere la qualità dell'immagine originale ma senza dover creare una rete che accetti immagini troppo grandi.
+%TODO spiegare meglio
+Infatti una rete che accetta immagini di grandi dimensioni, solitamente, avrà un numero di paramatri maggiore di una che accetta immagini piccole.
+Questo porta non solo ad occupare più spazio in memoria ma significa anche che la rete impiegherà più tempo sia in fase di train (più parametri da aggiustare) sia in fase di predizione (più conti da fare). TODO sistemare.
+%TODO verificare dimensione immagine
+Per avere un termine di paragone basti pensare che le immagini di MNIST sono $64$x$64$ pixel mentre quelle di ImageNet di $TODO$x$TODOpx$.
 
+%% falsi colori, contrasti differenti, centramenti
+Osservando nuovamente Figura TODO ci si accorge che le immagini 
 
-%I risultati illustrati in questo documento sono stati ottenuti utilizzando esclusivamente le immagini fornite o loro elaborazioni
-%Va fatto notare però che, qualora fosse stato necessario, si sarebbero potuti ottenere un numero arbitrariamente grande di Conformi, mentre il numero di Scarti sarebbe rimasto comunque esiguo.
-%Infatti, all'occorrenza, si sarebbero potute raccogliere svariate fotografie dal macchinario ma, ricordando i dati numerici del capitolo precedente, soltanto una frazione minima, se non addirittura nulla, sarebbe stata del tipo Scarto.
-%Si fa notare che gli Scarti presenti nel dataset sono stati raccolti a distanza di mesi l'uno dall'altro.
-%%TODO si può parlare al lettore?
-%Il lettore potrebbe chiedersi per quale motivo si sia deciso di non ampliare il dataset almeno per quanto riguarda le carcasse Conformi, ma come verrà mostrato più avanti ampliare il dataset non avrebbe portato alcun valore aggiunto.
-%%TODO ref a "più avanti" e dire che son bastati
-
-
-%Nel campo del \textit{Machine Learning}, ed ancora di più in quello del \textit{Deep Learning}, la dimensione del dataset è una variabile da non sottovalutare.
-%Anzi, nonostante 
-
-%TODO inserire ref ad articolo riguardo argomento
-
-%e la sua capacità di contenere abbastanza informazioni da 
-%Ci chiediamo se sono in numero 
-
-
-
-
-
-
-%, inoltre gli Scarti forniti, per la natura della colla, non possono ritenersi esaustivi
-
-%TODO
-%% Fortemente sbilanciato, falsi colori, contrasti differenti, centramenti
-%Osservando le immagini in figura, ci si accorge che le foto acquisite possono differire per vari motivi; verranno ora elencati in ordine di variabilità partendo dalle proprietà certe.
-%Dimensioni immagini
 %qualità generali
 % - cerchi concentrici
 % - colori omogenei
@@ -116,6 +106,10 @@ A seconda della posizione dell'ugello rispetto alla carcassa si può immaginare 
 
 
 
+% Come ultima cosa accennare al fatto che gli scarti presentano anelli di colorazione differente e che questo sarà un grave problema in fase di valutazione dei risultati
+
+
+
 
 
 \section{Importanza Preprocessing}
@@ -125,7 +119,7 @@ A seconda della posizione dell'ugello rispetto alla carcassa si può immaginare 
 
 %Si illustra il Preprocessing che ha portato ai migliori risultati
 %
-%- centramento fondametale per aiutare la rete
+%- centramento fondamentale per aiutare la rete
 %    - descrizione funzione di centramento (passaggio BW, negativo, houghCirc media e matrice affine)
 %- passaggio da RGB a Grayscale perché non c'è una grande perdita di informazione
 %- bilateralFilter per smoothare via la texture "sale e pepe" tipica delle carcasse
