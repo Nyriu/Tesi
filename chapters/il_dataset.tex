@@ -87,27 +87,49 @@ Questo porta non solo ad occupare più spazio in memoria ma significa anche che 
 Per avere un termine di paragone basti pensare che le immagini di MNIST sono $64$x$64$ pixel mentre quelle di ImageNet di $TODO$x$TODOpx$.
 
 %% falsi colori, contrasti differenti, centramenti
-Osservando nuovamente Figura TODO ci si accorge che le immagini 
+Osservando nuovamente Figura TODO ci si accorge che le immagini hanno varie proprietà, verranno ora elencate e commentate in ordine crescente di fastidiosità (TODO fix).
+% le prime sono da considerarsi poco problematiche o non problematiche le ultime problematiche
+\begin{itemize}
 
-%qualità generali
-% - cerchi concentrici
-% - colori omogenei
-% - la colla ha texture differente
-% - la colla è localizzata
-% - Scarti sono asimmetrici
-%% TODO 3 immagini conformi vicine il più diverse possibile
-% - La distanza dal fondo è sempre quella (quindi le dimensioni relative degli anelli)
-% - La superficie del pezzo varia ma bene o male è sempre quello
-% - centratura (varia ma sappiamo che non può essere completamente fuori)
-% - luminosità (ci possiamo basare sul più e sul meno luminoso)
-% - riflessività del centro molto fastidiosa
-% - posizione delle balze (possono capitare a 360 gradi)
+  \item Ogni immagine presenta tre circonferenze concentriche, con centro il centro del pezzo.
+    Ciascuna circonferenza è definita da una transizione da una zona più scura ad una più chiara.
+    Sappiamo che le zone più scure corrispondono alle pareti verticali del pezzo mentre le zone chiare ai tre gradini sul fondo.
+    Questa proprietà non è problematica, anzi potrà essere sfruttata a nostro vantaggio.
+
+  \item La distanza dal fondo è sempre quella (quindi le dimensioni relative degli anelli).
+
+  \item Le due balze sulla parete verticale sono ben visibili e possono presentarsi, sempre una di fronte all'altra, in ogni posizione lungo una circonferenza di raggio pari al raggio della cavità cilindrica.
+    Possono essere considerate un problema in quanto rappresentano informazione superflua e variabile.
+    Ricordiamo che la posizione delle balze non ha alcuna correlazione con la presenza della colla, tanto meno con la sua posizione.
+
+  \item La superficie del pezzo varia ma bene o male è sempre quello.
+    Nota sulle macchie scure.
+
+  \item centratura (varia ma sappiamo che non può essere completamente fuori)
+  
+  \item riflessività del centro fastidiosa
+
+  \item luminosità (ci possiamo basare sul più e sul meno luminoso per avere più o meno il range) fastidiosa
+
+\end{itemize}
 
 
 
+% TODO 3 immagini conformi vicine il più diverse possibile
+Ora possiamo elencare le proprietà esclusive degli Scarti, sempre in ordine di fastidiosità:
+\begin{itemize}
+  \item la colla ha texture differente
 
+  \item la colla è localizzata
+
+  \item Scarti sono asimmetrici
+
+\end{itemize}
+
+% pezzo sotto dirlo ora o quando faccio la diff la prima volta nella sezione degli AE? Oppure quando creo gli scarti sintetici?
 % Come ultima cosa accennare al fatto che gli scarti presentano anelli di colorazione differente e che questo sarà un grave problema in fase di valutazione dei risultati
-
+% Specificare che NON è una proprietà "corretta" ma che dipende dal modo in cui sono state raccolte le immagini
+% Che gli scarti on-line saranno uguali a Conforme+Colla
 
 
 
