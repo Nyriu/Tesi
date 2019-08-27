@@ -87,7 +87,7 @@ Questo porta non solo ad occupare più spazio in memoria ma significa anche che 
 Per avere un termine di paragone basti pensare che le immagini di MNIST sono $64$x$64$ pixel mentre quelle di ImageNet di $TODO$x$TODOpx$.
 
 %% falsi colori, contrasti differenti, centramenti
-Osservando nuovamente Figura TODO ci si accorge che le immagini hanno varie proprietà, verranno ora elencate e commentate in ordine crescente di fastidiosità (TODO fix).
+Osservando nuovamente Figura TODO ci si accorge che le immagini hanno varie proprietà, verranno ora elencate e commentate in ordine crescente di fastidiosità (TODO dire meglio).
 % le prime sono da considerarsi poco problematiche o non problematiche le ultime problematiche
 \begin{itemize}
 
@@ -96,47 +96,64 @@ Osservando nuovamente Figura TODO ci si accorge che le immagini hanno varie prop
     Sappiamo che le zone più scure corrispondono alle pareti verticali del pezzo mentre le zone chiare ai tre gradini sul fondo.
     Questa proprietà non è problematica, anzi potrà essere sfruttata a nostro vantaggio.
 
-  \item La distanza dal fondo è sempre quella (quindi le dimensioni relative degli anelli).
+  \item Dato che le immagini vengono raccolte ad una distanza costante dal fondo, la dimensioni delle circonferenze sono fissate e si mantengono coerenti tra le immagini. Anche questa proprietà verrà usata a nostro vantaggio.
 
   \item Le due balze sulla parete verticale sono ben visibili e possono presentarsi, sempre una di fronte all'altra, in ogni posizione lungo una circonferenza di raggio pari al raggio della cavità cilindrica.
     Possono essere considerate un problema in quanto rappresentano informazione superflua e variabile.
     Ricordiamo che la posizione delle balze non ha alcuna correlazione con la presenza della colla, tanto meno con la sua posizione.
 
-  \item La superficie del pezzo varia ma bene o male è sempre quello.
-    Nota sulle macchie scure.
+  \item Le superfici dei pezzi si assomigliano: presentano tutte un effetto chiamato "sale e pepe" con granuli di grandezze e luminosità varia.
+    Questo è un bene perché è una costante ma anche un male perché ognuno ha una particolare disposizione di quella texture. TODO dire meglio.
+    Bisogna prestare particolare attenzione alle macchie scure presenti sul fondo di alcune carcasse.
+    La posizione delle macchie non è fissa, perdipiù anche la loro dimensione è variabile.
+    Queste qualità superficiali non saranno da sottovalutare in fase di elaborazione delle immagini.
 
-  \item centratura (varia ma sappiamo che non può essere completamente fuori)
+  \item A guardare le immagini sembra che siano centrate in realtà ci siamo accorti che c'erano delle differenze. TODO dire meglio.
+    Il centro dell'immagine non corrisponde con il centro del pezzo.
+    Nonostante la distanza massima tra centro del pezzo e il centro dell'immagine è tale che il fondo della carcassa sia sempre visibile interamente, è preferibile che le carcasse nelle immagini vengano centrate correttamente.
   
-  \item riflessività del centro fastidiosa
+  % TODO decidere se metterlo
+  %\item La luminosità del gradino più piccolo, quello al centro dell'immagine, varia di molto.
+  %  Questo comporta un problema perché in alcune immagini con luminosità maggiore il cerchio più piccolo risulta completamente bianco.
+  %  Se lo confrontiamo con un'altra immagine si vede che sono state perse tutte le informazioni sulla superficie del fondo. (TODO dire meglio).
+  %  Questo sarebbe una problematica secondaria se non fosse che la colla può colare fino al centro.
+  %  Poiché la colorazione della colla è nell'intorno del bianco bisognerà trovare un modo per smorzare la luminosità del fondo.
 
-  \item luminosità (ci possiamo basare sul più e sul meno luminoso per avere più o meno il range) fastidiosa
+  \item La variazione di luminosità tra le varie foto è una problematica che dovrà essere assolutamente gestita.
+    Infatti alcune immagini hanno una luminosità così alta da far risultare alcune superfici bianche.
+    Altre immagini invece sono molto più scure, tanto che anche le zone che normalmente rifletterebbero sono illuminate appena.
 
 \end{itemize}
-
-
 
 % TODO 3 immagini conformi vicine il più diverse possibile
-Ora possiamo elencare le proprietà esclusive degli Scarti, sempre in ordine di fastidiosità:
+
+Ora possiamo elencare le proprietà esclusive degli Scarti, in questo caso sono tutte a nostro favore poiché sono l'informazione con cui si distingue uno scarto da un conforme(TODO dire meglio):
 \begin{itemize}
-  \item la colla ha texture differente
+  \item La colla ha alcune caratteristiche particolari: ha un colore bianco-verde solitamente più chiaro della superficie della carcassa e presenta sempre delle zone con dei riflessi.
 
-  \item la colla è localizzata
+  \item La colla è localizzata.
+    Significa che, se presente, non appare come tante gocce sparse ma come un corpo unico più o meno allungato.
 
-  \item Scarti sono asimmetrici
+  \item Tracciando una diametro a piacere ci si accorge che gli Scarti sono sempre asimmetrici, invece i conformi, a meno di piccole differenze superficiali, sono sempre simmetrici. (TODO dire meglio).
+
+    
 
 \end{itemize}
 
-% pezzo sotto dirlo ora o quando faccio la diff la prima volta nella sezione degli AE? Oppure quando creo gli scarti sintetici?
+% commento sotto dirlo ora o quando faccio la diff la prima volta nella sezione degli AE? Oppure quando creo gli scarti sintetici?
 % Come ultima cosa accennare al fatto che gli scarti presentano anelli di colorazione differente e che questo sarà un grave problema in fase di valutazione dei risultati
 % Specificare che NON è una proprietà "corretta" ma che dipende dal modo in cui sono state raccolte le immagini
 % Che gli scarti on-line saranno uguali a Conforme+Colla
 
+TODO manca qualcosa?
+TODO fare conclusione section/subsection?
 
 
 
-\section{Importanza Preprocessing}
+
+\section{Preprocessing}
 % specificare librerie usate ??
-% specificare bene che quelli che ora sono passaggi ben ordinati sono il risultato di mesi di trial and error
+% specificare bene che quelli che ora sono passaggi ben ordinati sono il risultato di mesi di trial and error.
 % Processo di modifica delle immagini ed euristiche applicate per ottenerne di "buone"
 
 %Si illustra il Preprocessing che ha portato ai migliori risultati
@@ -148,12 +165,22 @@ Ora possiamo elencare le proprietà esclusive degli Scarti, sempre in ordine di 
 %- il masking per rimuovere le balze e l'area corrispondente alla zona verticale della carcassa
 %- crop per levare l'area nera (in proporzione ho molta più informazione)
 %- resize ad 224x224 perché si è dimostrata essere una buona dimensione (magari mostrare come sotto il 200 è difficile vedere la colla, quelle piccole spariscono)
+Specificare librerie usate.
+Descrizione sommaria di ciò che viene fatto alle immagini ed in che ordine.
+
 
 \subsection {Centramento mediante Hough Circles}
+Descrizione algoritmo di Hough Circles
+%https://docs.opencv.org/2.4/doc/tutorials/imgproc/imgtrans/hough_circle/hough_circle.html
+
 \subsection {Passaggio da RGB a GrayScale}
+
 \subsection {Equalizzazione}
+
 \subsection {Bilateral Filtering}
+
 \subsection {Masking}
+
 \subsection {Crop e Resizing}
 
 
