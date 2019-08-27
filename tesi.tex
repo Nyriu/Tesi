@@ -1,8 +1,8 @@
 %!TEX TS-program = pdflatex
 %!TEX encoding = UTF-8 Unicode
 
-%\documentclass[12pt,a4paper,twoside,english,italian]{book}
-\documentclass[12pt,a4paper,oneside,english,italian]{book}
+\documentclass[12pt,a4paper,twoside,english,italian]{book} % twoside
+%\documentclass[12pt,a4paper,oneside,english,italian]{book} % oneside
 
 % Usare "oneside" invece di "twoside"
 % nelle bozze, per risparmiare carta:
@@ -242,9 +242,9 @@
 \renewcommand{\chaptermark}[1]{\markboth{#1}{}}
 \renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
 \fancyhf{}
-%\fancyhead[LE,RO]{\bfseries\thepage} % TODO riattivare con twoside
+\fancyhead[LE,RO]{\bfseries\thepage} % TODO riattivare con twoside
 \fancyhead[LO]{\bfseries\rightmark}
-%\fancyhead[RE]{\bfseries\leftmark} % TODO riattivare con twoside
+\fancyhead[RE]{\bfseries\leftmark} % TODO riattivare con twoside
 \renewcommand{\headrulewidth}{0.5pt}
 \renewcommand{\footrulewidth}{0pt}
 \setlength{\headheight}{14.5pt}
@@ -254,16 +254,11 @@
                %    da usare nell'intestazione      %
                %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-  \titolo{La mia tesi\\ di Matematica}
-  \laureanda{Giovanna Tesista}
-% \laureando{Giovanni Tesista}
-  \annoaccademico{2015-2016}
-% \facolta{Scienze Matematiche, Fisiche e Naturali} % (default)
-%  \corsodilaurea{Informatica} % per la laurea vecchio ordinamento
-\corsodilaureatriennalein{Matematica}
-% \corsodilaureaspecialisticain{Informatica}
-% \corsodilaureamagistralein{Matematica}
-  \relatore[Prof.]{Tal dei Tali}
+  \titolo{Autoencoder per \\ l'Anomaly Detection \\ applicati in \\ ambito AutoMotive}
+  \laureando{Tristano Munini}
+  \annoaccademico{2018-2019}
+  \corsodilaureatriennalein{Informatica}
+  \relatore[Prof.]{Giuseppe Serra}
 %  \relatoreDue[Prof.]{Secondo relatore}
 % \correlatore{Talaltro dei Tali}
 % \correlatoreDue{Secondo Correlatore}
