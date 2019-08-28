@@ -152,6 +152,11 @@ TODO fare conclusione section/subsection?
 
 
 \section{Preprocessing}
+Questa sezione è divisa in due parti: nella prima verranno illustrate alcune tra le principali tecniche di \textit{Digital Image Preprocessing}, esponendo i dettagli matematici ed esplorando le loro applicazioni; nella seconda si spiegherà quali di queste tecniche, in che ordine e per quali motivi sono state utilizzate.
+
+Come prima cosa è bene ricordare cosa si intende per \textit{Digital Image Preprocessing}.
+
+
 % specificare librerie usate ??
 % specificare bene che quelli che ora sono passaggi ben ordinati sono il risultato di mesi di trial and error.
 % Processo di modifica delle immagini ed euristiche applicate per ottenerne di "buone"
@@ -166,20 +171,74 @@ TODO fare conclusione section/subsection?
 %- crop per levare l'area nera (in proporzione ho molta più informazione)
 %- resize ad 224x224 perché si è dimostrata essere una buona dimensione (magari mostrare come sotto il 200 è difficile vedere la colla, quelle piccole spariscono)
 Specificare librerie usate.
-Descrizione sommaria di ciò che viene fatto alle immagini ed in che ordine.
+
+
+Specificare che useremo solo raster images.
+In opencv sono array bidimensionali o 3d se immagine a colori.
+% https://en.wikipedia.org/wiki/Raster_graphics
 
 TODO Cosa si intende per Feature Extraction.
 % https://en.wikipedia.org/wiki/Feature_extractionODO Cosa si intende per Feature Extraction.
 % https://deepai.org/machine-learning-glossary-and-terms/feature-extraction
 
-Prima verranno introdotti algoritmi che sono alla base o fanno parte di quelli che affronteremo poi. TODO dire meglio.
+
+% DECIDERE! 
+% Opzione 2: Prima spiego gli algoritmi poi summary dell'ordine e dei motivi per cui sono stai applicati.
+
+Descrizione sommaria di ciò che viene fatto alle immagini ed in che ordine.
+
+Prima verranno introdotti algoritmi che sono alla base o fanno parte di quelli che affronteremo poi.
+
+\subsection {Passaggio da RGB a GrayScale}
+% https://www.johndcook.com/blog/2009/08/24/algorithms-convert-color-grayscale/
+% https://docs.opencv.org/3.1.0/de/d25/imgproc_color_conversions.html
+% https://stackoverflow.com/questions/19181323/what-grayscale-conversion-algorithm-does-opencv-cvtcolor-use
+% ITU-R Recommendation BT. 709.
+
+\subsection {Masking}
+Basta dire che è una operazione di AND tra mask e immagine.
+
+\subsection {Traslazioni e Rotazioni}
+Rotazione è metodo standard e largamente usato e bla bla
+% wrap affine e matrici di traslazione / rotazione
+% cfr cambio di base?
+
+\subsection {Crop e Resizing}
+Crop è "slice" di un array
+% https://en.wikipedia.org/wiki/Cropping_(image)
+Il più semplice è Nearest-Neighbor Interpolation
+% https://docs.opencv.org/2.4/modules/imgproc/doc/geometric_transformations.html
+% https://en.wikipedia.org/wiki/Image_scaling
+
+Resizing default di opencv è Bilinear Interpolation
+Parentesi sulla Linear Interpolation
+% https://en.wikipedia.org/wiki/Linear_interpolation
+Per poi spiegare Bilinear Interpolation
+% https://en.wikipedia.org/wiki/Bilinear_interpolation
+
+
+\subsection {Histogram Equalization}
+% https://en.wikipedia.org/wiki/Histogram_equalization
+
 \subsection {Gaussian Blur}
 % https://en.wikipedia.org/wiki/Gaussian_blur
+% Cosa si intende per convolution https://en.wikipedia.org/wiki/Convolution
 
-\subsection {Sobel}
+\subsection {Bilateral Filter}
+% https://en.wikipedia.org/wiki/Bilateral_filter
+% https://docs.opencv.org/2.4/modules/imgproc/doc/filtering.html?highlight=bilateralfilter#bilateralfilter
+
+% Capire formule in 
+% http://homepages.inf.ed.ac.uk/rbf/CVonline/LOCAL_COPIES/MANDUCHI1/Bilateral_Filtering.htmlhttp://homepages.inf.ed.ac.uk/rbf/CVonline/LOCAL_COPIES/MANDUCHI1/Bilateral_Filtering.html
+
+
+\subsection {Sobel Operator}
+% https://en.wikipedia.org/wiki/Sobel_operator
+% https://en.wikipedia.org/wiki/Gradient
 
 \subsection {Canny Edge Detection}
 % https://en.wikipedia.org/wiki/Canny_edge_detector
+
 
 \subsection {Circle Hough Transform}
 Descrizione radius-and-angle parametrization
@@ -197,16 +256,8 @@ Descrizione algoritmo di Hough Circles
 
 
 
-\subsection {Passaggio da RGB a GrayScale}
 
-\subsection {Equalizzazione}
-
-\subsection {Bilateral Filtering}
-
-\subsection {Masking}
-
-\subsection {Crop e Resizing}
-
+\subsection {Applicazione degli algoritmi descritti}
 
 
 
@@ -219,9 +270,6 @@ Descrizione algoritmo di Hough Circles
 Due metodi principali:
  - rotazione
  - generazione degli scarti sintetici
-
-\subsection {Rotazione}
-Rotazione è metodo standard e largamente usato e bla bla
 
 \subsection {Generazione Scarti Sintetici}
 
