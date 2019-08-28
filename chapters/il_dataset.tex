@@ -81,7 +81,7 @@ Innanzitutto ogni immagine ha una risoluzione di $896$x$896$ pixel, dimensione c
 Ad esempio si può pensare di ridurre l'immagine ad una dimensione tale da: occupare meno spazio in memoria, quindi in RAM durante il training, ed allo stesso tempo di mantenere un livello di dettaglio sufficiente ai nostri scopi, risultando quindi in un boost in velocità di train. TODO dire meglio.
 Oppure di suddividere l'immagine in quadranti da analizzare singolarmente così da mantenere la qualità dell'immagine originale ma senza dover creare una rete che accetti immagini troppo grandi.
 %TODO spiegare meglio
-Infatti una rete che accetta immagini di grandi dimensioni, solitamente, avrà un numero di paramatri maggiore di una che accetta immagini piccole.
+Infatti una rete che accetta immagini di grandi dimensioni, solitamente, avrà un numero di parametri maggiore di una che accetta immagini piccole.
 Questo porta non solo ad occupare più spazio in memoria ma significa anche che la rete impiegherà più tempo sia in fase di train (più parametri da aggiustare) sia in fase di predizione (più conti da fare). TODO sistemare.
 %TODO verificare dimensione immagine
 Per avere un termine di paragone basti pensare che le immagini di MNIST sono $64$x$64$ pixel mentre quelle di ImageNet di $TODO$x$TODOpx$.
@@ -154,10 +154,78 @@ TODO fare conclusione section/subsection?
 \section{Preprocessing}
 Questa sezione è divisa in due parti: nella prima verranno illustrate alcune tra le principali tecniche di \textit{Digital Image Preprocessing}, esponendo i dettagli matematici ed esplorando le loro applicazioni; nella seconda si spiegherà quali di queste tecniche, in che ordine e per quali motivi sono state utilizzate.
 
-Come prima cosa è bene ricordare cosa si intende per \textit{Digital Image Preprocessing}.
+Come prima cosa è bene ricordare che con \textit{Digital Image Preprocessing} si intende il modificare immagini digitali per mezzo di algoritmi eseguibili da un calcolatore.
+Spesso questi algoritmi hanno precise formulazioni matematiche perché ogni immagine può essere pensata come una matrice bidimensionale, se in scala di grigi, oppure tridimensionale se a colori.
+Un'immagine in scala di grigi è rappresentata da una matrice bidimensionale in cui ogni elemento appartiene all'intervallo $[0,255]$, $0$ corrisponde al colore nero mentre $255$ corrisponde al bianco.
+Disponendo una sopra l'altra tre matrici come quelle appena descritte si ottiene un'immagine a colori: ogni matrice rappresenta uno dei canali principali (Red, Green, Blue da cui il famoso acronimo RGB) dell'immagine.
+Sia $I$ un'immagine a tre canali (RGB), il colore del pixel in posizione $(i,j)$ è dato dalla tripletta $(I[i,j,0], I[i,j,1], I[i,j,2])$, in cui: $(0,0,0)$ indica il colore nero, $(255,255,255)$ indica il colore bianco, $(255,0,0)$ indica il colore rosso, $(0,255,0)$ indica il colore verde, e così via \dots
+Quindi un'immagine avrà un numero finito di elementi, detti \textit{pixel}, il cui numero si può ottenere moltiplicando il numero di colonne della matrice per il numero di righe.
+% potrei definire qua lo aspect ratio
+
+% La definizione di immagine appena data prende il nome di \textit{raster-image}.
+% https://en.wikipedia.org/wiki/Raster_graphics
+
+Uno dei vantaggi del rappresentare le immagini come matrici è quello di poter applicare operazioni classiche come somma, sottrazione, prodotto e divisione.
+Ma la nostra attenzione si concentrerà soprattutto sulle convoluzioni e sulle trasformazioni affini.
+
+Nell'ambito del \textit{Image Preprocessing} con convoluzione si intende l'operazione che permette di effettuare una somma pesata tra un pixel di un'immagine e gli elementi a lui vicini.
+I pesi sono definiti in una matrice, detta \textit{kernel} o filtro, di dimensioni non superiori a quelle dell'immagine.
+Solitamente i kernel hanno dimensione $3x3$ o $5x5$.
+Sfrutteremo ora un esempio per spiegare come viene effettuata una convoluzione, poi verrà illustrato uno pseudocodice generale.
+In Figura~\ref{fig:conv_example} sono illustrate, da sinistra a destra: l'immagine di partenza $I$, il filtro $K$ e l'immagine risultato $O$.
+Il simbolo $*$ denota l'operazione di convoluzione e non è da confondere con il prodotto elemento per elemento.
+Effettueremo una convoluzione da sinistra a destra e dall'alto verso il basso, ma si fa presente che l'ordine d'esecuzione non modifica il risultato.
+\begin{itemize}
+  \item Il primo passo è posizionare una copia di $K$ sopra ad $I$ in modo che l'angolo in alto a sinistra del kernel combaci con quello in alto a sinistra dell'immagine.
+  \item Ora possiamo moltiplicare ogni elemento di $I$ con il rispettivo elemento di $K$.
+  \item I valori così ottenuti dovranno essere sommati.
+    Effettuando i conti si osserva che il risultato combacia con il valore in alto a sinistra dell'immagine risultato.
+  \item Il prossimo passo consiste nel far traslare il kernel di una cella a sinistra, calcolare la somma di prodotti rispetto ai nuovi valori ed infine salvare il risultato in $O$ una cella a destra rispetto a prima.
+  \item Si prosegue in questo modo fino a che l'ultima colonna di $K$ non combacia con l'ultima colonna di $I$, questo coincide con il riempimento della prima riga in $O$.
+  \item Ora bisogna posizionare $K$ in modo che l'elemento nell'angolo superiore sinistro sia sopra all'elemento in $I$ sulla prima colonna della seconda riga.
+    Si effettuano prodotti e somme, salvando il risultato nella prima cella libera della seconda riga in $O$.
+  \item Si procede in questo modo finché non si raggiunge l'ultimo elemento dell''immagine di partenza.
+\end{itemize}
+
+L'algoritmo può essere facilmente espresso tramite due cicli $for$ facendo attenzione a posizionare il kernel sempre entro i limiti dell'immagine di partenza.
 
 
-% specificare librerie usate ??
+Se si vuole ottenere un'immagine 
+
+
+
+\begin{figure}[ht]
+  \includegraphics[width=0.6\textwidth]{esempio_convoluzione}
+  \label{fig:conv_example}
+  \caption{TODO Immagine da rifare}
+\end{figure}
+\cleardoublepage
+
+
+% Una convoluzione tra un'immagine e un kernel viene effettuata facendo scorrere il kernel sull'immagine in modo che il kernel venga centrato almeno una volta su ogni elemento dell'immagine tale che il kernel non sbordi dall'immagine.
+%Una convoluzione tra un'immagine $I$ ed un kernel $K$ può essere descritta con il seguente pseudocodice.
+%
+%\begin{lstlisting}
+%output_image = new empty image 
+%
+%for each image row in input image:
+%   for each pixel in image row:
+%
+%      set accumulator to zero
+%
+%      for each kernel row in kernel:
+%         for each element in kernel row:
+%
+%            if element position  corresponding* to pixel position then
+%               multiply element value  corresponding* to pixel value
+%               add result to accumulator
+%            endif
+%
+%      set output image pixel to accumulator
+%\end{lstlisting}
+
+
+
 % specificare bene che quelli che ora sono passaggi ben ordinati sono il risultato di mesi di trial and error.
 % Processo di modifica delle immagini ed euristiche applicate per ottenerne di "buone"
 
@@ -170,12 +238,7 @@ Come prima cosa è bene ricordare cosa si intende per \textit{Digital Image Prep
 %- il masking per rimuovere le balze e l'area corrispondente alla zona verticale della carcassa
 %- crop per levare l'area nera (in proporzione ho molta più informazione)
 %- resize ad 224x224 perché si è dimostrata essere una buona dimensione (magari mostrare come sotto il 200 è difficile vedere la colla, quelle piccole spariscono)
-Specificare librerie usate.
 
-
-Specificare che useremo solo raster images.
-In opencv sono array bidimensionali o 3d se immagine a colori.
-% https://en.wikipedia.org/wiki/Raster_graphics
 
 TODO Cosa si intende per Feature Extraction.
 % https://en.wikipedia.org/wiki/Feature_extractionODO Cosa si intende per Feature Extraction.
@@ -209,6 +272,7 @@ Crop è "slice" di un array
 Il più semplice è Nearest-Neighbor Interpolation
 % https://docs.opencv.org/2.4/modules/imgproc/doc/geometric_transformations.html
 % https://en.wikipedia.org/wiki/Image_scaling
+% https://en.wikipedia.org/wiki/Scale_(ratio)
 
 Resizing default di opencv è Bilinear Interpolation
 Parentesi sulla Linear Interpolation
@@ -223,6 +287,7 @@ Per poi spiegare Bilinear Interpolation
 \subsection {Gaussian Blur}
 % https://en.wikipedia.org/wiki/Gaussian_blur
 % Cosa si intende per convolution https://en.wikipedia.org/wiki/Convolution
+% https://en.wikipedia.org/wiki/Kernel_(image_processing)#Convolution
 
 \subsection {Bilateral Filter}
 % https://en.wikipedia.org/wiki/Bilateral_filter
