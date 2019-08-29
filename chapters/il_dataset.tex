@@ -152,13 +152,9 @@ TODO fare conclusione section/subsection?
 
 
 \section{Preprocessing}
-Questa sezione è divisa in due parti: nella prima verranno illustrate alcune tra le principali tecniche di \textit{Digital Image Preprocessing} nonché di \textit{Machine Vision}, esponendo i dettagli matematici ed esplorando le loro applicazioni; nella seconda si spiegherà quali di queste tecniche, in che ordine e per quali motivi sono state utilizzate.
+Questa sezione è divisa in due parti: nella prima verranno illustrate alcune tra le principali tecniche di \textit{Digital Image Preprocessing} nonché di \textit{Computer Vision}, esponendo i dettagli matematici ed esplorando le loro applicazioni; nella seconda si spiegherà quali di queste tecniche, in che ordine e per quali motivi sono state utilizzate.
 
 Come prima cosa è bene ricordare che con \textit{Digital Image Preprocessing} si intende il modificare immagini digitali per mezzo di algoritmi eseguibili da un calcolatore.
-
-% https://en.wikipedia.org/wiki/Machine_vision
-Mentre con Machine vision
-
 
 Gli algoritmi utilizzati in questi campi hanno precise formulazioni matematiche perché ogni immagine viene rappresentata come una matrice bidimensionale, se in scala di grigi, oppure tridimensionale se a colori.
 Gli elementi di una matrice bidimensionale appartengono all'intervallo $[0,255]$, nel quale $0$ corrisponde al colore nero mentre $255$ corrisponde al bianco.
@@ -177,7 +173,7 @@ Nell'ambito del \textit{Image Preprocessing} con convoluzione si intende l'opera
 I pesi sono definiti in una matrice, detta \textit{kernel} o filtro, di dimensioni non superiori a quelle dell'immagine di partenza.
 Solitamente i kernel hanno dimensione $3x3$ o $5x5$.
 Sfrutteremo ora un esempio per spiegare come viene effettuata una convoluzione, più avanti, quando parleremo del filtro Sobel, verrà illustrato lo pseudocodice che ne formalizza i passaggi.
-In Figura~\ref{fig:conv_example} sono illustrate, da sinistra a destra: l'immagine di partenza $I$, il filtro $K$ e l'immagine risultato $O$.
+In Figura~\ref{fig:conv_example} sono illustrate, da sinistra a destra: l'immagine di partenza $I$, il filtro $K$ e l'immagine risultato $Y$.
 Il simbolo $*$ denota l'operazione di convoluzione e non è da confondere con nessun tipo di prodotto.
 Effettueremo una convoluzione da sinistra a destra e dall'alto verso il basso, ma si fa presente che l'ordine d'esecuzione non modifica il risultato.
 \begin{itemize}
@@ -185,14 +181,16 @@ Effettueremo una convoluzione da sinistra a destra e dall'alto verso il basso, m
   \item Ora possiamo moltiplicare ogni elemento di $I$ con il rispettivo elemento di $K$.
     I valori così ottenuti dovranno essere sommati tra di loro.
     Effettuando i conti si osserva che il risultato combacia con il valore in alto a sinistra dell'immagine risultato.
-  \item Il prossimo passo consiste nel far traslare il kernel di una cella a sinistra, calcolare la somma di prodotti rispetto ai nuovi valori ed infine salvare il risultato in $O$ una cella a destra rispetto a prima.
-  \item Si prosegue in questo modo fino a che l'ultima colonna di $K$ non combacia con l'ultima colonna di $I$, questo coincide con il riempimento della prima riga in $O$.
+  \item Il prossimo passo consiste nel far traslare il kernel di una cella a sinistra, calcolare la somma di prodotti rispetto ai nuovi valori ed infine salvare il risultato in $Y$ una cella a destra rispetto a prima.
+  \item Si prosegue in questo modo fino a che l'ultima colonna di $K$ non combacia con l'ultima colonna di $I$, questo coincide con il riempimento della prima riga in $Y$.
   \item Ora bisogna posizionare $K$ in modo che l'elemento nell'angolo superiore sinistro sia sopra all'elemento in $I$ sulla prima colonna della seconda riga.
-    Si effettuano prodotti e somme, salvando il risultato nella prima cella libera della seconda riga in $O$.
+    Si effettuano prodotti e somme, salvando il risultato nella prima cella libera della seconda riga in $Y$.
   \item Si procede in questo modo finché non si raggiunge l'ultimo elemento dell''immagine di partenza.
 \end{itemize}
 
 L'algoritmo può essere facilmente espresso tramite due cicli $for$ facendo attenzione a posizionare il kernel sempre entro i limiti dell'immagine di partenza.
+
+% TODO parentesi su il caso a colori?
 
 \begin{figure}[ht]
   \includegraphics[width=0.6\textwidth]{esempio_convoluzione}
@@ -208,30 +206,101 @@ Trasformazioni Affini
 TODO RIEMPIRE DI TEORIA QUA
 
 
-% TODO Cosa si intende per Feature Extraction.
-% https://en.wikipedia.org/wiki/Feature_extractionODO Cosa si intende per Feature Extraction.
+Come ultima cosa prima di cominciare a descrivere gli algoritmi, si vuole specificare cosa significa \textit{Feature Extraction}.
+% https://en.wikipedia.org/wiki/Feature_extraction
 % https://deepai.org/machine-learning-glossary-and-terms/feature-extraction
 
+TODO
 
-Ora verranno introdotti alcuni algoritmi fondamentali nel campo del \textit{Machine Vision}
+
+\clearpage
+Ora verranno introdotti alcuni algoritmi fondamentali nel campo della \textit{Computer Vision}.
+
+TODO aggiungere applicazioni principali per ogni tecnica?
+
+TODO sono da riscrivere meglio.
+
 
 \subsection {Passaggio da RGB a GrayScale}
+La conversione di un'immagine da RGB in scala di grigi è un'operazione estremamente facile, ma rimane comunque alla base di molti algoritmi di image processing.
+Infatti per molti compiti l'informazione sul colore non è necessaria.
+Il modo più semplice per combinare i tre canali RGB in un unico canale è quello di fare la media dei valori pixel per pixel:
+\begin{equation}
+  Y = (R + G + B)/3
+\end{equation}
+\label{eq:rgb2gray_avg}
+In questo modo ogni canale partecipa allo stesso modo.
+Però sappiamo che l'occhio umano è più sensibile ai colori verdi, quindi potrebbe essere preferibile dare più importanza al secondo canale:
+\begin{equation}
+  Y = 0.299*R + 0.587*G + 0.114*B
+\end{equation}
+\label{eq:rgb2gray}
+I pesi sono stati definiti nello standard CCIR 601.
+Il risulato di quest'ultimo calcolo è rappresentato in Figura~\ref{fig:rgb2gray_example}.
+
+% TODO accennare agli altri metodi?
 % https://www.johndcook.com/blog/2009/08/24/algorithms-convert-color-grayscale/
 % https://docs.opencv.org/3.1.0/de/d25/imgproc_color_conversions.html
 % https://stackoverflow.com/questions/19181323/what-grayscale-conversion-algorithm-does-opencv-cvtcolor-use
-% ITU-R Recommendation BT. 709.
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[width=0.3\textwidth]{RGB}
+    \includegraphics[width=0.3\textwidth]{RGBtoGRAY}
+    \label{fig:rgb2gray_example}
+    \caption{A sinistra l'immagine originale. A destra la versione in scala di grigi}
+  \end{center}
+\end{figure}
 
+
+\clearpage
 \subsection {Masking}
-Basta dire che è una operazione di AND tra mask e immagine.
+La tecnica del masking permette di nascondere parti di immagine a cui non siamo interessati.
+Abbiamo bisogno di una maschera binaria, nella quale ogni pixel appartiene all'insieme $\{0,1\}$, che solitamente viene generata a mano, ed ovviamente dell'immagine che si vuole mascherare.
+La maschera deve avere le stesse dimensioni dell'immagine di partenza.
+L'operazione consiste nell'effettuare un AND logico, pixel per pixel,  tra l'immagine e la maschera.
+Così facendo tutti i pixel dell'immagine di partenza corrispondenti a zone di valore $0$ della maschera verranno impostati a $0$, diventando quindi neri.
+Il resto dell'immagine rimane con i colori originali.
 
+Nell'esempio in Figura~\ref{fig:mask_example} si è deciso di rimuove l'informazione relativa allo sfondo.
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[width=0.3\textwidth]{RGB}
+    \includegraphics[width=0.3\textwidth]{mask}
+    \includegraphics[width=0.3\textwidth]{masked}
+    \label{fig:mask_example}
+    \caption{Da sinistra a destra: immagine originale, maschera binaria, risultato del masking}
+  \end{center}
+\end{figure}
+
+% TODO dire che ci sono vari tipi di masking?
+
+\clearpage
 \subsection {Traslazioni e Rotazioni}
-Rotazione è metodo standard e largamente usato e bla bla
+Come abbiamo accennato prima, le trasformazioni affini ci permettono di effettuare traslazioni e rotazioni alle immagini.
+
+TODOOOOOOO
+
+Con la matrice per il cambio di base hhkk
 % wrap affine e matrici di traslazione / rotazione
 % cfr cambio di base?
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[width=0.3\textwidth]{RGB}
+    \includegraphics[width=0.2\textwidth]{mask}
+    \includegraphics[width=0.3\textwidth]{masked}
+    \label{fig:traslation_example}
+    \caption{Da sinistra a destra: immagine originale, maschera binaria, risultato del masking}
+  \end{center}
+\end{figure}
 
-\subsection {Crop e Resizing}
-Crop è "slice" di un array
+\clearpage
+\subsection {Image Cropping and Resizing}
+Quando si effettua un \textit{image cropping} si ritaglia una porzione dell'immagine, che viene chiamata ROI (\textit{Region Of Interest}), sulla quale vogliamo concentrare la nostra attenzione.
+Dato che ogni immagine è rappresentata con una matrice, una ROI non sarà nient'altro che una matrice di dimensioni minori in cui sono stati copiati i valori dell'area interessata.
+Una matrice di questo tipo viene anche chiamata \textit{view}.
 % https://en.wikipedia.org/wiki/Cropping_(image)
+
+L'\textit{image resizing} 
 Il più semplice è Nearest-Neighbor Interpolation
 % https://docs.opencv.org/2.4/modules/imgproc/doc/geometric_transformations.html
 % https://en.wikipedia.org/wiki/Image_scaling
@@ -244,6 +313,7 @@ Per poi spiegare Bilinear Interpolation
 % https://en.wikipedia.org/wiki/Bilinear_interpolation
 
 
+\clearpage
 \subsection {Histogram Equalization}
 % https://en.wikipedia.org/wiki/Histogram_equalization
 
