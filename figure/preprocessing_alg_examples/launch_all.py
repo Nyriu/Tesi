@@ -1,6 +1,7 @@
 import rgb_to_gray
 import masking
 import affine_trans
+import eq_hist
 
 
 from my_globals import dest_dir, tesi_dest_dir

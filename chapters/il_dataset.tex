@@ -300,23 +300,65 @@ Dato che ogni immagine è rappresentata con una matrice, una ROI non sarà nient
 Una matrice di questo tipo viene anche chiamata \textit{view}.
 % https://en.wikipedia.org/wiki/Cropping_(image)
 
-L'\textit{image resizing} 
-Il più semplice è Nearest-Neighbor Interpolation
+Con l'\textit{image resizing} si aumentano (o diminuiscono) le dimensioni di un'immagine.
+Nel primo caso, poiché si vuole aumentare il numero di pixel dell'immagine finale,bisognerà utilizzare tecniche di upsampling ed interpolare i dati a disposizione per generarne di nuovi che siano verosimili.
+
+Uno fra gli algoritmi più semplici è Nearest-Neighbor Interpolation:
+il pixel che deve essere aggiunto ottiene il valore del pixel a lui più vicino.
+Un criterio di scelta dovrà essere definito nel caso in cui ci siano più pixel alla stessa distanza ma con valori differenti.
+Un criterio possibile è quello di assegnare al nuovo pixel sempre il valore del pixel in alto a sinistra.
+% https://en.wikipedia.org/wiki/Nearest-neighbor_interpolation
 % https://docs.opencv.org/2.4/modules/imgproc/doc/geometric_transformations.html
 % https://en.wikipedia.org/wiki/Image_scaling
 % https://en.wikipedia.org/wiki/Scale_(ratio)
 
-Resizing default di opencv è Bilinear Interpolation
-Parentesi sulla Linear Interpolation
+Una tecnica leggermente più complessa, ma che fornisce risultati soddisfacenti nella maggior parte delle occasioni, è l'interpolazione bilineare.
+Con questa tecnica si effettuano, in cascata, due interpolazioni lineari, una orizzontale ed una verticale.
+Con l'interpolazione bilineare i nuovi pixel si ottengono come media dei valori noti, pesata rispetto allo loro distanza dal pixel che si vuole colorare.
+In questo modo si ottengono immagini con cambi di colore più dolci.
+
+TODO
+Parentesi sulle formule?
+Linear Interpolation
 % https://en.wikipedia.org/wiki/Linear_interpolation
-Per poi spiegare Bilinear Interpolation
+per poi spiegare Bilinear Interpolation?
 % https://en.wikipedia.org/wiki/Bilinear_interpolation
+%https://theailearner.com/2018/12/29/image-processing-bilinear-interpolation/
+
+
+Nel caso in cui si voglia ridurre le dimensioni dell'immagine si dovranno usare tecniche di \textit{downsampling} ed \textit{anti-aliasing}.
+% https://en.wikipedia.org/wiki/Anti-aliasing_filter
+Il downsampling permette di selezionare un numero limitato di pixel che poi verranno usati per colorare la matrice di dimensione ridotta.
+Applicare soltanto questa tecnica può portare alla creazione di artefatti sintetici nell'immagine risultato.
+Significa che l'immagine ridotta potrebbe contenere gruppi di pixel di colori sbagliati.
+Sfruttando tecniche come l'anti-aliasing si può evitare, o quantomeno limitare, la creazione di tali artefatti.
+Un \textit{low-pass filter} è un tipo di filtro che smorza tutti i valori al di sopra di una certa soglia, mentre lascia passare tutti i valori minori.
+Nel campo del \textit{digital image processing} vengono utilizzati filtri di \textit{blur} applicati tramite convoluzione.
+Il termine \textit{blur} o \textit{smooth} indicano applicare un effetto sfuocato che tende a rendere più dolci le transizioni da un colore all'altro, andando quindi anche a ridurre valori troppo alti (o troppo bassi) avvicinandoli a valori più probabili.
 
 
 \clearpage
 \subsection {Histogram Equalization}
+Questa tecnica permette di "aggiustare" il contrasto di un'immagine sfruttandone l'istogramma.
+Il contrasto è definito come la differenza in intensità luminosa e colore che permette di distinguere gli oggetti.
+
+In Figura~\ref{fig:hist_eq_example} sono stati riporta
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[width=0.35\textwidth]{GRAY_low_contrast}
+    \includegraphics[width=0.35\textwidth]{eqHist_example}
+    \includegraphics[width=0.35\textwidth]{pre_eq_hist}
+    \includegraphics[width=0.35\textwidth]{post_eq_hist}
+    \label{fig:hist_eq_example}
+    \caption{TODO rifare e caption}
+  \end{center}
+\end{figure}
+
+
 % https://en.wikipedia.org/wiki/Histogram_equalization
 
+\clearpage
 \subsection {Gaussian Blur}
 % https://en.wikipedia.org/wiki/Gaussian_blur
 % Cosa si intende per convolution https://en.wikipedia.org/wiki/Convolution
