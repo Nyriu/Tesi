@@ -151,10 +151,13 @@ TODO fare conclusione section/subsection?
 
 
 
-\section{Preprocessing}
-Questa sezione è divisa in due parti: nella prima verranno illustrate alcune tra le principali tecniche di \textit{Digital Image Preprocessing} nonché di \textit{Computer Vision}, esponendo i dettagli matematici ed esplorando le loro applicazioni; nella seconda si spiegherà quali di queste tecniche, in che ordine e per quali motivi sono state utilizzate.
+\section{Pre-Processing}
+Questa sezione è divisa in due parti: nella prima verranno illustrate alcune tra le principali tecniche di \textit{Digital Image Processing} nonché di \textit{Computer Vision}, esponendo i dettagli matematici ed esplorando le loro applicazioni; nella seconda si spiegherà quali di queste tecniche, in che ordine e per quali motivi sono state utilizzate.
 
-Come prima cosa è bene ricordare che con \textit{Digital Image Preprocessing} si intende il modificare immagini digitali per mezzo di algoritmi eseguibili da un calcolatore.
+Come prima cosa è bene ricordare che con \textit{Digital Image Processing} si intende il modificare immagini digitali per mezzo di algoritmi eseguibili da un calcolatore.
+
+TODO descrivere pre-processing anziché Digital Image Processing?(Il DIP nelle altr sezioni o mai)
+Il pre-processing è il manipolare le immagini digitali per renderle utilizzabili da altri algoritmi, nel nostro caso si manipoler
 
 Gli algoritmi utilizzati in questi campi hanno precise formulazioni matematiche perché ogni immagine viene rappresentata come una matrice bidimensionale, se in scala di grigi, oppure tridimensionale se a colori.
 Gli elementi di una matrice bidimensionale appartengono all'intervallo $[0,255]$, nel quale $0$ corrisponde al colore nero mentre $255$ corrisponde al bianco.
@@ -170,7 +173,13 @@ Uno dei vantaggi del rappresentare le immagini come matrici è quello di poter a
 Ma la nostra attenzione si concentrerà soprattutto sulle convoluzioni e sulle trasformazioni affini.
 
 \paragraph{Convoluzioni}
-Nell'ambito del \textit{Image Preprocessing} con convoluzione si intende l'operazione che permette di effettuare, per ogni pixel dell'immagine, una somma pesata tra il pixel e gli elementi a lui vicini.
+ATTENZIONE QUESTA E' LA CONVOLUZIONE IN UN LAYER CONVOLUTIVO
+INVECE IN QEUSTA SEZIONE QUA BISOGNA CENTRARE I KERNEL SU OGNI VALORE E 
+SOSTITUIRLO IN OUTPUT CON IL VALORE OTTENUTO
+NELLA SEZIONE SUGLI AE SPIEGO CHE D'ORA IN POI LE CONVOLUZIONI SONO DA INTENDERE 
+DIVERSAMENTE CIOE' CON QUALITA' DI FEATURE EXTRACTION (NOTA SUL PADDING CHE FA TORNARE LE CONV DEL AE COME QUELLE DA DESCRIVERE QUA)
+
+Nell'ambito del \textit{Image Processing} con convoluzione si intende l'operazione che permette di effettuare, per ogni pixel dell'immagine, una somma pesata tra il pixel e gli elementi a lui vicini.
 I pesi sono definiti in una matrice, detta \textit{kernel} o filtro, di dimensioni non superiori a quelle dell'immagine di partenza.
 Solitamente i kernel hanno dimensione $3x3$ o $5x5$.
 Sfrutteremo ora un esempio per spiegare come viene effettuata una convoluzione, più avanti, quando parleremo del filtro Sobel, verrà illustrato lo pseudocodice che ne formalizza i passaggi.
@@ -385,20 +394,84 @@ Sostanzialmente abbiamo ricolorato ogni pixel dell'immagine di partenza con colo
 
 \clearpage
 \subsection {Gaussian Blur}
-Conosciuto anche come \textit{Gaussian Smoothing}
+Conosciuto anche come \textit{Gaussian smoothing}, il \textit{Gaussian blur} permette di sfocare un immagine sfruttando una convoluzione con kernel gaussiano.
+L'immagine così ottenuta risulta meno nitida, con meno dettagli e, quindi, con meno rumore.
+L'obbiettivo principale di questa tecnica è mantenere soltanto l'informazione caratterizzante, rimuovendo quella non necessaria od anomala.
+Si può dimostrare che il \textit{Gaussian blur} è un \textit{low-pass filter}.
 
-sfocare
-risultare meno nitida, quindi con meno dettagli
+Si ricorda che la funzione di Gauss ad un parametro è
+\begin{equation*}
+  G(x) = \frac{1}{\sqrt{2\pi\sigma^2}}
+         \exp{\Bigl(- \frac{ x^2 }{ 2 \sigma^2 } \Bigr)} 
+\end{equation*}
+Si dimostra che la funzione di Gauss a due parametri equivale al prodotto di due funzioni come quella appena definita, in formule
+\begin{equation}
+  \begin{split}
+    G(x,y) & = G(x)G(y) \\
+           & = \frac{1}{2\pi\sigma^2}
+               \exp{\Bigl(- \frac{ x^2 + y^2 }{ 2 \sigma^2 } \Bigr)} 
+  \end{split}
+\end{equation}
+in cui $x$ ed $y$ sono le distanze dagli assi di riferimento, mentre $\sigma$ è la deviazione standard.
+In termini di calcolo computazionale ciò può essere sfruttato eseguendo due computazioni lineari,
+rispetto alle dimensioni dell'immagine e del kernel, %non corretto
+anziché una quadratica.
+
+$
+{\displaystyle O\left(w_{\text{kernel}}w_{\text{image}}h_{\text{image}}\right)+O\left(h_{\text{kernel}}w_{\text{image}}h_{\text{image}}\right)}
+$
+
+$
+{\displaystyle O\left(w_{\text{kernel}}h_{\text{kernel}}w_{\text{image}}h_{\text{image}}\right)}
+$
+TODO correggere e dire meglio.
 
 
-% WIKIPEDIA
-In image processing, a Gaussian blur (also known as Gaussian smoothing) is the result of blurring an image by a Gaussian function (named after mathematician and scientist Carl Friedrich Gauss). It is a widely used effect in graphics software, typically to reduce image noise and reduce detail. The visual effect of this blurring technique is a smooth blur resembling that of viewing the image through a translucent screen, distinctly different from the bokeh effect produced by an out-of-focus lens or the shadow of an object under usual illumination. Gaussian smoothing is also used as a pre-processing stage in computer vision algorithms in order to enhance image structures at different scales—see scale space representation and scale space implementation.
+La matrice sottostante rappresenta un filtro gaussiano quadrato di lato $7$ con $\sigma = 2$.
 
-Mathematically, applying a Gaussian blur to an image is the same as convolving the image with a Gaussian function. This is also known as a two-dimensional Weierstrass transform. By contrast, convolving by a circle (i.e., a circular box blur) would more accurately reproduce the bokeh effect. Since the Fourier transform of a Gaussian is another Gaussian, applying a Gaussian blur has the effect of reducing the image's high-frequency components; a Gaussian blur is thus a low pass filter.
-% END WIKIPEDIA
+\begin{equation*} % TODO 
+  \begin{bmatrix}
+    0&0&0&0&0&0&0\\
+    0&0&0&0&0&0&0\\
+    0&0&0&0&0&0&0\\
+    0&0&0&0&0&0&0\\
+    0&0&0&0&0&0&0\\
+    0&0&0&0&0&0&0\\
+    0&0&0&0&0&0&0
+  \end{bmatrix}
+\end{equation*}
+
+Ricordiamo che durante una convoluzione si effettua la somma di prodotti elemento per elemento, ossia una media pesata in cui i pesi sono definiti nel kernel.
+Dato che i valori al centro del filtro sono più grandi di quelli ai bordi, daremo maggior peso ai pixel nell'intorno dell'elemento su cui il kernel viene centrato.
+Sappiamo che all'aumentare di $\sigma$ cresce il raggio alla base della campana di Gauss, questo significa che verrà data sempre più importanza ai pixel distanti.
+Ciò farà risultare l'immagine in uscita molto più sfocata.
+
+%\begin{figure}[ht] % TODO
+%  \begin{center}
+%    \includegraphics[width=0.3\textwidth]{mask} % plot 3d del kernel
+%    \label{fig:gaussian_kernel}
+%    \caption{TODO plot 3d del kernel}
+%  \end{center}
+%\end{figure}
+
+In Figura~\ref{fig:gaussian_blur_example} è riportata un'immagine prima e dopo l'applicazione del filtro appena descritto, si nota come i dettagli più piccoli sono stati rimossi, mentre l'oggetto dell'immagine rimane distinguibile.
+
+\begin{figure}[ht] % TODO
+  \begin{center}
+    \includegraphics[width=0.3\textwidth]{GRAY}
+    \includegraphics[width=0.3\textwidth]{gaussian_blur_example}
+    \label{fig:gaussian_blur_example}
+    \caption{TODO rifare caption}
+  \end{center}
+\end{figure}
+
+Va fatta un'ultima considerazione: COSA SUCCEDE SE APPLICO DUE VOLTE LO STESSO FILTRO?
+Se si applica piu volte uno stesso filtro gaussiano si ottiene lo stesso risultato che si otterrebe dopo un'unica applicazione di un filtro 
+TODO completare
+
 % https://en.wikipedia.org/wiki/Gaussian_blur
 
-
+\clearpage
 \subsection {Bilateral Filter}
 % https://en.wikipedia.org/wiki/Bilateral_filter
 % https://docs.opencv.org/2.4/modules/imgproc/doc/filtering.html?highlight=bilateralfilter#bilateralfilter
@@ -407,12 +480,16 @@ Mathematically, applying a Gaussian blur to an image is the same as convolving t
 % http://homepages.inf.ed.ac.uk/rbf/CVonline/LOCAL_COPIES/MANDUCHI1/Bilateral_Filtering.htmlhttp://homepages.inf.ed.ac.uk/rbf/CVonline/LOCAL_COPIES/MANDUCHI1/Bilateral_Filtering.html
 
 
+\clearpage
 \subsection {Sobel Operator}
 % https://en.wikipedia.org/wiki/Sobel_operator
 % https://en.wikipedia.org/wiki/Gradient
 
+\clearpage
 \subsection {Canny Edge Detection}
 % https://en.wikipedia.org/wiki/Canny_edge_detector
+% Per gif su efficacia blur prima di canny
+% https://en.wikipedia.org/wiki/Gaussian_blur
 
 
 \subsection {Circle Hough Transform}
@@ -436,7 +513,7 @@ Descrizione algoritmo di Hough Circles
 % specificare bene che quelli che ora sono passaggi ben ordinati sono il risultato di mesi di trial and error.
 % Processo di modifica delle immagini ed euristiche applicate per ottenerne di "buone"
 
-%Si illustra il Preprocessing che ha portato ai migliori risultati
+%Si illustra il pre-processing che ha portato ai migliori risultati
 %
 %- centramento fondamentale per aiutare la rete
 %    - descrizione funzione di centramento (passaggio BW, negativo, houghCirc media e matrice affine)
