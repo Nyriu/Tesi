@@ -169,6 +169,7 @@ Quindi un'immagine avrà un numero finito di elementi, detti \textit{pixel}, il 
 Uno dei vantaggi del rappresentare le immagini come matrici è quello di poter applicare operazioni classiche come somma, sottrazione, prodotto e divisione.
 Ma la nostra attenzione si concentrerà soprattutto sulle convoluzioni e sulle trasformazioni affini.
 
+\paragraph{Convoluzioni}
 Nell'ambito del \textit{Image Preprocessing} con convoluzione si intende l'operazione che permette di effettuare, per ogni pixel dell'immagine, una somma pesata tra il pixel e gli elementi a lui vicini.
 I pesi sono definiti in una matrice, detta \textit{kernel} o filtro, di dimensioni non superiori a quelle dell'immagine di partenza.
 Solitamente i kernel hanno dimensione $3x3$ o $5x5$.
@@ -198,7 +199,7 @@ L'algoritmo può essere facilmente espresso tramite due cicli $for$ facendo atte
   \caption{TODO Immagine da rifare}
 \end{figure}
 
-Trasformazioni Affini 
+\paragraph{Trasformazioni Affini}
 % https://en.wikipedia.org/wiki/Digital_image_processing
 % https://en.wikipedia.org/wiki/Affine_transformation
 % https://en.wikipedia.org/wiki/Rotation
@@ -262,7 +263,7 @@ Così facendo tutti i pixel dell'immagine di partenza corrispondenti a zone di v
 Il resto dell'immagine rimane con i colori originali.
 
 Nell'esempio in Figura~\ref{fig:mask_example} si è deciso di rimuove l'informazione relativa allo sfondo.
-\begin{figure}[ht]
+\begin{figure}[ht] % TODO migliorare caption
   \begin{center}
     \includegraphics[width=0.3\textwidth]{RGB}
     \includegraphics[width=0.3\textwidth]{mask}
@@ -283,13 +284,13 @@ TODOOOOOOO
 Con la matrice per il cambio di base hhkk
 % wrap affine e matrici di traslazione / rotazione
 % cfr cambio di base?
-\begin{figure}[ht]
+\begin{figure}[ht] % TODO immagini
   \begin{center}
     \includegraphics[width=0.3\textwidth]{RGB}
     \includegraphics[width=0.2\textwidth]{mask}
     \includegraphics[width=0.3\textwidth]{masked}
     \label{fig:traslation_example}
-    \caption{Da sinistra a destra: immagine originale, maschera binaria, risultato del masking}
+    \caption{TODO cambiare immagini}
   \end{center}
 \end{figure}
 
@@ -342,16 +343,40 @@ Il termine \textit{blur} o \textit{smooth} indicano applicare un effetto sfuocat
 Questa tecnica permette di "aggiustare" il contrasto di un'immagine sfruttandone l'istogramma.
 Il contrasto è definito come la differenza in intensità luminosa e colore che permette di distinguere gli oggetti.
 
-In Figura~\ref{fig:hist_eq_example} sono stati riporta
+In Figura~\ref{fig:hist_eq_example} sono stati riporta un'immagine a basso contrasto e l'immagine risultato dopo l'applicazione della \textit{histogram equalization}.
+Sotto ogni immagine si possono osservare i relativi istogrammi: sull'asse delle $x$ abbiamo ogni possibile valore di un pixel, quindi da 0 a 255; sull'asse delle $y$ è riportato il numero di occorrenze di quel colore nell'immagine.
+Notare che l'immagine in input deve essere in scala di grigi.
 
-\begin{figure}[ht]
+Vediamo ora come possiamo formulare matematicamente la costruzione dell'istogramma e la sua manipolazione.
+Siano $X$ l'immagine di partenza ed $Y$ l'immagine risultato.
+Facendo riferimento a quanto scritto nel documento (TODO AGGIUNGERE REF A DOC) l'istogramma può essere definito come:
+\begin{equation*}
+p_n = \frac{\text{\# di pixel di colore} \quad n}{\text{\# totale di pixel}} \quad \text{con} \quad n \in [0,255]
+\end{equation*}
+Poiché $p_n$ descrive la probabilità che un pixel, scelto a caso dall'immagine, abbia valore $n$, possiamo considerare $X$ una variabile casuale discreta in $[0,255]$.
+Quindi $X$ avrà funzione di ripartizione, tracciata in nero nel grafico, pari ad:
+\begin{equation*}
+  F_X(x) = \sum_{n=0}^{x} p_n
+\end{equation*}
+Noi vorremmo che la differenza di colore tra i pixel fosse più netta, così da aumentare il contrasto dell'immagine.
+Per raggiungere i nostri scopi possiamo ridistribuire equamente i valori di $X$ nell'intervallo dei valori possibili:
+\begin{equation*}
+  T(x) = \text{floor}(255 * F_X(x))
+\end{equation*}
+dove floor() arrotonda verso il basso all'intero più vicino.
+In questo modo possiamo ottenere la variabile casuale trasformata $Y=T(X)$, ossia l'immagine equalizzata.
+Sostanzialmente abbiamo ricolorato ogni pixel dell'immagine di partenza con colori più distanti tra loro.
+
+\begin{figure}[ht] % TODO rifare grafici
   \begin{center}
-    \includegraphics[width=0.35\textwidth]{GRAY_low_contrast}
-    \includegraphics[width=0.35\textwidth]{eqHist_example}
-    \includegraphics[width=0.35\textwidth]{pre_eq_hist}
-    \includegraphics[width=0.35\textwidth]{post_eq_hist}
+    \begin{tabular}{cc}
+      \includegraphics[width=0.3\textwidth]{GRAY_low_contrast} &
+      \includegraphics[width=0.3\textwidth]{eqHist_example} \\
+      \includegraphics[width=0.3\textwidth]{pre_eq_hist} &
+      \includegraphics[width=0.3\textwidth]{post_eq_hist}
+    \end{tabular}
     \label{fig:hist_eq_example}
-    \caption{TODO rifare e caption}
+    \caption{TODO rifare caption e grafici}
   \end{center}
 \end{figure}
 
@@ -360,9 +385,19 @@ In Figura~\ref{fig:hist_eq_example} sono stati riporta
 
 \clearpage
 \subsection {Gaussian Blur}
+Conosciuto anche come \textit{Gaussian Smoothing}
+
+sfocare
+risultare meno nitida, quindi con meno dettagli
+
+
+% WIKIPEDIA
+In image processing, a Gaussian blur (also known as Gaussian smoothing) is the result of blurring an image by a Gaussian function (named after mathematician and scientist Carl Friedrich Gauss). It is a widely used effect in graphics software, typically to reduce image noise and reduce detail. The visual effect of this blurring technique is a smooth blur resembling that of viewing the image through a translucent screen, distinctly different from the bokeh effect produced by an out-of-focus lens or the shadow of an object under usual illumination. Gaussian smoothing is also used as a pre-processing stage in computer vision algorithms in order to enhance image structures at different scales—see scale space representation and scale space implementation.
+
+Mathematically, applying a Gaussian blur to an image is the same as convolving the image with a Gaussian function. This is also known as a two-dimensional Weierstrass transform. By contrast, convolving by a circle (i.e., a circular box blur) would more accurately reproduce the bokeh effect. Since the Fourier transform of a Gaussian is another Gaussian, applying a Gaussian blur has the effect of reducing the image's high-frequency components; a Gaussian blur is thus a low pass filter.
+% END WIKIPEDIA
 % https://en.wikipedia.org/wiki/Gaussian_blur
-% Cosa si intende per convolution https://en.wikipedia.org/wiki/Convolution
-% https://en.wikipedia.org/wiki/Kernel_(image_processing)#Convolution
+
 
 \subsection {Bilateral Filter}
 % https://en.wikipedia.org/wiki/Bilateral_filter
