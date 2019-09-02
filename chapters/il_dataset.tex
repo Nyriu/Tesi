@@ -615,23 +615,41 @@ In Figura~\ref{fig:canny_example} è illustrata l'applicazione del \textit{Sobel
 % https://en.wikipedia.org/wiki/Canny_edge_detector
 
 \clearpage
-\subsection {Circle Hough Transform}
-Descrizione radius-and-angle parametrization
+\subsection {Hough Circles Transform}
+Prima di poter spiegare questa tecnica si devono introdurre alcuni concetti come la \textit{Hough Line Transform}, il \textit{Hough Parameter Space} e la parametrizzazione raggio-angolo di una retta.
+Le trasformate di Hough sono largamente usate come metodi di \textit{feature extraction}, permettono di rilevare semplici figure come linee e cerchi.
+Il loro obbiettivo è raggruppare correttamente un'insieme di pixel in modo che l'insieme raffiguri la forma da rilevare.
+Una delle problematiche principali è la possibilità che nell'immagine la forma da rilevare sia discontinua o deformata.
 
-Descrizione Hough Line Transform
+Esploriamo come il metodo di \textit{Hough Line Transform} permette di trovare una linea retta in un'immagine.
+Definiamo tre punti $P_i=(x_i, x_i)$ con $i=1,2,3$ in modo che siano allineati, cioè che esista una retta a alla quale appartengano tutti.
+Sappiamo che per ciascun punto ci sono infinite rette che soddisfano $y_i = m x_i + c$, ma che soltanto una di queste rette passa anche per gli altri due punti.
+L'equazione appena descritta è in funzione di $m$ e $c$, riscrivendola come
+\begin{equation} \label{eq:cm_lines}
+  c = y_i - m x_i \quad con \quad i=1,2,3
+\end{equation}
+risulta più facile immaginarla (fissato un $i$) come una retta in uno spazio in cui $c$ è sull'asse delle ordinate e $m$ su quello delle ascisse.
+Lo spazio appena descritto prende il nome di \textit{Hough Parameter Space}, in cui ogni punto $(m,c)$ descrive una retta nello spazio di partenza.
+Nello \textit{Hough Parameter Space} le tre rette della formula \ref{eq:cm_lines} si incontrano in esattamente un punto, sia $(m_0,c_0)$.
+Quindi l'equazione $y = m_0 x + c_0$, nello spazio originale, passa per tutti i $P_i$.
+L'idea alla base di \textit{Hough Line Transform} è quella di, definito un range di valori per $m$ e per $c$, trovare quello che soddisfa il maggior numero di equazioni.
+In pratica ad ogni cella nello spazio $c-m$ viene associato un intero che indica quante delle rette di equazione~\ref{eq:cm_lines} ref passano per quella cella.
 
-Descrizione Hough Parameter Space
 
-Descrizione algoritmo di Hough Circles
+
+
+
+
+
+%Passaggio teorico ad Hough Circles
+%Cosa richiede l'implementazione
 
 % Risorse
 % https://docs.opencv.org/2.4/doc/tutorials/imgproc/imgtrans/hough_circle/hough_circle.html
 % https://en.wikipedia.org/wiki/Hough_transform
 % https://en.wikipedia.org/wiki/Circle_Hough_Transform
 
-
-
-
+\clearpage
 \subsection {Applicazione degli algoritmi descritti}
  specificare bene che quelli che ora sono passaggi ben ordinati sono il risultato di mesi di trial and error.
 
