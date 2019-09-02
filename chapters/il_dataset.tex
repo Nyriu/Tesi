@@ -215,11 +215,10 @@ L'algoritmo può essere facilmente espresso tramite due cicli $for$ facendo atte
 
 TODO RIEMPIRE DI TEORIA QUA
 
-
+\paragraph{Feature Extraction}
 Come ultima cosa prima di cominciare a descrivere gli algoritmi, si vuole specificare cosa significa \textit{Feature Extraction}.
 % https://en.wikipedia.org/wiki/Feature_extraction
 % https://deepai.org/machine-learning-glossary-and-terms/feature-extraction
-
 TODO
 
 
@@ -534,12 +533,16 @@ L'applicazione del filtro Sobel avviene come mostrato nelle due equazioni sottos
   \end{bmatrix}
 \end{equation}
 \begin{equation} \label{eq:sobel_g}
-  G = \sqrt{G^2 + G^2}
+  G = \sqrt{G_x^2 + G_y^2}
 \end{equation}
+%\begin{equation} \label{eq:sobel_angle}
+%  \Theta = atan{\Bigl( \frac{G_y}{G_x} \Bigr)}
+%\end{equation}
 % TODO allineare le equazioni
 
 La prima equazione fornisce un'approssimazione del gradiente rispetto all'asse $x$, mentre la seconda rispetto ad $y$.
 La terza equazione, invece, combina le precedenti fornendoci informazione riguardo alla magnitudine del gradiente dell'immagine.
+%TODO aggiungere anche l'angolo?
 
 Ora verranno fatte delle considerazioni sul primo kernel ma, poiché il secondo è una semplice trasposta del primo, tali considerazioni sono, facendo riferimento all'asse delle $y$, valide anche per il filtro in equazione \ref{eq:sobel_gy}.
 Il kernel nell'equazione~\ref{eq:sobel_gx} assegnerà valori in assoluto più grandi a pixel in una posizione di transizione di colore, rispetto a pixel posizionati in una zona con colorazione uniforme.
@@ -566,11 +569,50 @@ Nell'immagine sottostante viene mostrata l'applicazione dell'operatore Sobel pri
 % https://en.wikipedia.org/wiki/Gradient
 
 \clearpage
-\subsection {Canny Edge Detection}
-% https://en.wikipedia.org/wiki/Canny_edge_detector
-% Per gif su efficacia blur prima di canny
-% https://en.wikipedia.org/wiki/Gaussian_blur
+\subsection {Canny Edge Detector}
+Composto da vari passaggi ed algoritmi, il \textit{Canny Edge Detector} permette di estrarre i principali \textit{edge} di un'immagine ottenendo risultati soddisfacenti ed adattabili alle necessità dell'utilizzatore.
+Questo rilevatore viene sfruttato largamente come tecnica di \textit{feature extraction} perché permette di rimuovere molta informazione dall'immagine mantenendo solo quella strettamente necessaria.
+Nell'ambito del \textit{edge detection} è bene che tutti gli \textit{edge} presenti nell'immagine vengano identificati correttamente, ma è altrettanto importante che non vengano generati falsi positivi, cioè che delle aree nel risultato presentino contorni che nell'immagine di partenza non esistevano.
+Per questo motivo \textit{Canny edge detector} effettua molte operazioni di rimozione di falsi positivi ed allo stesso tempo tende ad evidenziare molto bene quelli che sembrano essere \textit{edge autentici}.
+Ora verranno elencati in ordine i vari passaggi del rilevatore:
+\begin{enumerate}
+  \item Viene applicato un filtro gaussiano per effettuare uno \textit{smooth} all'immagine.
+    Questo passaggio è fondamentale perché vengono rimossi valori anomali che, risultando come picchi positivi o negativi, potrebbero contribuire a generare falsi positivi.
+    Inoltre rimuove può essere usato per rimuovere dettagli superflui.
 
+  \item Utilizzando il \textit{Sobel operator} si ottiene la magnitudine dei gradienti dell'immagine, ossia tutti gli \textit{edge} candidati, che dovranno poi essere manipolati e selezionati.
+
+  %\item Con il \textit{non-maximum suppression}  % TODO fare se c'e spazio
+
+  \item Con una doppia sogliatura si ottengono due effetti:
+    come prima cosa vengono rimossi tutti quegli edge con magnitudine troppo bassa, perché considerati rumore;
+    successivamente gli edge sopravvissuti vengono classificati come forti e deboli, questa informazione verrà sfruttata nel prossimo passaggio.
+    Effettuare una sogliatura significa semplicemente osservare ogni valore di un'immagine, nel nostro caso ogni pixel indica la magnitudine, e mapparlo ad un valore dato se soddisfa determinate condizioni.
+    In questo passaggio sono presenti due soglie.
+    La prima ci permette di annullare tutti gli edge con valori troppo piccoli.
+    Con la seconda viene usata per etichettare i pixel superiori come \textit{strong edge}.
+    Tutti i pixel intermedi vengono considerati \textit{weak edge}.
+
+  \item A questo punto si procede con il rimuovere tutti gli edge deboli che non facciamo parte di edge forti.
+    Significa che, per ogni pixel etichettato come \textit{weak edge}, vengono osservati gli otto pixel circostanti.
+    Se nessuno di questi è uno \textit{strong edge} allora il pixel centrale viene annullato.
+    % TODO cfr Connected Componets
+
+\end{enumerate}
+Va fatto notare che i valori delle due soglie devono essere trovati in modo empirico, a seconda del tipo d'immagine bisognerà impostare soglie più o meno grandi, ma anche più o meno distanti fra loro.
+
+In Figura~\ref{fig:canny_example} è illustrata l'applicazione del \textit{Sobel operator}, notare come il risultato sia molto più pulito di quello illustro in Figura~\ref{fig:sobel_example}.
+\begin{figure}[ht] % TODO
+  \begin{center}
+    \includegraphics[width=0.3\textwidth]{GRAY}
+    \includegraphics[width=0.3\textwidth]{canny_example}
+    \label{fig:canny_example}
+    \caption{TODO }
+  \end{center}
+\end{figure}
+
+
+% https://en.wikipedia.org/wiki/Canny_edge_detector
 
 \clearpage
 \subsection {Circle Hough Transform}
@@ -591,18 +633,23 @@ Descrizione algoritmo di Hough Circles
 
 
 \subsection {Applicazione degli algoritmi descritti}
-% specificare bene che quelli che ora sono passaggi ben ordinati sono il risultato di mesi di trial and error.
-% Processo di modifica delle immagini ed euristiche applicate per ottenerne di "buone"
+ specificare bene che quelli che ora sono passaggi ben ordinati sono il risultato di mesi di trial and error.
 
-%Si illustra il pre-processing che ha portato ai migliori risultati
-%
-%- centramento fondamentale per aiutare la rete
-%    - descrizione funzione di centramento (passaggio BW, negativo, houghCirc media e matrice affine)
-%- passaggio da RGB a Grayscale perché non c'è una grande perdita di informazione
-%- bilateralFilter per smoothare via la texture "sale e pepe" tipica delle carcasse
-%- il masking per rimuovere le balze e l'area corrispondente alla zona verticale della carcassa
-%- crop per levare l'area nera (in proporzione ho molta più informazione)
-%- resize ad 224x224 perché si è dimostrata essere una buona dimensione (magari mostrare come sotto il 200 è difficile vedere la colla, quelle piccole spariscono)
+ Processo di modifica delle immagini ed euristiche applicate per ottenerne di "buone"
+
+Si illustra il pre-processing che ha portato ai migliori risultati
+
+- centramento fondamentale per aiutare la rete (descrizione funzione di centramento (passaggio BW, negativo, houghCirc media e matrice affine))
+
+- passaggio da RGB a Grayscale perché non c'è una grande perdita di informazione
+
+- bilateralFilter per smoothare via la texture "sale e pepe" tipica delle carcasse
+
+- il masking per rimuovere le balze e l'area corrispondente alla zona verticale della carcassa
+
+- crop per levare l'area nera (in proporzione ho molta più informazione)
+
+- resize ad 224x224 perché si è dimostrata essere una buona dimensione (magari mostrare come sotto il 200 è difficile vedere la colla, quelle piccole spariscono)
 
 
 
