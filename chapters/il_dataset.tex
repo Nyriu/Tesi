@@ -466,13 +466,14 @@ In Figura~\ref{fig:gaussian_blur_example} è riportata un'immagine prima e dopo 
 \end{figure}
 
 Va fatta un'ultima considerazione: COSA SUCCEDE SE APPLICO DUE VOLTE LO STESSO FILTRO?
-Se si applica piu volte uno stesso filtro gaussiano si ottiene lo stesso risultato che si otterrebe dopo un'unica applicazione di un filtro 
-TODO completare
+Se si applica più volte uno stesso filtro gaussiano si ottiene lo stesso risultato che si otterrebbe dopo un'unica applicazione di un filtro 
+\fbox{TODO completare}
 
 % https://en.wikipedia.org/wiki/Gaussian_blur
 
 \clearpage
 \subsection {Bilateral Filter}
+TODO
 % https://en.wikipedia.org/wiki/Bilateral_filter
 % https://docs.opencv.org/2.4/modules/imgproc/doc/filtering.html?highlight=bilateralfilter#bilateralfilter
 
@@ -482,6 +483,85 @@ TODO completare
 
 \clearpage
 \subsection {Sobel Operator}
+Prima di descrivere cosa sia il \textit{Sobel operator}, detto anche \textit{Sobel filter}, bisogna dare una definizione di gradiente.
+% TODO formattare correttamente la citazione
+Nel calcolo vettoriale, il gradiente è la generalizzazione della derivata.
+La derivata di una funzione ad una variabile associa ad ogni punto uno scalare, mentre il gradiente di una funzione $f$ a più variabili associa ad ogni punto un vettore multidimensionale.
+Quest'ultimo è composto dall'insieme delle derivate parziali di $f$ nel punto considerato.
+Il gradiente rappresenta la pendenza della tangente al grafico della funzione in un punto.
+La sua direzione indica il più grande incremento della funzione mentre la magnitudine è il tasso d'incremento.
+
+Possiamo pensare un'immagine (in scala di grigi) come una funzione a due variabili che associa ad ogni punto $(x,y)$ un valore in $[0,255]$.
+Il gradiente dell'immagine sarà composto da vettori direzionati in modo da uscire dalle zone scure ed entrare nelle zone più chiare (mantenendo la convenzione per cui a zero è associato il colore nero).
+La magnitudine sarà tanto più grande quanto più grande il contrasto, quindi differenza di colore e luminosità.
+%In Figura~\ref{fig:gradient} è presentato un esempio di gradiente di un'immagine.
+%\begin{figure}[ht] % TODO
+%  \begin{center}
+%    \includegraphics[width=0.2\textwidth]{gradient}
+%    \label{fig:gradient}
+%    \caption{TODO occhio che qui black=high e white=low}
+%  \end{center}
+%\end{figure}
+
+Ora possiamo procedere con la descrizione del filtro di Sobel.
+Il \textit{Sobel filter} viene utilizzato per creare immagini in cui si enfatizzano gli \textit{edge}.
+Per \textit{edge} si intendono tutte quelle zone dell'immagine che corrispondono a bordi, margini o spigoli degli oggetti rappresentati nell'immagine.
+Ciascuna di queste zone deve necessariamente essere associata almeno ad un cambio di colore oppure ad un cambio di luminosità, altrimenti l'oggetto in questione non sarebbe distinguibile dallo sfondo.
+Quindi, osservando il gradiente dell'immagine, ad ogni \textit{edge} corrisponderà una serie di vettori con magnitudine più grande rispetto alle magnitudini dei vettori circostanti.
+Lo scopo del \textit{Sobel operator} è generare una approssimazione del gradiente dell'immagine sfruttando due convoluzioni distinte con uno specifico kernel.
+Nonostante il risultato sia abbastanza grossolano, la sua efficacia e rapidità lo rendono uno dei principali strumenti per la \textit{edge detection}, tecnica che esploreremo fra poco.
+
+L'applicazione del filtro Sobel avviene come mostrato nelle due equazioni sottostanti, dove $*$ denota una convoluzione ed $I$ è un'immagine in scala di grigi.
+
+\begin{equation} \label{eq:sobel_gx}
+  G_x = 
+  I
+  *
+  \begin{bmatrix}
+    -1&0&1\\
+    -2&0&2\\
+    -1&0&1\\
+  \end{bmatrix}
+\end{equation}
+\begin{equation} \label{eq:sobel_gy}
+  G_y = 
+  I
+  *
+  \begin{bmatrix}
+    -1&-2&-1\\
+    0&0&0\\
+    1&2&1\\
+  \end{bmatrix}
+\end{equation}
+\begin{equation} \label{eq:sobel_g}
+  G = \sqrt{G^2 + G^2}
+\end{equation}
+% TODO allineare le equazioni
+
+La prima equazione fornisce un'approssimazione del gradiente rispetto all'asse $x$, mentre la seconda rispetto ad $y$.
+La terza equazione, invece, combina le precedenti fornendoci informazione riguardo alla magnitudine del gradiente dell'immagine.
+
+Ora verranno fatte delle considerazioni sul primo kernel ma, poiché il secondo è una semplice trasposta del primo, tali considerazioni sono, facendo riferimento all'asse delle $y$, valide anche per il filtro in equazione \ref{eq:sobel_gy}.
+Il kernel nell'equazione~\ref{eq:sobel_gx} assegnerà valori in assoluto più grandi a pixel in una posizione di transizione di colore, rispetto a pixel posizionati in una zona con colorazione uniforme.
+Prendiamo un pixel $p$ di colore bianco posizionato in una zona in cui tutti i pixel sono di colore bianco, si avrà che il kernel, pesando i pixel a destra allo stesso modo di quelli di sinistra ma con segno opposto, attribuisce un valore pari a $0$ a $p$.
+Se $p$ fosse stato in una zona si transizione dal bianco al nero, avrebbe ottenuto un valore negativo molto grande:
+tutti i valori nella prima colonna del filtro verrebbero moltiplicati per $255$ mentre tutti quelli dell'ultima colonna verrebbero annullati, essendo moltiplicati per $0$.
+
+
+Nell'immagine sottostante viene mostrata l'applicazione dell'operatore Sobel prima rispetto ad $x$, poi rispetto ad $y$ ed infine il risultato della combinazione delle precedenti.
+
+\begin{figure}[ht] % TODO
+  \begin{center}
+    \includegraphics[width=0.3\textwidth]{gx}
+    \includegraphics[width=0.3\textwidth]{gy}
+    \includegraphics[width=0.3\textwidth]{g}
+    \label{fig:sobel_example}
+    \caption{TODO caption}
+  \end{center}
+\end{figure}
+
+
+
 % https://en.wikipedia.org/wiki/Sobel_operator
 % https://en.wikipedia.org/wiki/Gradient
 
@@ -492,6 +572,7 @@ TODO completare
 % https://en.wikipedia.org/wiki/Gaussian_blur
 
 
+\clearpage
 \subsection {Circle Hough Transform}
 Descrizione radius-and-angle parametrization
 

@@ -3,6 +3,7 @@ import masking
 import affine_trans
 import eq_hist
 import gaussian_blur
+import sobel_operator
 
 
 from my_globals import dest_dir, tesi_dest_dir
