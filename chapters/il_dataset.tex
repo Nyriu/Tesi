@@ -689,24 +689,7 @@ Ciascun elemento è un intero con valore iniziale zero, che verrà incrementato 
 
 \clearpage
 \subsection {Applicazione degli algoritmi descritti}
-% specificare bene che quelli che ora sono passaggi ben ordinati sono il risultato di mesi di trial and error.
-%
-% Processo di modifica delle immagini ed euristiche applicate per ottenerne di "buone"
-%
-%Si illustra il pre-processing che ha portato ai migliori risultati
-%
-%- centramento fondamentale per aiutare la rete (descrizione funzione di centramento (passaggio BW, negativo, houghCirc media e matrice affine))
-%
-%- passaggio da RGB a Grayscale perché non c'è una grande perdita di informazione
-%
-%- bilateralFilter per smoothare via la texture "sale e pepe" tipica delle carcasse
-%
-%- il masking per rimuovere le balze e l'area corrispondente alla zona verticale della carcassa
-%
-%- crop per levare l'area nera (in proporzione ho molta più informazione)
-%
-%- resize ad 224x224 perché si è dimostrata essere una buona dimensione (magari mostrare come sotto il 200 è difficile vedere la colla, quelle piccole spariscono)
-Si fa notare che prima di ottenere immagini come quella illustrata in Figura~\ref{fig:esempio_prima_dopo_prep} e soprattutto prima di essere sicuri che questo è il tipo di immagine migliore per i nostri scopi, sono stati necessari numerosi esperimenti e tentativi.
+Si fa notare che prima di ottenere immagini come quella illustrata in Figura~\ref{fig:prima_dopo_prep} e soprattutto prima di essere sicuri che questo è il tipo di immagine migliore per i nostri scopi, sono stati necessari numerosi esperimenti e tentativi.
 In particolar modo è stato importante capire che tipo di informazione potesse essere gestita interamente dalla rete neurale e quale invece dovesse essere rimossa o modificata.
 Lo scopo del nostro \textit{pre-processing} è quello di fornire un'immagine contenente solo l'informazione necessaria e sufficiente per poter discriminare un pezzo conforme da uno scarto.
 
@@ -718,29 +701,100 @@ Immagini scarto verranno mostrate nella prossima sezione, interamente dedicata a
   \begin{center}
     \includegraphics[width=0.5\textwidth]{128___1362_1_1_1_OnLineAnalysis}
     \includegraphics[width=0.35\textwidth]{128___1362_1_1_1_OnLineAnalysis_prep}
-    \label{fig:esempio_prima_dopo_prep}
+    \label{fig:prima_dopo_prep}
     \caption{TODO }
   \end{center}
 \end{figure}
-
 
 \clearpage
-\paragraph{1 Centramento con Hough Circle Transform} sdfsdhfjsdahfkjsd hfksad
+Ora verrà illustrato l'ordine in cui sono stati applica gli algoritmi descritti precedentemente e i principali motivi per cui sono stati scelti.
+
+\subsubsection{1 Centramento con Hough Circle Transform}
+Sappiamo che le immagini del dataset non sono perfettamente centrate, per questo motivo si è deciso di utilizzare la tecnica della \textit{Hough Circle Transform} per ottenere un'approssimazione del centro della carcassa.
+Avendo le coordinate di quest'ultimo si può ottenere una matrice di traslazione con cui riallineare il pezzo con il centro dell'immagine.
+% TODO si può specificare che l'immagine deve essere
+% - To Grayscale
+% - Equalization Histogram
+% - ottenere i cerchi con Hough Circle
+% - media tra centri
+% - trasformazione affine
+% - l'immagine uscita è ancora a colori
+
+Nella Figura~\ref{fig:centramento} sono illustrati, a sinistra, il cerchio rilevato, mentre sulla destra l'immagine prima e dopo il centramento.
 \begin{figure}[ht] % TODO
   \begin{center}
-    \includegraphics[width=0.3\textwidth]{example-image-a}
-    \includegraphics[width=0.3\textwidth]{example-image-a}
+    \includegraphics[width=0.3\textwidth]{example-image}
+    \includegraphics[width=0.3\textwidth]{example-image}
+    \includegraphics[width=0.3\textwidth]{example-image}
+    \label{fig:centramento}
     \caption{TODO }
   \end{center}
 \end{figure}
 
-\paragraph{2 Equalizzazione tramite istogramma}
+\subsubsection{2 Equalizzazione}
+Per gestire la variazione di luminosità tra immagini si utilizza \textit{equalization histogram}.
+In questo modo le immagini in bianco e nero delle carcasse risultano molto più simili tra di loro e si vanno a mitigare i fastidiosi effetti di sovra illuminazione.
 
-\paragraph{3 Smooth dell'immagine}
+D'ora in poi verranno manipolate immagini in scala di grigi.
+Questa scelta, validata dagli esperimenti, nasce principalmente dalla prossima considerazione.
+Le immagini sono in falsi colori, manterremmo informazione non reale ma soprattutto richiederemmo alla nostra rete neurale uno sforzo molto maggiore.
+La rete, infatti, dovrebbe imparare a gestire non solo le forme geometriche del pezzo ma anche le sue colorazioni.
 
-\paragraph{4 Mascheramento}
+Nella Figura~\ref{fig:equalizzazione} sono illustrate due carcasse conformi con luminosità differenti, affiancate dalla loro trasformazione.
+% TODO mostrare l'immagine gray scale prima e dopo
+\begin{figure}[ht] % TODO
+  \begin{center}
+    \begin{tabular}{cc}
+      \includegraphics[width=0.3\textwidth]{example-image} &
+      \includegraphics[width=0.3\textwidth]{example-image} \\
+      \includegraphics[width=0.3\textwidth]{example-image} &
+      \includegraphics[width=0.3\textwidth]{example-image}
+    \end{tabular}
+    \label{fig:equalizzazione}
+    \caption{TODO}
+  \end{center}
+\end{figure}
 
-\paragraph{5 Crop e Resizing} 
+% TODO si può specificare che l'immagine deve essere
+% - To Grayscale
+% - Equalization Histogram
+
+\subsubsection{3 Smooth dell'immagine}
+Utilizzando un filtro gaussiano è stato rimosso il rumore principale, ossi quello dovuto a graffi ed effetto "sale e pepe".
+È stato fondamentale definire il filtro in modo che non fosse troppo aggressivo altrimenti si sarebbe rischiato di perdere l'informazione della colla.
+
+In Figura~\ref{fig:smooth} si mostra l'effetto dell'applicazione del kernel.
+% TODO mostrare anche cosa succede se si esagera col filtro?
+\begin{figure}[ht] % TODO
+  \begin{center}
+    \includegraphics[width=0.3\textwidth]{example-image}
+    \includegraphics[width=0.3\textwidth]{example-image}
+    \label{fig:smooth}
+    \caption{TODO}
+  \end{center}
+\end{figure}
+
+\subsubsection{4 Mascheramento}
+L'area che nell'immagine corrisponde alla parete verticale della carcassa, ed in particolar modo alle due balze, deve essere rimossa.
+Come abbiamo già sottolineato precedentemente la posizione delle balze non è correlata con la presenza della colla.
+Mentre si suppone che la colla non si presenti soltanto sulla parete verticale, ma che coli almeno fino a raggiungere il gradino più ampio.
+
+Nella Figura~\ref{fig:mask} è illustrato un conforme prima e dopo il mascheramento.
+Fra le due immagini si presenta la maschera utilizzata.
+% TODO mostrare anche cosa succede se si esagera col filtro?
+\begin{figure}[ht] % TODO
+  \begin{center}
+    \includegraphics[width=0.3\textwidth]{example-image}
+    \includegraphics[width=0.3\textwidth]{example-image}
+    \includegraphics[width=0.3\textwidth]{example-image}
+    \label{fig:mask}
+    \caption{TODO}
+  \end{center}
+\end{figure}
+
+\subsubsection{5 Crop e Resizing}
+A questo punto l'immagine contiene una grande porzione 
+%- crop per levare l'area nera (in proporzione ho molta più informazione)
 
 
 
