@@ -9,7 +9,7 @@ Invece con la parola Conforme si indica l'immagine di una carcassa nella quale l
 
 In questo capitolo verrà descritto il dataset e gli algoritmi principali e la loro applicazione.
 Si concluderà con la tecnica del data augmentation.
-\todo{TODO recap capitolo}
+\todo{recap capitolo}
 
 
 \section{Problematiche Principali}
@@ -29,10 +29,9 @@ Basti pensare ai dataset più famosi ed usati:
 \begin{itemize}
   \item MNIST è un dataset molto famoso contenente $70000$ cifre disegnate a mano appartenenti a $10$ classi in totale.
     È alla stesso tempo sia il punto di partenza dei principianti, perché di facile manipolazione, sia il campo di prova degli esperti, sul quale vengono allenati nuovi modelli prima di passare a compiti più complessi;
-  \item CIFAR-10 contiene TODO descrivere 
-  \item ImageNet contiene TODO descrivere 
+  \item CIFAR-10 contiene \todo{TODO descrivere}
+  \item ImageNet contiene \todo{TODO descrivere}
 \end{itemize}
-%TODO aggiungere immagini esempio??
 
 Ciascuno di questi dataset è stato etichettato\footnote{in inglese \textit{labeled} da \textit{label}, etichetta} a mano.
 Ciò significa che ad ogni immagine è stata assegnata, a mano, una classe di appartenenza.
@@ -41,26 +40,56 @@ Allo stesso modo le immagini di ImageNet hanno etichette come \textit{dog}, \tex
 Il nostro dataset, come già illustrato, contiene due classi: Conforme e Scarto.
 
 Sembrerebbe che possedere 2000 immagini appena renda impossibile applicare algoritmi di \textit{Machine Learning}.
-In realtà osservando i Conformi, in figura TODO sono stati riportati alcuni esemplari significativi, ci si accorge che i pezzi sono molto simili.
+In realtà osservando i Conformi, in Figura \ref{fig:esempi_conformi} sono stati riportati alcuni esemplari significativi, ci si accorge che i pezzi sono molto simili.
 Le differenze principali tra un'immagine e l'altra riguardano la posizione delle balze, la luminosità e le imperfezioni superficiali (graffi, macchie, \dots), ciascuna di queste differenze verrà analizzata nel dettaglio tra poco.
-Quindi, come ci si poteva aspettare essendo pezzi creati meccanicamente, la loro distribuzione è nell'intorno del pezzo progettato. TODO dire meglio.
-Concludiamo che il numero di Conformi a nostra disposizione è sufficiente
+Quindi, come ci si poteva aspettare essendo pezzi creati meccanicamente, la loro distribuzione è nell'intorno del pezzo progettato.
+\todo{TODO dire meglio}
+Concludiamo che il numero di Conformi a nostra disposizione è sufficiente.
+
+\begin{figure}[ht] % TODO
+  \begin{center}
+    \begin{tabular}{ccc}
+      \includegraphics[width=0.3\textwidth]{example-image} &
+      \includegraphics[width=0.3\textwidth]{example-image} &
+      \includegraphics[width=0.3\textwidth]{example-image} \\
+      \includegraphics[width=0.3\textwidth]{example-image} &
+      \includegraphics[width=0.3\textwidth]{example-image} &
+      \includegraphics[width=0.3\textwidth]{example-image}
+    \end{tabular}
+    \caption{TODO rifare caption e grafici}
+    \label{fig:esempi_conformi}
+  \end{center}
+\end{figure}
 
 Purtroppo non possiamo dire lo stesso per gli Scarti.
 Se già la statistica ci lascia sospettare che $30$ esemplari non possono ritenersi significativi, allora questo sospetto diventa certezza quando si analizzano le caratteristiche della colla nelle immagini Scarto.  
-Come si vede in figura TODO
-la colla può presentarsi in forma di gocce più o meno circolari oppure come sbaffi di grossezza e lunghezza variabili.
+Come si vede in Figura \ref{fig:esempi_scarti} la colla può presentarsi in forma di gocce più o meno circolari oppure come sbaffi di grossezza e lunghezza variabili.
 Anche la quantità di superficie coperta dalla colla può variare notevolmente, passando da aree ridotte e localizzate ad aree estese e di conformazioni singolari.
 Infine notiamo che la posizione del rimasuglio di colla all'interno della carcassa non è in relazione con la posizione delle balze e che la presenza dei gradini sul fondo non la obbliga in alcun modo a scivolare fino al centro.
+
+\begin{figure}[ht] % TODO aggiungere sub-caption
+  \begin{center}
+    \begin{tabular}{ccc}
+      \includegraphics[width=0.3\textwidth]{example-image} &
+      \includegraphics[width=0.3\textwidth]{example-image} &
+      \includegraphics[width=0.3\textwidth]{example-image} \\
+      \includegraphics[width=0.3\textwidth]{example-image} &
+      \includegraphics[width=0.3\textwidth]{example-image} &
+      \includegraphics[width=0.3\textwidth]{example-image}
+    \end{tabular}
+    \caption{TODO rifare caption e grafici}
+    \label{fig:esempi_scarti}
+  \end{center}
+\end{figure}
 
 Per analizzare meglio le modalità con cui potrebbe essere generato uno Scarto si supponga che il macchinario abbia commesso un errore: dall'ugello è uscita un certa quantità di colla in esubero.
 A seconda della posizione dell'ugello rispetto alla carcassa si può immaginare che la colla raggiunga il fondo in vari modi, proviamo ora ad esplorarne due:
 \begin{itemize}
   \item nel primo caso si immagina che il braccio abbia già depositato l'anello di colla e che si stia allontanando dalla carcassa.
     La colla in esubero cadrebbe sotto forma si goccia fino a raggiungere il fondo del pezzo.
-    Questo potrebbe esse il caso per la figura TODO ref immagine con colla a goccia;
+    Questo potrebbe esse il caso per la Figura ;\todo{TODO ref immagine con colla a goccia}
   \item nel secondo caso si immagina che la colla in esubero faccia parte dell'anello appena depositato e che, a causa delle vibrazioni o di altri fattori simili, coli raggiungendo il fondo della carcassa.
-    Questo potrebbe esse il caso per la figura TODO ref immagine con colla "sbaffata" dal bordo.
+    Questo potrebbe esse il caso per la Figura .\todo{TODO ref immagine con colla "sbaffata" dal bordo}
 \end{itemize}
 
 Concludiamo che gli esemplari forniti per la classe Scarto descrivono soltanto in modo parziale la distribuzione della classe (TODO dire meglio) e che quindi non possono essere utilizzati per allenare un modello veramente generale.
@@ -79,17 +108,17 @@ Come vedremo poi le immagini verranno trasformate in scala di grigi quindi, nono
 Ora che abbiamo una visione d'insieme sul dataset possiamo concentrare la nostra attenzione sulle proprietà principali delle immagini.
 %TODO verificare dimensione immagine
 Innanzitutto ogni immagine ha una risoluzione di $896$x$896$ pixel, dimensione che ci permette di esplorare varie possibilità.
-Ad esempio si può pensare di ridurre l'immagine ad una dimensione tale da: occupare meno spazio in memoria, quindi in RAM durante il training, ed allo stesso tempo di mantenere un livello di dettaglio sufficiente ai nostri scopi, risultando quindi in un boost in velocità di train. TODO dire meglio.
+Ad esempio si può pensare di ridurre l'immagine ad una dimensione tale da: occupare meno spazio in memoria, quindi in RAM durante il training, ed allo stesso tempo di mantenere un livello di dettaglio sufficiente ai nostri scopi, risultando quindi in un boost in velocità di train.
+\todo{TODO dire meglio}
 Oppure di suddividere l'immagine in quadranti da analizzare singolarmente così da mantenere la qualità dell'immagine originale ma senza dover creare una rete che accetti immagini troppo grandi.
 %TODO spiegare meglio
 Infatti una rete che accetta immagini di grandi dimensioni, solitamente, avrà un numero di parametri maggiore di una che accetta immagini piccole.
-Questo porta non solo ad occupare più spazio in memoria ma significa anche che la rete impiegherà più tempo sia in fase di train (più parametri da aggiustare) sia in fase di predizione (più conti da fare). TODO sistemare.
-%TODO verificare dimensione immagine
-Per avere un termine di paragone basti pensare che le immagini di MNIST sono $64$x$64$ pixel mentre quelle di ImageNet di $TODO$x$TODOpx$.
+Questo porta non solo ad occupare più spazio in memoria ma significa anche che la rete impiegherà più tempo sia in fase di train (più parametri da aggiustare) sia in fase di predizione (più conti da fare). %TODO sistemare
+Per avere un termine di paragone basti pensare che le immagini di MNIST sono $64$x$64$ pixel mentre quelle di ImageNet di $TODO$x$TODOpx$. \todo{dimensioni}
 
 %% falsi colori, contrasti differenti, centramenti
-Osservando nuovamente Figura TODO ci si accorge che le immagini hanno varie proprietà, verranno ora elencate e commentate in ordine crescente di fastidiosità (TODO dire meglio).
-% le prime sono da considerarsi poco problematiche o non problematiche le ultime problematiche
+Osservando nuovamente Figura \ref{fig:esempi_conformi} ci si accorge che le immagini hanno varie proprietà.
+Verranno ora elencate a partire da quella da conaiderarsi meno problematica fino ad arrivare a quella piu problematica.
 \begin{itemize}
 
   \item Ogni immagine presenta tre circonferenze concentriche, con centro il centro del pezzo.
@@ -104,14 +133,13 @@ Osservando nuovamente Figura TODO ci si accorge che le immagini hanno varie prop
     Ricordiamo che la posizione delle balze non ha alcuna correlazione con la presenza della colla, tanto meno con la sua posizione.
 
   \item Le superfici dei pezzi si assomigliano: presentano tutte un effetto chiamato "sale e pepe" con granuli di grandezze e luminosità varia.
-    Questo è un bene perché è una costante ma anche un male perché ognuno ha una particolare disposizione di quella texture. TODO dire meglio.
+    %Questo è un bene perché è una costante ma anche un male perché ognuno ha una particolare disposizione di quella texture. TODO dire meglio.
     Bisogna prestare particolare attenzione alle macchie scure presenti sul fondo di alcune carcasse.
     La posizione delle macchie non è fissa, perdipiù anche la loro dimensione è variabile.
     Queste qualità superficiali non saranno da sottovalutare in fase di elaborazione delle immagini.
 
-  \item A guardare le immagini sembra che siano centrate in realtà ci siamo accorti che c'erano delle differenze. TODO dire meglio.
-    Il centro dell'immagine non corrisponde con il centro del pezzo.
-    Nonostante la distanza massima tra centro del pezzo e il centro dell'immagine è tale che il fondo della carcassa sia sempre visibile interamente, è preferibile che le carcasse nelle immagini vengano centrate correttamente.
+  \item Ad un primo sguardo potrebbe sembrare che le immagini siano tutte centrate allo stesso modo, invece in molte il centro dell'immagine non corrisponde con il centro del pezzo.
+    Nonostante la distanza massima tra centro del pezzo e centro dell'immagine è tale che il fondo della carcassa sia sempre visibile interamente, è preferibile che le carcasse vengano centrate correttamente./todo{dire meglio}
   
   % TODO decidere se metterlo
   %\item La luminosità del gradino più piccolo, quello al centro dell'immagine, varia di molto.
@@ -122,13 +150,13 @@ Osservando nuovamente Figura TODO ci si accorge che le immagini hanno varie prop
 
   \item La variazione di luminosità tra le varie foto è una problematica che dovrà essere assolutamente gestita.
     Infatti alcune immagini hanno una luminosità così alta da far risultare alcune superfici bianche.
-    Altre immagini invece sono molto più scure, tanto che anche le zone che normalmente rifletterebbero sono illuminate appena.
+    Altre immagini, invece, sono molto più scure, tanto che anche le zone che normalmente rifletterebbero sono illuminate appena.
 
 \end{itemize}
 
-% TODO 3 immagini conformi vicine il più diverse possibile
-
-Ora possiamo elencare le proprietà esclusive degli Scarti, in questo caso sono tutte a nostro favore poiché sono l'informazione con cui si distingue uno scarto da un conforme(TODO dire meglio):
+% TODO 3 immagini conformi vicine il più diverse possibile??
+Ora, facendo riferimento alla Figura \ref{fig:esempi_scarti}, possiamo elencare le proprietà esclusive degli Scarti.
+In questo caso sono tutte non problematiche, anzi sono sfruttabili poiché rappresentano informazione con cui si può distingue uno scarto da un conforme:
 \begin{itemize}
   \item La colla ha alcune caratteristiche particolari: ha un colore bianco-verde solitamente più chiaro della superficie della carcassa e presenta sempre delle zone con dei riflessi.
 
@@ -141,19 +169,21 @@ Ora possiamo elencare le proprietà esclusive degli Scarti, in questo caso sono 
 
 \end{itemize}
 
+% TODO spostare in sezione AE
 % commento sotto dirlo ora o quando faccio la diff la prima volta nella sezione degli AE? Oppure quando creo gli scarti sintetici?
 % Come ultima cosa accennare al fatto che gli scarti presentano anelli di colorazione differente e che questo sarà un grave problema in fase di valutazione dei risultati
 % Specificare che NON è una proprietà "corretta" ma che dipende dal modo in cui sono state raccolte le immagini
 % Che gli scarti on-line saranno uguali a Conforme+Colla
 
-TODO manca qualcosa?
-TODO fare conclusione section/subsection?
+% TODO manca qualcosa?
+% TODO fare conclusione section/subsection?
 
 
 
 
 \section{Pre-Processing}
 Questa sezione è divisa in due parti: nella prima verranno illustrate alcune tra le principali tecniche di \textit{Digital Image Processing} nonché di \textit{Computer Vision}, esponendo i dettagli matematici ed esplorando le loro applicazioni; nella seconda si spiegherà quali di queste tecniche, in che ordine e per quali motivi sono state utilizzate.
+\todo{TODO Descrivere cose'è preprocesing resto(DIP, Machine e Compute Vision) lasciamolo all'introduzione}
 
 Come prima cosa è bene ricordare che con \textit{Digital Image Processing} si intende il modificare immagini digitali per mezzo di algoritmi eseguibili da un calcolatore.
 
@@ -204,9 +234,11 @@ L'algoritmo può essere facilmente espresso tramite due cicli $for$ facendo atte
 % TODO parentesi su il caso a colori?
 
 \begin{figure}[ht]
-  \includegraphics[width=0.6\textwidth]{esempio_convoluzione}
-  \caption{TODO Immagine da rifare}
-  \label{fig:conv_example}
+  \begin{center}
+    \includegraphics[width=0.6\textwidth]{esempio_convoluzione}
+    \caption{TODO Immagine da rifare}
+    \label{fig:conv_example}
+  \end{center}
 \end{figure}
 
 \paragraph{Trasformazioni Affini}
@@ -214,21 +246,21 @@ L'algoritmo può essere facilmente espresso tramite due cicli $for$ facendo atte
 % https://en.wikipedia.org/wiki/Affine_transformation
 % https://en.wikipedia.org/wiki/Rotation
 
-TODO RIEMPIRE DI TEORIA QUA
+\todo{TODO RIEMPIRE DI TEORIA QUA}
 
 \paragraph{Feature Extraction}
+\todo{TODO}
 Come ultima cosa prima di cominciare a descrivere gli algoritmi, si vuole specificare cosa significa \textit{Feature Extraction}.
 % https://en.wikipedia.org/wiki/Feature_extraction
 % https://deepai.org/machine-learning-glossary-and-terms/feature-extraction
-TODO
 
 
 \clearpage
 Ora verranno introdotti alcuni algoritmi fondamentali nel campo della \textit{Computer Vision}.
+\todo{TODO machine o computer?}
 
-TODO aggiungere applicazioni principali per ogni tecnica?
-
-TODO sono da riscrivere meglio.
+% TODO aggiungere applicazioni principali per ogni tecnica?
+% TODO sono da riscrivere meglio.
 
 
 \subsection {Passaggio da RGB a GrayScale}
@@ -288,16 +320,16 @@ Nell'esempio in Figura~\ref{fig:mask_example} si è deciso di rimuove l'informaz
 \subsection {Traslazioni e Rotazioni}
 Come abbiamo accennato prima, le trasformazioni affini ci permettono di effettuare traslazioni e rotazioni alle immagini.
 
-TODOOOOOOO
+TODO
 
-Con la matrice per il cambio di base hhkk
+Con la matrice per il cambio di base
 % wrap affine e matrici di traslazione / rotazione
 % cfr cambio di base?
 \begin{figure}[ht] % TODO immagini
   \begin{center}
-    \includegraphics[width=0.3\textwidth]{RGB}
-    \includegraphics[width=0.2\textwidth]{mask}
-    \includegraphics[width=0.3\textwidth]{masked}
+    \includegraphics[width=0.3\textwidth]{example-image}
+    \includegraphics[width=0.2\textwidth]{example-image}
+    \includegraphics[width=0.3\textwidth]{example-image}
     \caption{TODO cambiare immagini}
     \label{fig:traslation_example}
   \end{center}
@@ -325,15 +357,15 @@ Un criterio possibile è quello di assegnare al nuovo pixel sempre il valore del
 Una tecnica leggermente più complessa, ma che fornisce risultati soddisfacenti nella maggior parte delle occasioni, è l'interpolazione bilineare.
 Con questa tecnica si effettuano, in cascata, due interpolazioni lineari, una orizzontale ed una verticale.
 Con l'interpolazione bilineare i nuovi pixel si ottengono come media dei valori noti, pesata rispetto allo loro distanza dal pixel che si vuole colorare.
-In questo modo si ottengono immagini con cambi di colore più dolci.
+In questo modo si ottengono immagini con transazioni di colore più dolci.
 
-TODO
-Parentesi sulle formule?
-Linear Interpolation
-% https://en.wikipedia.org/wiki/Linear_interpolation
-per poi spiegare Bilinear Interpolation?
-% https://en.wikipedia.org/wiki/Bilinear_interpolation
-%https://theailearner.com/2018/12/29/image-processing-bilinear-interpolation/
+% TODO
+% Parentesi sulle formule?
+% Linear Interpolation
+% % https://en.wikipedia.org/wiki/Linear_interpolation
+% per poi spiegare Bilinear Interpolation?
+% % https://en.wikipedia.org/wiki/Bilinear_interpolation
+% %https://theailearner.com/2018/12/29/image-processing-bilinear-interpolation/
 
 
 Nel caso in cui si voglia ridurre le dimensioni dell'immagine si dovranno usare tecniche di \textit{downsampling} ed \textit{anti-aliasing}.
@@ -358,7 +390,8 @@ Notare che l'immagine in input deve essere in scala di grigi.
 
 Vediamo ora come possiamo formulare matematicamente la costruzione dell'istogramma e la sua manipolazione.
 Siano $X$ l'immagine di partenza ed $Y$ l'immagine risultato.
-Facendo riferimento a quanto scritto nel documento (TODO AGGIUNGERE REF A DOC) l'istogramma può essere definito come:
+Facendo riferimento a quanto scritto nel documento l'istogramma può essere definito come:
+\todo{TODO AGGIUNGERE REF A DOC}
 \begin{equation*}
 p_n = \frac{\text{\# di pixel di colore} \quad n}{\text{\# totale di pixel}} \quad \text{con} \quad n \in [0,255]
 \end{equation*}
@@ -384,7 +417,7 @@ Sostanzialmente abbiamo ricolorato ogni pixel dell'immagine di partenza con colo
       \includegraphics[width=0.3\textwidth]{pre_eq_hist} &
       \includegraphics[width=0.3\textwidth]{post_eq_hist}
     \end{tabular}
-    \caption{TODO rifare caption e grafici}
+    \caption{TODO rifare grafici}
     \label{fig:hist_eq_example}
   \end{center}
 \end{figure}
@@ -415,6 +448,7 @@ Si dimostra che la funzione di Gauss a due parametri equivale al prodotto di due
 in cui $x$ ed $y$ sono le distanze dagli assi di riferimento, mentre $\sigma$ è la deviazione standard.
 In termini di calcolo computazionale ciò può essere sfruttato eseguendo due computazioni lineari,
 rispetto alle dimensioni dell'immagine e del kernel, %non corretto
+\todo{TODO correggere e dire meglio}
 anziché una quadratica.
 
 $
@@ -424,8 +458,6 @@ $
 $
 {\displaystyle O\left(w_{\text{kernel}}h_{\text{kernel}}w_{\text{image}}h_{\text{image}}\right)}
 $
-TODO correggere e dire meglio.
-
 
 La matrice sottostante rappresenta un filtro gaussiano quadrato di lato $7$ con $\sigma = 2$.
 
@@ -467,7 +499,7 @@ In Figura~\ref{fig:gaussian_blur_example} è riportata un'immagine prima e dopo 
 
 Va fatta un'ultima considerazione: COSA SUCCEDE SE APPLICO DUE VOLTE LO STESSO FILTRO?
 Se si applica più volte uno stesso filtro gaussiano si ottiene lo stesso risultato che si otterrebbe dopo un'unica applicazione di un filtro 
-\fbox{TODO completare}
+\todo{TODO completare}
 
 % https://en.wikipedia.org/wiki/Gaussian_blur
 
@@ -543,7 +575,8 @@ L'applicazione del filtro Sobel avviene come mostrato nelle due equazioni sottos
 
 La prima equazione fornisce un'approssimazione del gradiente rispetto all'asse $x$, mentre la seconda rispetto ad $y$.
 La terza equazione, invece, combina le precedenti fornendoci informazione riguardo alla magnitudine del gradiente dell'immagine.
-%TODO aggiungere anche l'angolo?
+
+\todo{TODO aggiungere formula per angolo}
 
 Ora verranno fatte delle considerazioni sul primo kernel ma, poiché il secondo è una semplice trasposta del primo, tali considerazioni sono, facendo riferimento all'asse delle $y$, valide anche per il filtro in equazione \ref{eq:sobel_gy}.
 Il kernel nell'equazione~\ref{eq:sobel_gx} assegnerà valori in assoluto più grandi a pixel in una posizione di transizione di colore, rispetto a pixel posizionati in una zona con colorazione uniforme.
@@ -644,13 +677,13 @@ Ogni retta viene identificata dall'equazione:
   r = x_i cos \theta + y_i sin \theta \quad con \quad i=1,2,3
 \end{equation}
 ottenibile con semplici calcoli geometrici.
-Questo significa che il fascio di rette nello spazio di partenza verrà descritto da curve nello \textit{Hough Parameter Space} $\theta$-$r$, come si vede in figura~TODO.
+Questo significa che il fascio di rette nello spazio di partenza verrà descritto da curve nello \textit{Hough Parameter Space} $\theta$-$r$, come si vede in figura~\ref{fig:hough_parametr_raggio-angolo}.
 Valutando le celle nello stesso modo di prima si ottiene la retta passante per i tre punti ma identificata dalla coppia $(r_0,\theta_0)$.
 
 \begin{figure}[ht] % TODO
   \begin{center}
     \includegraphics[width=0.3\textwidth]{raggio_angolo}
-    \includegraphics[width=0.3\textwidth]{raggio_angolo}
+    \includegraphics[width=0.3\textwidth]{example-image}
     \caption{TODO }
     \label{fig:hough_parametr_raggio-angolo}
   \end{center}
@@ -672,10 +705,19 @@ Supponiamo di conoscere il raggio $r_0$ della circonferenza che vogliamo rilevar
 Lo spazio dei parametri $a$-$b$ ci permette di creare le circonferenze centrate nei $P_i$ e di assegnare un punteggio alto alla cella in $(a_0,b_0)$ perché votata da molte circonferenze.
 
 Se anche il raggio fosse incognito allora lo \textit{Hough Parameter Space} avrebbe tre dimensioni ed ogni punto sarebbe una tripla $(a,b,r)$ appartenente alla superficie di un cono.
-In figura~TODO è illustrata una rappresentazione di questo spazio.
+In figura~\ref{fig:hough_parametr_3d} è illustrata una rappresentazione di questo spazio.
 
 Le implementazioni della \textit{Hough Circle Transform} sfruttano una matrice di supporto, chiamata accumulatore, che corrisponde allo spazio dei parametri di Hough.
 Ciascun elemento è un intero con valore iniziale zero, che verrà incrementato di uno per ogni linea passante.
+
+\begin{figure}[ht] % TODO
+  \begin{center}
+    \includegraphics[width=0.3\textwidth]{example-image}
+    \includegraphics[width=0.3\textwidth]{example-image}
+    \caption{TODO }
+    \label{fig:hough_parametr_3d}
+  \end{center}
+\end{figure}
 
 % TODO commento sulla implementazione 
 % - immagine deve essere canny edge
@@ -782,7 +824,7 @@ Mentre si suppone che la colla non si presenti soltanto sulla parete verticale, 
 
 Nella Figura~\ref{fig:mask} è illustrato un conforme prima e dopo il mascheramento.
 Fra le due immagini si presenta la maschera utilizzata.
-% TODO mostrare anche cosa succede se si esagera col filtro?
+
 \begin{figure}[ht] % TODO
   \begin{center}
     \includegraphics[width=0.3\textwidth]{example-image}
