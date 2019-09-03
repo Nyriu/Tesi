@@ -470,9 +470,9 @@ Se si applica più volte uno stesso filtro gaussiano si ottiene lo stesso risult
 
 % https://en.wikipedia.org/wiki/Gaussian_blur
 
-\clearpage
-\subsection {Bilateral Filter}
-TODO
+%\clearpage
+%\subsection {Bilateral Filter}
+%TODO
 % https://en.wikipedia.org/wiki/Bilateral_filter
 % https://docs.opencv.org/2.4/modules/imgproc/doc/filtering.html?highlight=bilateralfilter#bilateralfilter
 
@@ -615,10 +615,10 @@ In Figura~\ref{fig:canny_example} è illustrata l'applicazione del \textit{Sobel
 % https://en.wikipedia.org/wiki/Canny_edge_detector
 
 \clearpage
-\subsection {Hough Circles Transform}
-Prima di poter spiegare questa tecnica si devono introdurre alcuni concetti come la \textit{Hough Line Transform}, il \textit{Hough Parameter Space} e la parametrizzazione raggio-angolo di una retta.
+\subsection {Hough Circle Transform}
+Prima di poter spiegare questa tecnica si devono introdurre alcuni concetti come la \textit{Hough Line Transform}, lo \textit{Hough Parameter Space} e la parametrizzazione raggio-angolo di una retta.
 Le trasformate di Hough sono largamente usate come metodi di \textit{feature extraction}, permettono di rilevare semplici figure come linee e cerchi.
-Il loro obbiettivo è raggruppare correttamente un'insieme di pixel in modo che l'insieme raffiguri la forma da rilevare.
+Il loro obbiettivo è raggruppare correttamente un'insieme di pixel in modo che l'insieme raffiguri la forma che si vuole trovare.
 Una delle problematiche principali è la possibilità che nell'immagine la forma da rilevare sia discontinua o deformata.
 
 Esploriamo come il metodo di \textit{Hough Line Transform} permette di trovare una linea retta in un'immagine.
@@ -630,19 +630,57 @@ L'equazione appena descritta è in funzione di $m$ e $c$, riscrivendola come
 \end{equation}
 risulta più facile immaginarla (fissato un $i$) come una retta in uno spazio in cui $c$ è sull'asse delle ordinate e $m$ su quello delle ascisse.
 Lo spazio appena descritto prende il nome di \textit{Hough Parameter Space}, in cui ogni punto $(m,c)$ descrive una retta nello spazio di partenza.
-Nello \textit{Hough Parameter Space} le tre rette della formula \ref{eq:cm_lines} si incontrano in esattamente un punto, sia $(m_0,c_0)$.
-Quindi l'equazione $y = m_0 x + c_0$, nello spazio originale, passa per tutti i $P_i$.
+Nello \textit{Hough Parameter Space} le tre rette della formula \ref{eq:cm_lines} si devono necessariamente incontrarsi in esattamente un punto, sia $(m_0,c_0)$, perché sappiamo che deve esistere una coppia di parametri per cui la retta $y = m_0 x + c_0$, nello spazio originale, passa per tutti gli $P_i$.
 L'idea alla base di \textit{Hough Line Transform} è quella di, definito un range di valori per $m$ e per $c$, trovare quello che soddisfa il maggior numero di equazioni.
-In pratica ad ogni cella nello spazio $c-m$ viene associato un intero che indica quante delle rette di equazione~\ref{eq:cm_lines} ref passano per quella cella.
+In pratica ad ogni cella nello spazio $m$-$c$ viene associato un intero che indica quante delle rette di equazione~\ref{eq:cm_lines} ref passano per quella cella.
+
+Ci si accorge facilmente che questo metodo non ci permette di rilevare rette parallele all'asse delle $y$, infatti bisognerebbe avere un parametro $m$ con valore che tende all'infinito.
+Per risolvere questa problematica viene usata la parametrizzazione raggio-angolo.
+Come si vede in figura~\ref{fig:hough_parametr_raggio-angolo}, ogni retta viene identificata da una coppia univoca $(r,\theta)$.
+Nella coppia $r$ indica la distanza dall'origine al punto più vicino della retta, mentre $\theta$ indica l'angolo tra il segmento appena generato e l'asse delle $x$.
+Ogni retta viene identificata dall'equazione:
+\begin{equation} \label{eq:raggio_angolo_parametr}
+  r = x_i cos \theta + y_i sin \theta \quad con \quad i=1,2,3
+\end{equation}
+ottenibile con semplici calcoli geometrici.
+Questo significa che il fascio di rette nello spazio di partenza verrà descritto da curve nello \textit{Hough Parameter Space} $\theta$-$r$, come si vede in figura~TODO.
+Valutando le celle nello stesso modo di prima si ottiene la retta passante per i tre punti ma identificata dalla coppia $(r_0,\theta_0)$.
+
+\begin{figure}[ht] % TODO
+  \begin{center}
+    \includegraphics[width=0.3\textwidth]{raggio_angolo}
+    \includegraphics[width=0.3\textwidth]{raggio_angolo}
+    \label{fig:hough_parametr_raggio-angolo}
+    \caption{TODO }
+  \end{center}
+\end{figure}
 
 
+Vediamo ora come si può modificare la tecnica appena descritta per rilevare cerchi anziché linee rette.
+L'idea principale ruota sempre attorno al concetto di voto di celle nello spazio di parametri.
 
+In questo caso si sfrutta il fatto che, in una circonferenza $c$ di raggio $r$, ogni punto è equidistante dal centro.
+Per ogni punto $P_i$ di $c$ può essere tracciata una circonferenza $c_i$ di centro $P_i$ e raggio $r$.
+Sappiamo che tutte le circonferenze $c_i$ si incontrano in un unico punto, il centro di $c$, perché è l'unico equidistante da tutti i centri delle $c_i$.
 
+Si ricorda che l'equazione di una circonferenza di centro $(a,b)$ e raggio $r$ è
+\begin{equation} \label{eq:circonferenza}
+  (x - a)^2 + (y - b)^2 = r^2
+\end{equation}
+Supponiamo di conoscere il raggio $r_0$ della circonferenza che vogliamo rilevare e di avere un insieme di punti $P_i$ che sappiamo appartenere alla circonferenza.
+Lo spazio dei parametri $a$-$b$ ci permette di creare le circonferenze centrate nei $P_i$ e di assegnare un punteggio alto alla cella in $(a_0,b_0)$ perché votata da molte circonferenze.
 
+Se anche il raggio fosse incognito allora lo \textit{Hough Parameter Space} avrebbe tre dimensioni ed ogni punto sarebbe una tripla $(a,b,r)$ appartenente alla superficie di un cono.
+In figura~TODO è illustrata una rappresentazione di questo spazio.
 
+Le implementazioni della \textit{Hough Circle Transform} sfruttano una matrice di supporto, chiamata accumulatore, che corrisponde allo spazio dei parametri di Hough.
+Ciascun elemento è un intero con valore iniziale zero, che verrà incrementato di uno per ogni linea passante.
 
-%Passaggio teorico ad Hough Circles
-%Cosa richiede l'implementazione
+% TODO commento sulla implementazione 
+% - immagine deve essere canny edge
+% - threshold per fare pochi FP
+% - min e max radius per restringere la ricerca
+
 
 % Risorse
 % https://docs.opencv.org/2.4/doc/tutorials/imgproc/imgtrans/hough_circle/hough_circle.html

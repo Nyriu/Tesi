@@ -5,6 +5,7 @@ import eq_hist
 import gaussian_blur
 import sobel_operator
 import canny_edge_detector
+import hough_circles
 
 
 from my_globals import dest_dir, tesi_dest_dir
