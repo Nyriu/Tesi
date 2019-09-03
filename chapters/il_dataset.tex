@@ -689,29 +689,63 @@ Ciascun elemento è un intero con valore iniziale zero, che verrà incrementato 
 
 \clearpage
 \subsection {Applicazione degli algoritmi descritti}
- specificare bene che quelli che ora sono passaggi ben ordinati sono il risultato di mesi di trial and error.
+% specificare bene che quelli che ora sono passaggi ben ordinati sono il risultato di mesi di trial and error.
+%
+% Processo di modifica delle immagini ed euristiche applicate per ottenerne di "buone"
+%
+%Si illustra il pre-processing che ha portato ai migliori risultati
+%
+%- centramento fondamentale per aiutare la rete (descrizione funzione di centramento (passaggio BW, negativo, houghCirc media e matrice affine))
+%
+%- passaggio da RGB a Grayscale perché non c'è una grande perdita di informazione
+%
+%- bilateralFilter per smoothare via la texture "sale e pepe" tipica delle carcasse
+%
+%- il masking per rimuovere le balze e l'area corrispondente alla zona verticale della carcassa
+%
+%- crop per levare l'area nera (in proporzione ho molta più informazione)
+%
+%- resize ad 224x224 perché si è dimostrata essere una buona dimensione (magari mostrare come sotto il 200 è difficile vedere la colla, quelle piccole spariscono)
+Si fa notare che prima di ottenere immagini come quella illustrata in Figura~\ref{fig:esempio_prima_dopo_prep} e soprattutto prima di essere sicuri che questo è il tipo di immagine migliore per i nostri scopi, sono stati necessari numerosi esperimenti e tentativi.
+In particolar modo è stato importante capire che tipo di informazione potesse essere gestita interamente dalla rete neurale e quale invece dovesse essere rimossa o modificata.
+Lo scopo del nostro \textit{pre-processing} è quello di fornire un'immagine contenente solo l'informazione necessaria e sufficiente per poter discriminare un pezzo conforme da uno scarto.
 
- Processo di modifica delle immagini ed euristiche applicate per ottenerne di "buone"
+Nonostante in questa sezione vengano mostrate solo immagini di carcasse conformi, il processo iterativo appena descritto è stato eseguito confrontando costantemente immagini conformi e scarto.
+Immagini scarto verranno mostrate nella prossima sezione, interamente dedicata a loro.
 
-Si illustra il pre-processing che ha portato ai migliori risultati
-
-- centramento fondamentale per aiutare la rete (descrizione funzione di centramento (passaggio BW, negativo, houghCirc media e matrice affine))
-
-- passaggio da RGB a Grayscale perché non c'è una grande perdita di informazione
-
-- bilateralFilter per smoothare via la texture "sale e pepe" tipica delle carcasse
-
-- il masking per rimuovere le balze e l'area corrispondente alla zona verticale della carcassa
-
-- crop per levare l'area nera (in proporzione ho molta più informazione)
-
-- resize ad 224x224 perché si è dimostrata essere una buona dimensione (magari mostrare come sotto il 200 è difficile vedere la colla, quelle piccole spariscono)
+% https://tex.stackexchange.com/questions/343605/latex-code-for-subcaption-of-image
+\begin{figure}[ht] % TODO
+  \begin{center}
+    \includegraphics[width=0.5\textwidth]{128___1362_1_1_1_OnLineAnalysis}
+    \includegraphics[width=0.35\textwidth]{128___1362_1_1_1_OnLineAnalysis_prep}
+    \label{fig:esempio_prima_dopo_prep}
+    \caption{TODO }
+  \end{center}
+\end{figure}
 
 
+\clearpage
+\paragraph{1 Centramento con Hough Circle Transform} sdfsdhfjsdahfkjsd hfksad
+\begin{figure}[ht] % TODO
+  \begin{center}
+    \includegraphics[width=0.3\textwidth]{example-image-a}
+    \includegraphics[width=0.3\textwidth]{example-image-a}
+    \caption{TODO }
+  \end{center}
+\end{figure}
+
+\paragraph{2 Equalizzazione tramite istogramma}
+
+\paragraph{3 Smooth dell'immagine}
+
+\paragraph{4 Mascheramento}
+
+\paragraph{5 Crop e Resizing} 
 
 
 
 
+\clearpage
 \section {Data Augmentation}
 % Com'è stato sfruttato la Data Aug
 % Colle sintetiche
