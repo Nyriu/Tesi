@@ -29,8 +29,18 @@ Basti pensare ai dataset più famosi ed usati:
 \begin{itemize}
   \item MNIST è un dataset molto famoso contenente $70000$ cifre disegnate a mano appartenenti a $10$ classi in totale.
     È alla stesso tempo sia il punto di partenza dei principianti, perché di facile manipolazione, sia il campo di prova degli esperti, sul quale vengono allenati nuovi modelli prima di passare a compiti più complessi;
-  \item CIFAR-10 contiene \todo{TODO descrivere}
-  \item ImageNet contiene \todo{TODO descrivere}
+
+  \item CIFAR-10 contiene $60000$ immagini a colori suddivise in 10 classi da 6000 immagini l'una.
+    Le classi comprendono alcuni tipi di veicoli ed animali.
+   Date le dimensioni ridotte delle immagini, appena $32$x$32$ pixel, il dataset occupa meno di $200 MegaByte$, questo permette di allenare reti neurali in tempi ragionevoli.
+    % https://www.cs.toronto.edu/~kriz/cifar.html
+
+  \item ImageNet con le sue 14 milioni di immagini è il più grande dataset che sia mai stato creato.
+    I più grandi esperti nel campo del \textit{Machine Learning} si sfidano annualmente su questo dataset.
+    Contiene decine di migliaia di classi e le sue immagini sono in gran parte fotografie, che quindi hanno condizioni di luminosità e colori molti diversi tra loro.
+    Anche la dimensione e l'orientamento delle immagini possono variare.
+    % https://en.wikipedia.org/wiki/ImageNet
+
 \end{itemize}
 
 Ciascuno di questi dataset è stato etichettato\footnote{in inglese \textit{labeled} da \textit{label}, etichetta} a mano.
@@ -49,17 +59,44 @@ Concludiamo che il numero di Conformi a nostra disposizione è sufficiente.
 \begin{figure}[ht] % TODO
   \begin{center}
     \begin{tabular}{ccc}
-      \includegraphics[width=0.3\textwidth]{example-image} &
-      \includegraphics[width=0.3\textwidth]{example-image} &
-      \includegraphics[width=0.3\textwidth]{example-image} \\
-      \includegraphics[width=0.3\textwidth]{example-image} &
-      \includegraphics[width=0.3\textwidth]{example-image} &
-      \includegraphics[width=0.3\textwidth]{example-image}
+
+  \begin{subfigure}{.3\linewidth}
+    \centering\includegraphics[width=\textwidth]{128___16760_0_0_1_OnLineAnalysis}
+    \caption{}
+  \end{subfigure} &
+
+  \begin{subfigure}{.3\linewidth}
+      \includegraphics[width=\textwidth]{128___17986_1_1_1_OnLineAnalysis}
+      \caption{}
+    \end{subfigure} &
+
+  \begin{subfigure}{.3\linewidth}
+      \includegraphics[width=\textwidth]{128___18037_1_0_1_OnLineAnalysis}
+      \caption{}
+    \end{subfigure} \\ \\
+
+  \begin{subfigure}{.3\linewidth}
+      \includegraphics[width=\textwidth]{128___289_1_0_1_OnLineAnalysis}
+      \caption{}
+    \end{subfigure} &
+
+  \begin{subfigure}{.3\linewidth}
+      \includegraphics[width=\textwidth]{128___290_1_1_1_OnLineAnalysis}
+      \caption{}
+    \end{subfigure} &
+
+    \begin{subfigure}{.3\linewidth}
+      \includegraphics[width=\textwidth]{128___297_1_0_1_OnLineAnalysis}
+      \caption{}
+    \end{subfigure} \\
+
     \end{tabular}
-    \caption{TODO rifare caption e grafici}
+    \caption{TODO rifare caption}
     \label{fig:esempi_conformi}
   \end{center}
 \end{figure}
+
+% https://tex.stackexchange.com/questions/333249/controlling-subfigure-captions-and-subfigure-placement
 
 Purtroppo non possiamo dire lo stesso per gli Scarti.
 Se già la statistica ci lascia sospettare che $30$ esemplari non possono ritenersi significativi, allora questo sospetto diventa certezza quando si analizzano le caratteristiche della colla nelle immagini Scarto.  
@@ -67,17 +104,44 @@ Come si vede in Figura \ref{fig:esempi_scarti} la colla può presentarsi in form
 Anche la quantità di superficie coperta dalla colla può variare notevolmente, passando da aree ridotte e localizzate ad aree estese e di conformazioni singolari.
 Infine notiamo che la posizione del rimasuglio di colla all'interno della carcassa non è in relazione con la posizione delle balze e che la presenza dei gradini sul fondo non la obbliga in alcun modo a scivolare fino al centro.
 
-\begin{figure}[ht] % TODO aggiungere sub-caption
+\begin{figure}[ht] % TODO
   \begin{center}
     \begin{tabular}{ccc}
-      \includegraphics[width=0.3\textwidth]{example-image} &
-      \includegraphics[width=0.3\textwidth]{example-image} &
-      \includegraphics[width=0.3\textwidth]{example-image} \\
-      \includegraphics[width=0.3\textwidth]{example-image} &
-      \includegraphics[width=0.3\textwidth]{example-image} &
-      \includegraphics[width=0.3\textwidth]{example-image}
+
+  \begin{subfigure}{.3\linewidth}
+    \centering\includegraphics[width=\textwidth]{128___14097_1_0_1_OnLineAnalysis}
+    \caption{}
+  \end{subfigure} &
+
+  \begin{subfigure}{.3\linewidth}
+      \includegraphics[width=\textwidth]{128___14177_1_0_1_OnLineAnalysis}
+      \caption{}
+      \label{fig:esempi_scarti_sbaffo}
+    \end{subfigure} &
+
+  \begin{subfigure}{.3\linewidth}
+      \includegraphics[width=\textwidth]{128___22886_1_1_1_OnLineAnalysis}
+      \caption{}
+    \end{subfigure} \\ \\
+
+  \begin{subfigure}{.3\linewidth}
+      \includegraphics[width=\textwidth]{128___33657_0_0_1_OnLineAnalysis}
+      \caption{}
+      \label{fig:esempi_scarti_goccia}
+    \end{subfigure} &
+
+  \begin{subfigure}{.3\linewidth}
+      \includegraphics[width=\textwidth]{128___35_0_1_1_OnLineAnalysis}
+      \caption{}
+    \end{subfigure} &
+
+    \begin{subfigure}{.3\linewidth}
+      \includegraphics[width=\textwidth]{128___5668_1_1_1_OnLineAnalysis}
+      \caption{}
+    \end{subfigure} \\
+
     \end{tabular}
-    \caption{TODO rifare caption e grafici}
+    \caption{TODO rifare caption}
     \label{fig:esempi_scarti}
   \end{center}
 \end{figure}
@@ -87,16 +151,15 @@ A seconda della posizione dell'ugello rispetto alla carcassa si può immaginare 
 \begin{itemize}
   \item nel primo caso si immagina che il braccio abbia già depositato l'anello di colla e che si stia allontanando dalla carcassa.
     La colla in esubero cadrebbe sotto forma si goccia fino a raggiungere il fondo del pezzo.
-    Questo potrebbe esse il caso per la Figura ;\todo{TODO ref immagine con colla a goccia}
+    Questo potrebbe esse il caso per la Figura~\ref{fig:esempi_scarti_goccia};
   \item nel secondo caso si immagina che la colla in esubero faccia parte dell'anello appena depositato e che, a causa delle vibrazioni o di altri fattori simili, coli raggiungendo il fondo della carcassa.
-    Questo potrebbe esse il caso per la Figura .\todo{TODO ref immagine con colla "sbaffata" dal bordo}
+    Questo potrebbe esse il caso per la Figura~\ref{fig:esempi_scarti_sbaffo}.
 \end{itemize}
 
 Concludiamo che gli esemplari forniti per la classe Scarto descrivono soltanto in modo parziale la distribuzione della classe (TODO dire meglio) e che quindi non possono essere utilizzati per allenare un modello veramente generale.
 Infatti se, per esempio, venissero usati per il train di una rete convolutiva, di cui poi verrà illustrata brevemente la struttura, si rischierebbe di creare un modello con forte \textit{overfit} rispetto a quelle specifiche macchie di colla fornite.
-Con il termine overfit si intende TODO.
+\todo{definire overfit}
 %Dopo queste osservazioni siamo convinti che il problema deve essere affrontato com e un problema di anomaly detection... Piccola introduzione? Meglio parlarne vicino agli AE
-
 
 Prima di proseguire con le prossime problematiche dobbiamo spendere alcune parole per commentare la colorazione delle immagini rispetto ai veri colori delle carcasse e della colla.
 In figura~\ref{fig:carc} a pagina \pageref{fig:carc} abbiamo visto che la superficie del pezzo è di colore grigio ma nella foto risulta di colore verdastro.
@@ -106,15 +169,12 @@ Come vedremo poi le immagini verranno trasformate in scala di grigi quindi, nono
 
 \subsection{Differenze tra Immagini}
 Ora che abbiamo una visione d'insieme sul dataset possiamo concentrare la nostra attenzione sulle proprietà principali delle immagini.
-%TODO verificare dimensione immagine
 Innanzitutto ogni immagine ha una risoluzione di $896$x$896$ pixel, dimensione che ci permette di esplorare varie possibilità.
-Ad esempio si può pensare di ridurre l'immagine ad una dimensione tale da: occupare meno spazio in memoria, quindi in RAM durante il training, ed allo stesso tempo di mantenere un livello di dettaglio sufficiente ai nostri scopi, risultando quindi in un boost in velocità di train.
-\todo{TODO dire meglio}
+Ad esempio si può pensare di ridurre l'immagine ad una dimensione tale da: occupare meno spazio in memoria, quindi in RAM durante l'allenamento della rete, ed allo stesso tempo di mantenere un livello di dettaglio sufficiente ai nostri scopi.
 Oppure di suddividere l'immagine in quadranti da analizzare singolarmente così da mantenere la qualità dell'immagine originale ma senza dover creare una rete che accetti immagini troppo grandi.
-%TODO spiegare meglio
-Infatti una rete che accetta immagini di grandi dimensioni, solitamente, avrà un numero di parametri maggiore di una che accetta immagini piccole.
-Questo porta non solo ad occupare più spazio in memoria ma significa anche che la rete impiegherà più tempo sia in fase di train (più parametri da aggiustare) sia in fase di predizione (più conti da fare). %TODO sistemare
-Per avere un termine di paragone basti pensare che le immagini di MNIST sono $64$x$64$ pixel mentre quelle di ImageNet di $TODO$x$TODOpx$. \todo{dimensioni}
+Infatti una rete che prende in input immagini di grandi dimensioni, solitamente, avrà un numero di parametri maggiore di una che accetta immagini piccole.
+Questo porta non solo ad occupare più spazio in memoria ma significa anche che la rete impiegherà più tempo in fase di \textit{train}, perché dovrà impostare correttamente un maggior numero di parametri.
+Per avere un termine di paragone basti pensare che le immagini di MNIST sono $64$x$64$ pixel mentre quelle di ImageNet, che ricordiamo hanno dimensioni variabili, vengono solitamente scalate a $224$x$224px$. \todo{ref a documento}
 
 %% falsi colori, contrasti differenti, centramenti
 Osservando nuovamente Figura \ref{fig:esempi_conformi} ci si accorge che le immagini hanno varie proprietà.

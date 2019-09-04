@@ -48,7 +48,12 @@
 % pagina vuota fra la fine di un capitolo e l'inizio del successivo 
 \usepackage{emptypage}
 % \usepackage{graphicx} % gia' caricato da uniudtesi
-\graphicspath{{./figure/}, {./figure/preprocessing/}}
+\graphicspath{
+  {./figure/},
+  {./figure/preprocessing/},
+  {./figure/conformi/},
+  {./figure/scarti/}
+}
 %\usepackage{epstopdf}
 
        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -274,6 +279,9 @@
 %% Path per i chapters
 %\makeatletter
 %\def\input@path{{./chapters}}
+
+\usepackage{caption}
+\usepackage{subcaption}
 
 % Numera le immagini con interi crescenti
 %\usepackage{chngcntr}
