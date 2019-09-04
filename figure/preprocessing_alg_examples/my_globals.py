@@ -1,5 +1,6 @@
 image_dir  = './'
-image_name = 'zebra_RGB.jpg'
+#image_name = 'zebra_RGB.jpg'
+image_name = 'peacock_spider.jpg'
 image_suffix = '.' + image_name.split('.')[1]
 image_path = image_dir + image_name
 
