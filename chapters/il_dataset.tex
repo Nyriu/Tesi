@@ -199,7 +199,7 @@ Verranno ora elencate a partire da quella da conaiderarsi meno problematica fino
     Queste qualità superficiali non saranno da sottovalutare in fase di elaborazione delle immagini.
 
   \item Ad un primo sguardo potrebbe sembrare che le immagini siano tutte centrate allo stesso modo, invece in molte il centro dell'immagine non corrisponde con il centro del pezzo.
-    Nonostante la distanza massima tra centro del pezzo e centro dell'immagine è tale che il fondo della carcassa sia sempre visibile interamente, è preferibile che le carcasse vengano centrate correttamente./todo{dire meglio}
+    Nonostante la distanza massima tra centro del pezzo e centro dell'immagine è tale che il fondo della carcassa sia sempre visibile interamente, è preferibile che le carcasse vengano centrate correttamente.\todo{dire meglio}
   
   % TODO decidere se metterlo
   %\item La luminosità del gradino più piccolo, quello al centro dell'immagine, varia di molto.
@@ -223,17 +223,10 @@ In questo caso sono tutte non problematiche, anzi sono sfruttabili poiché rappr
   \item La colla è localizzata.
     Significa che, se presente, non appare come tante gocce sparse ma come un corpo unico più o meno allungato.
 
-  \item Tracciando una diametro a piacere ci si accorge che gli Scarti sono sempre asimmetrici, invece i conformi, a meno di piccole differenze superficiali, sono sempre simmetrici. (TODO dire meglio).
-
-    
+  \item Tracciando una diametro a piacere ci si accorge che gli Scarti sono sempre asimmetrici, invece i conformi, a meno di piccole differenze superficiali, sono sempre simmetrici. % (TODO dire meglio).
 
 \end{itemize}
 
-% TODO spostare in sezione AE
-% commento sotto dirlo ora o quando faccio la diff la prima volta nella sezione degli AE? Oppure quando creo gli scarti sintetici?
-% Come ultima cosa accennare al fatto che gli scarti presentano anelli di colorazione differente e che questo sarà un grave problema in fase di valutazione dei risultati
-% Specificare che NON è una proprietà "corretta" ma che dipende dal modo in cui sono state raccolte le immagini
-% Che gli scarti on-line saranno uguali a Conforme+Colla
 
 % TODO manca qualcosa?
 % TODO fare conclusione section/subsection?
@@ -263,53 +256,20 @@ Quindi un'immagine avrà un numero finito di elementi, detti \textit{pixel}, il 
 Uno dei vantaggi del rappresentare le immagini come matrici è quello di poter applicare operazioni classiche come somma, sottrazione, prodotto e divisione.
 Ma la nostra attenzione si concentrerà soprattutto sulle convoluzioni e sulle trasformazioni affini.
 
-\paragraph{Convoluzioni}
-ATTENZIONE QUESTA E' LA CONVOLUZIONE IN UN LAYER CONVOLUTIVO
-INVECE IN QEUSTA SEZIONE QUA BISOGNA CENTRARE I KERNEL SU OGNI VALORE E 
-SOSTITUIRLO IN OUTPUT CON IL VALORE OTTENUTO
-NELLA SEZIONE SUGLI AE SPIEGO CHE D'ORA IN POI LE CONVOLUZIONI SONO DA INTENDERE 
-DIVERSAMENTE CIOE' CON QUALITA' DI FEATURE EXTRACTION (NOTA SUL PADDING CHE FA TORNARE LE CONV DEL AE COME QUELLE DA DESCRIVERE QUA)
-
+%\paragraph{Convoluzioni}
 Nell'ambito del \textit{Image Processing} con convoluzione si intende l'operazione che permette di effettuare, per ogni pixel dell'immagine, una somma pesata tra il pixel e gli elementi a lui vicini.
 I pesi sono definiti in una matrice, detta \textit{kernel} o filtro, di dimensioni non superiori a quelle dell'immagine di partenza.
-Solitamente i kernel hanno dimensione $3x3$ o $5x5$.
-Sfrutteremo ora un esempio per spiegare come viene effettuata una convoluzione, più avanti, quando parleremo del filtro Sobel, verrà illustrato lo pseudocodice che ne formalizza i passaggi.
-In Figura~\ref{fig:conv_example} sono illustrate, da sinistra a destra: l'immagine di partenza $I$, il filtro $K$ e l'immagine risultato $Y$.
-Il simbolo $*$ denota l'operazione di convoluzione e non è da confondere con nessun tipo di prodotto.
-Effettueremo una convoluzione da sinistra a destra e dall'alto verso il basso, ma si fa presente che l'ordine d'esecuzione non modifica il risultato.
-\begin{itemize}
-  \item Il primo passo è posizionare una copia di $K$ sopra ad $I$ in modo che l'angolo in alto a sinistra del kernel combaci con quello in alto a sinistra dell'immagine.
-  \item Ora possiamo moltiplicare ogni elemento di $I$ con il rispettivo elemento di $K$.
-    I valori così ottenuti dovranno essere sommati tra di loro.
-    Effettuando i conti si osserva che il risultato combacia con il valore in alto a sinistra dell'immagine risultato.
-  \item Il prossimo passo consiste nel far traslare il kernel di una cella a sinistra, calcolare la somma di prodotti rispetto ai nuovi valori ed infine salvare il risultato in $Y$ una cella a destra rispetto a prima.
-  \item Si prosegue in questo modo fino a che l'ultima colonna di $K$ non combacia con l'ultima colonna di $I$, questo coincide con il riempimento della prima riga in $Y$.
-  \item Ora bisogna posizionare $K$ in modo che l'elemento nell'angolo superiore sinistro sia sopra all'elemento in $I$ sulla prima colonna della seconda riga.
-    Si effettuano prodotti e somme, salvando il risultato nella prima cella libera della seconda riga in $Y$.
-  \item Si procede in questo modo finché non si raggiunge l'ultimo elemento dell''immagine di partenza.
-\end{itemize}
+Solitamente i kernel hanno dimensione $3x3$ o $5x5$.%\todo{ref alla risorsa?}
+Una convoluzione è composta da semplici passi.
+Prima il filtro viene centrato su un pixel.
+A questo punto è come se il kernel coprisse un'area quadrata dell'immagine: moltiplichiamo i valori dei pixel con i rispettivi valori del filtro.
+I prodotti così ottenuti dovranno essere sommati assieme, il risultato della somma sarà il nuovo valore del pixel su cui il kernel era stato centrato.
+Effettuiamo questa operazione per ogni elemento dell'immagine.
+Si fa presente che di solito le convoluzione si effettuano da sinistra a destra e dall'alto verso il basso, ma si fa presente che l'ordine d'esecuzione non deve modifica il risultato.
+Infatti è importante aggiornare i pixel solo dopo aver ottenuto i nuovi valori dei pixel di tutta l'immagine.
 
-L'algoritmo può essere facilmente espresso tramite due cicli $for$ facendo attenzione a posizionare il kernel sempre entro i limiti dell'immagine di partenza.
-
-% TODO parentesi su il caso a colori?
-
-\begin{figure}[ht]
-  \begin{center}
-    \includegraphics[width=0.6\textwidth]{esempio_convoluzione}
-    \caption{TODO Immagine da rifare}
-    \label{fig:conv_example}
-  \end{center}
-\end{figure}
-
-\paragraph{Trasformazioni Affini}
-% https://en.wikipedia.org/wiki/Digital_image_processing
-% https://en.wikipedia.org/wiki/Affine_transformation
-% https://en.wikipedia.org/wiki/Rotation
-
-\todo{TODO RIEMPIRE DI TEORIA QUA}
-
-\paragraph{Feature Extraction}
-\todo{TODO}
+%\paragraph{Feature Extraction}
+%todo{TODO}
 Come ultima cosa prima di cominciare a descrivere gli algoritmi, si vuole specificare cosa significa \textit{Feature Extraction}.
 % https://en.wikipedia.org/wiki/Feature_extraction
 % https://deepai.org/machine-learning-glossary-and-terms/feature-extraction
@@ -378,6 +338,12 @@ Nell'esempio in Figura~\ref{fig:mask_example} si è deciso di rimuove l'informaz
 
 \clearpage
 \subsection {Traslazioni e Rotazioni}
+
+Trasformazioni Affini
+% https://en.wikipedia.org/wiki/Digital_image_processing
+% https://en.wikipedia.org/wiki/Affine_transformation
+% https://en.wikipedia.org/wiki/Rotation
+
 Come abbiamo accennato prima, le trasformazioni affini ci permettono di effettuare traslazioni e rotazioni alle immagini.
 
 TODO
