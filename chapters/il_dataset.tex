@@ -231,9 +231,7 @@ In questo caso sono tutte non problematiche, anzi sono sfruttabili poiché rappr
 % TODO manca qualcosa?
 % TODO fare conclusione section/subsection?
 
-
-
-
+\clearpage
 \section{Pre-Processing}
 Questa sezione è divisa in due parti: nella prima verranno illustrate alcune tra le principali tecniche di \textit{Digital Image Processing} nonché di \textit{Computer Vision}, esponendo i dettagli matematici ed esplorando le loro applicazioni; nella seconda si spiegherà quali di queste tecniche, in che ordine e per quali motivi sono state utilizzate.
 \todo{TODO Descrivere cose'è preprocesing resto(DIP, Machine e Compute Vision) lasciamolo all'introduzione}
@@ -254,9 +252,9 @@ Quindi un'immagine avrà un numero finito di elementi, detti \textit{pixel}, il 
 % https://en.wikipedia.org/wiki/Raster_graphics
 
 Uno dei vantaggi del rappresentare le immagini come matrici è quello di poter applicare operazioni classiche come somma, sottrazione, prodotto e divisione.
-Ma la nostra attenzione si concentrerà soprattutto sulle convoluzioni e sulle trasformazioni affini.
+Ma la nostra attenzione si concentrerà soprattutto su convoluzioni e trasformazioni affini.
+Le prime verranno descritte ora, mentre le ultime più avanti, ora 
 
-%\paragraph{Convoluzioni}
 Nell'ambito del \textit{Image Processing} con convoluzione si intende l'operazione che permette di effettuare, per ogni pixel dell'immagine, una somma pesata tra il pixel e gli elementi a lui vicini.
 I pesi sono definiti in una matrice, detta \textit{kernel} o filtro, di dimensioni non superiori a quelle dell'immagine di partenza.
 Solitamente i kernel hanno dimensione $3x3$ o $5x5$.%\todo{ref alla risorsa?}
@@ -269,11 +267,13 @@ Si fa presente che di solito le convoluzione si effettuano da sinistra a destra 
 Infatti è importante aggiornare i pixel solo dopo aver ottenuto i nuovi valori dei pixel di tutta l'immagine.
 
 %\paragraph{Feature Extraction}
-%todo{TODO}
-Come ultima cosa prima di cominciare a descrivere gli algoritmi, si vuole specificare cosa significa \textit{Feature Extraction}.
+Prima di cominciare a descrivere gli algoritmi, si vuole specificare cosa significa \textit{Feature Extraction}.
+\todo[noline]{completare}
+In generale indica un procedimento con cui si estrapolano, da un'insieme di dati formato,  un sottoinsieme ...
+
+
 % https://en.wikipedia.org/wiki/Feature_extraction
 % https://deepai.org/machine-learning-glossary-and-terms/feature-extraction
-
 
 \clearpage
 Ora verranno introdotti alcuni algoritmi fondamentali nel campo della \textit{Computer Vision}.
@@ -306,8 +306,8 @@ Il risulato di quest'ultimo calcolo è rappresentato in Figura~\ref{fig:rgb2gray
 % https://stackoverflow.com/questions/19181323/what-grayscale-conversion-algorithm-does-opencv-cvtcolor-use
 \begin{figure}[ht]
   \begin{center}
-    \includegraphics[width=0.3\textwidth]{RGB}
-    \includegraphics[width=0.3\textwidth]{RGBtoGRAY}
+    \includegraphics[width=0.4\textwidth]{RGB}
+    \includegraphics[width=0.4\textwidth]{RGBtoGRAY}
     \caption{A sinistra l'immagine originale. A destra la versione in scala di grigi}
     \label{fig:rgb2gray_example}
   \end{center}
@@ -472,18 +472,18 @@ Si dimostra che la funzione di Gauss a due parametri equivale al prodotto di due
   \end{split}
 \end{equation}
 in cui $x$ ed $y$ sono le distanze dagli assi di riferimento, mentre $\sigma$ è la deviazione standard.
-In termini di calcolo computazionale ciò può essere sfruttato eseguendo due computazioni lineari,
-rispetto alle dimensioni dell'immagine e del kernel, %non corretto
-\todo{TODO correggere e dire meglio}
-anziché una quadratica.
-
-$
-{\displaystyle O\left(w_{\text{kernel}}w_{\text{image}}h_{\text{image}}\right)+O\left(h_{\text{kernel}}w_{\text{image}}h_{\text{image}}\right)}
-$
-
-$
-{\displaystyle O\left(w_{\text{kernel}}h_{\text{kernel}}w_{\text{image}}h_{\text{image}}\right)}
-$
+% In termini di calcolo computazionale ciò può essere sfruttato eseguendo due computazioni lineari,
+% rispetto alle dimensioni dell'immagine e del kernel, %non corretto
+% \todo{TODO correggere e dire meglio}
+% anziché una quadratica.
+% 
+% $
+% {\displaystyle O\left(w_{\text{kernel}}w_{\text{image}}h_{\text{image}}\right)+O\left(h_{\text{kernel}}w_{\text{image}}h_{\text{image}}\right)}
+% $
+% 
+% $
+% {\displaystyle O\left(w_{\text{kernel}}h_{\text{kernel}}w_{\text{image}}h_{\text{image}}\right)}
+% $
 
 La matrice sottostante rappresenta un filtro gaussiano quadrato di lato $7$ con $\sigma = 2$.
 
@@ -498,6 +498,7 @@ La matrice sottostante rappresenta un filtro gaussiano quadrato di lato $7$ con 
     0&0&0&0&0&0&0
   \end{bmatrix}
 \end{equation*}
+\todo[noline]{inserire valori}
 
 Ricordiamo che durante una convoluzione si effettua la somma di prodotti elemento per elemento, ossia una media pesata in cui i pesi sono definiti nel kernel.
 Dato che i valori al centro del filtro sono più grandi di quelli ai bordi, daremo maggior peso ai pixel nell'intorno dell'elemento su cui il kernel viene centrato.
@@ -516,14 +517,14 @@ In Figura~\ref{fig:gaussian_blur_example} è riportata un'immagine prima e dopo 
 
 \begin{figure}[ht] % TODO
   \begin{center}
-    \includegraphics[width=0.3\textwidth]{GRAY}
-    \includegraphics[width=0.3\textwidth]{gaussian_blur_example}
+    \includegraphics[width=0.4\textwidth]{GRAY}
+    \includegraphics[width=0.4\textwidth]{gaussian_blur_example}
     \caption{TODO rifare caption}
     \label{fig:gaussian_blur_example}
   \end{center}
 \end{figure}
 
-Va fatta un'ultima considerazione: COSA SUCCEDE SE APPLICO DUE VOLTE LO STESSO FILTRO?
+Va fatta un'ultima considerazione: cosa succede se applico due volte lo stesso filtro?
 Se si applica più volte uno stesso filtro gaussiano si ottiene lo stesso risultato che si otterrebbe dopo un'unica applicazione di un filtro 
 \todo{TODO completare}
 
@@ -622,6 +623,7 @@ Nell'immagine sottostante viene mostrata l'applicazione dell'operatore Sobel pri
     \label{fig:sobel_example}
   \end{center}
 \end{figure}
+\todo{fare griglia più grande \\ aggiungere immagine originale}
 
 
 
@@ -664,8 +666,8 @@ Va fatto notare che i valori delle due soglie devono essere trovati in modo empi
 In Figura~\ref{fig:canny_example} è illustrata l'applicazione del \textit{Sobel operator}, notare come il risultato sia molto più pulito di quello illustro in Figura~\ref{fig:sobel_example}.
 \begin{figure}[ht] % TODO
   \begin{center}
-    \includegraphics[width=0.3\textwidth]{GRAY}
-    \includegraphics[width=0.3\textwidth]{canny_example}
+    \includegraphics[width=0.4\textwidth]{GRAY}
+    \includegraphics[width=0.4\textwidth]{canny_example}
     \caption{TODO }
     \label{fig:canny_example}
   \end{center}

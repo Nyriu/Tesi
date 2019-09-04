@@ -6,7 +6,7 @@ from my_globals import image_path, image_name, image_dir, dest_dir, image_suffix
 
 #print('Sobel ', image_path)
 
-img = cv2.imread(image_path, 0)
+img = cv2.imread(dest_dir + 'masked.jpg', 0)
 
 gx = cv2.Sobel(img, cv2.CV_16S, 1, 0, ksize=3, scale=1, delta=0, borderType=cv2.BORDER_DEFAULT)
 gy = cv2.Sobel(img, cv2.CV_16S, 0, 1, ksize=3, scale=1, delta=0, borderType=cv2.BORDER_DEFAULT)
