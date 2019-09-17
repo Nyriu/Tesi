@@ -14,13 +14,6 @@ Si conclude la sezione con una formalizzazione del problema da risolvere e le me
 
 \section{Le Carcasse per Motori Elettrici}
 
-\begin{figure}[h]
-  \includegraphics[width=3cm]{carcassa_da_sopra}
-  \includegraphics[width=3cm]{carcassa_di_lato}
-  \caption{Visioni laterale e superiore di una carcassa}
-  \label{fig:carc}
-\end{figure}
-
 Osservando le fotografie in figura, possono essere definite le caratteristiche principali delle carcasse:
 \begin{itemize}
   \item il pezzo ha una struttura cilindrica cava;
@@ -34,15 +27,23 @@ I due fori aiuteranno a fissare con delle viti il pezzo su dei supporti in plast
 Il motore alloggerà interamente nella cavità, nella quale verrà anche depositata della colla.
 Questa verrà poi cotta in modo che il motore non possa vibrare all'interno della carcassa, evitando che eventuali urti possano danneggiarlo.
 Dalla foto si può notare che la colla è distribuita in modo da formare un anello ad una altezza di circa $4cm$ dal fondo della carcassa.
+
 La colla è stata depositata correttamente se:
 \begin{enumerate}
   \item l'anello non presenta né sbavature né discontinuità;
   \item sul fondo non c'è presenza di colla.
 \end{enumerate}
-In questo documento, come si vedrà nella sezione sul \textit{dataset}, ci concentreremo esclusivamente sul secondo punto.
-La presenza di colla sul fondo della carcassa causerà il malfunzionamento del motorino dopo un limitato tempo d'utilizzo, molto inferiore al tempo di vita atteso.
+In questo documento ci concentreremo esclusivamente sul secondo punto, infatti la presenza di colla sul fondo della carcassa causa il malfunzionamento del motorino dopo un limitato tempo d'utilizzo, molto inferiore al tempo di vita atteso.
 Per questo motivo è fondamentale che la colla venga depositata correttamente.
 
+\begin{figure}[h]
+  \includegraphics[width=0.49\textwidth]{carcassa_da_sopra}
+  \includegraphics[width=0.49\textwidth]{carcassa_di_lato}
+  \caption{Visioni laterale e superiore di una carcassa}
+  \label{fig:carc}
+\end{figure}
+
+\clearpage
 
 \section{Il Processo di Produzione}
 Chiarire le modalità con cui le carcasse vengono manipolate, la colla viene depositata e le foto vengono acquisite risulta fondamentale.
@@ -75,29 +76,34 @@ In conclusione le foto che saranno da analizzare vengono raccolte da un totale d
 %TODO riassumere anche le caratteristiche delle carcasse?
 
 
+% TODO \clearpage ?
 \section{Gli Obiettivi da Raggiungere}
 % TODO confrontarsi per veridicità
 Di seguito sono riportati alcuni dati numerici riguardo i processi appena descritti.
 
 La colla viene depositata su circa $5000$ pezzi al giorno, la probabilità che gocce di colla cadano sul fondo delle carcasse è estremamente bassa.
-Purtroppo non esistono dati numerici esatti ma si stima che il macchinario abbia un \textit{fault rate} di una carcassa al mese o poco più.
+Purtroppo non esistono dati numerici esatti ma si stima che il macchinario abbia un tasso d'errore di una carcassa al mese o poco più.
 Questi dati possono essere trasformati in probabilità approssimative osservando che:
 
 \begin{center}
   \begin{tabular}{ l c r }
     colla depositata al mese: & $5000 * 31 =$& $155000$ \\
-    colla mal depositata al mese: && $2$
+    colla depositata male al mese: && $2$
   \end{tabular}
 \end{center}
 Quindi la probabilità che il macchinario sbagli e pari allo $0.00001\%$.
 %Tenendo ben presente questa probabilità, si vorrebbe riconoscere, e quindi scartare, le carcasse che presentano colla sul fondo.
+
 Il sistema di intelligenza artificiale deve riconoscere i pezzi non conformi ma soprattutto, tenendo conto della probabilità di cui sopra, deve generare un numero bassissimo di falsi positivi.
-Ricordano che per falsi positivi (riferiti anche come FP o \textit{False Positive}) si intendono tutte le carcasse che il sistema considera non conformi ma che in realtà non presentano difetti.
+Ricordano che per falsi positivi (detti anche FP o \textit{False Positive}) si intendono tutte le carcasse che il sistema considera non conformi ma che in realtà non presentano difetti.
 Una AI troppo rigida, che, quando indecisa, propende per scartare il pezzo, inciderebbe negativamente sulla produzione.
 Si rischierebbe, infatti di creare un enorme danno economico, andando a scartare molte più carcasse del necessario.
-% usare teorema di bayes per dim che un modello aggressivo è peggio di uno che lascia passare
+% TODO usare teorema di bayes per dim che un modello aggressivo è peggio di uno che lascia passare
 
-Il nostro obbiettivo è quindi quello di generare un numero di falsi positivi che sia inferiore al $2\%$, cercando di riconoscere più carcasse non conformi possibili.
+Il nostro obbiettivo è creare un sistema che generi un numero di falsi positivi che sia inferiore al $2\%$, cercando di riconoscere più carcasse non conformi possibili.
+
+% TODO numericamente vogliamo il 98 sui conformi e il 100 sugli scarti
+% Si da notare che queste 
 
 % L'obbiettivo è riconoscere i pezzi che presentano colla sul fondo
 % Acc sugli scarti $100\%$
