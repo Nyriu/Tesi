@@ -4,10 +4,10 @@
 
 \chapter{Il Dataset}
 
-Innanzitutto si specifica che con la parola Scarto si indica l'immagine di una carcasse che presenta colla sul fondo, pezzo che, quindi, dovrà essere scartato.
+Innanzitutto si specifica che con la parola Scarto si indica l'immagine di una carcassa che presenta colla sul fondo, pezzo che, quindi, dovrà essere scartato.
 Invece con la parola Conforme si indica l'immagine di una carcassa nella quale la colla è stata depositata correttamente, quindi con fondo pulito.
 
-In questo capitolo verrà descritto il dataset e gli algoritmi principali e la loro applicazione.
+In questo capitolo verrà descritto il \textit{dataset} e gli algoritmi principali e la loro applicazione.
 Si concluderà con la tecnica del data augmentation.
 \todo{recap capitolo}
 
@@ -15,8 +15,8 @@ Si concluderà con la tecnica del data augmentation.
 \section{Problematiche Principali}
 
 \subsection{Dataset Piccolo e Sbilanciato}
-La prima difficoltà insorge ancora prima di ispezionare le immagini del dataset.
-Infatti il dataset non solo comprende solamente 1719 immagini ma è anche fortemente sbilanciato:
+La prima difficoltà insorge ancora prima di ispezionare le immagini del \textit{dataset}.
+Infatti il \textit{dataset} non solo comprende solamente 1719 immagini ma è anche fortemente sbilanciato:
 \begin{itemize}
     \item 1719 immagini sono Conformi;
     \item 30 immagini sono Scarti.
@@ -28,26 +28,26 @@ Nel campo del \textit{Machine Learning}, ed ancora di più in quello del \textit
 Basti pensare ai dataset più famosi ed usati:
 \begin{itemize}
   \item MNIST è un dataset molto famoso contenente $70000$ cifre disegnate a mano appartenenti a $10$ classi in totale.
-    È alla stesso tempo sia il punto di partenza dei principianti, perché di facile manipolazione, sia il campo di prova degli esperti, sul quale vengono allenati nuovi modelli prima di passare a compiti più complessi;
+    È alla stesso tempo sia il punto di partenza dei principianti, perché di facile manipolazione, sia il campo di prova degli esperti, sul quale vengono allenati nuovi modelli prima di testarli su compiti più complessi.
 
   \item CIFAR-10 contiene $60000$ immagini a colori suddivise in 10 classi da 6000 immagini l'una.
     Le classi comprendono alcuni tipi di veicoli ed animali.
-   Date le dimensioni ridotte delle immagini, appena $32$x$32$ pixel, il dataset occupa meno di $200 MegaByte$, questo permette di allenare reti neurali in tempi ragionevoli.
+   Date le dimensioni ridotte delle immagini, appena $32$x$32$ pixel, il dataset occupa meno di $200 MB$, questo permette di allenare reti neurali in tempi ragionevoli.
     % https://www.cs.toronto.edu/~kriz/cifar.html
 
-  \item ImageNet con le sue 14 milioni di immagini è il più grande dataset che sia mai stato creato.
-    I più grandi esperti nel campo del \textit{Machine Learning} si sfidano annualmente su questo dataset.
+ \item ImageNet con le sue 14 milioni di immagini è il più grande \textit{dataset} che sia mai stato creato.
+    I più grandi esperti nel campo del \textit{Machine Learning} si sfidano annualmente su questo \textit{dataset}.
     Contiene decine di migliaia di classi e le sue immagini sono in gran parte fotografie, che quindi hanno condizioni di luminosità e colori molti diversi tra loro.
     Anche la dimensione e l'orientamento delle immagini possono variare.
     % https://en.wikipedia.org/wiki/ImageNet
 
 \end{itemize}
 
-Ciascuno di questi dataset è stato etichettato\footnote{in inglese \textit{labeled} da \textit{label}, etichetta} a mano.
+Ciascuno di questi \textit{dataset} è stato etichettato\footnote{in inglese \textit{labeled} da \textit{label}, etichetta} a mano.
 Ciò significa che ad ogni immagine è stata assegnata, a mano, una classe di appartenenza.
 Prendendo in esempio MNIST, se un'immagine raffigura la cifra $7$ allora sarà etichettata con il label \textit{seven} ed apparterrà alla classe di immagini in cui compare la cifra $7$.
 Allo stesso modo le immagini di ImageNet hanno etichette come \textit{dog}, \textit{cat}, \textit{bird}, \textit{car}, \textit{bike}, ecc... %TODO forma corretta??
-Il nostro dataset, come già illustrato, contiene due classi: Conforme e Scarto.
+Il nostro contiene due classi: Conforme e Scarto.
 
 Sembrerebbe che possedere 2000 immagini appena renda impossibile applicare algoritmi di \textit{Machine Learning}.
 In realtà osservando i Conformi, in Figura \ref{fig:esempi_conformi} sono stati riportati alcuni esemplari significativi, ci si accorge che i pezzi sono molto simili.
@@ -147,7 +147,7 @@ Infine notiamo che la posizione del rimasuglio di colla all'interno della carcas
 \end{figure}
 
 Per analizzare meglio le modalità con cui potrebbe essere generato uno Scarto si supponga che il macchinario abbia commesso un errore: dall'ugello è uscita un certa quantità di colla in esubero.
-A seconda della posizione dell'ugello rispetto alla carcassa si può immaginare che la colla raggiunga il fondo in vari modi, proviamo ora ad esplorarne due:
+A seconda della posizione dell'ugello rispetto alla carcassa si può immaginare che la colla raggiunga il fondo in vari modi, proviamo ora ad illustrarne due:
 \begin{itemize}
   \item nel primo caso si immagina che il braccio abbia già depositato l'anello di colla e che si stia allontanando dalla carcassa.
     La colla in esubero cadrebbe sotto forma si goccia fino a raggiungere il fondo del pezzo.
@@ -156,7 +156,7 @@ A seconda della posizione dell'ugello rispetto alla carcassa si può immaginare 
     Questo potrebbe esse il caso per la Figura~\ref{fig:esempi_scarti_sbaffo}.
 \end{itemize}
 
-Concludiamo che gli esemplari forniti per la classe Scarto descrivono soltanto in modo parziale la distribuzione della classe (TODO dire meglio) e che quindi non possono essere utilizzati per allenare un modello veramente generale.
+Concludiamo che gli esemplari forniti per la classe Scarto descrivono soltanto in modo parziale la distribuzione della classe \todo{dire meglio} e che quindi non possono essere utilizzati per allenare un modello veramente generale.
 Infatti se, per esempio, venissero usati per il train di una rete convolutiva, di cui poi verrà illustrata brevemente la struttura, si rischierebbe di creare un modello con forte \textit{overfit} rispetto a quelle specifiche macchie di colla fornite.
 \todo{definire overfit}
 %Dopo queste osservazioni siamo convinti che il problema deve essere affrontato com e un problema di anomaly detection... Piccola introduzione? Meglio parlarne vicino agli AE
@@ -178,7 +178,7 @@ Per avere un termine di paragone basti pensare che le immagini di MNIST sono $64
 
 %% falsi colori, contrasti differenti, centramenti
 Osservando nuovamente Figura \ref{fig:esempi_conformi} ci si accorge che le immagini hanno varie proprietà.
-Verranno ora elencate a partire da quella da conaiderarsi meno problematica fino ad arrivare a quella piu problematica.
+Verranno ora elencate a partire da quella da considerarsi meno problematica fino ad arrivare a quella più problematica.
 \begin{itemize}
 
   \item Ogni immagine presenta tre circonferenze concentriche, con centro il centro del pezzo.
@@ -252,8 +252,7 @@ Quindi un'immagine avrà un numero finito di elementi, detti \textit{pixel}, il 
 % https://en.wikipedia.org/wiki/Raster_graphics
 
 Uno dei vantaggi del rappresentare le immagini come matrici è quello di poter applicare operazioni classiche come somma, sottrazione, prodotto e divisione.
-Ma la nostra attenzione si concentrerà soprattutto su convoluzioni e trasformazioni affini.
-Le prime verranno descritte ora, mentre le ultime più avanti, ora 
+Ma la nostra attenzione si concentrerà soprattutto sulle convoluzioni.
 
 Nell'ambito del \textit{Image Processing} con convoluzione si intende l'operazione che permette di effettuare, per ogni pixel dell'immagine, una somma pesata tra il pixel e gli elementi a lui vicini.
 I pesi sono definiti in una matrice, detta \textit{kernel} o filtro, di dimensioni non superiori a quelle dell'immagine di partenza.
@@ -263,7 +262,7 @@ Prima il filtro viene centrato su un pixel.
 A questo punto è come se il kernel coprisse un'area quadrata dell'immagine: moltiplichiamo i valori dei pixel con i rispettivi valori del filtro.
 I prodotti così ottenuti dovranno essere sommati assieme, il risultato della somma sarà il nuovo valore del pixel su cui il kernel era stato centrato.
 Effettuiamo questa operazione per ogni elemento dell'immagine.
-Si fa presente che di solito le convoluzione si effettuano da sinistra a destra e dall'alto verso il basso, ma si fa presente che l'ordine d'esecuzione non deve modifica il risultato.
+Si fa presente che di solito le convoluzioni si effettuano da sinistra a destra e dall'alto verso il basso, ma si fa presente che l'ordine d'esecuzione non deve modificare il risultato.
 Infatti è importante aggiornare i pixel solo dopo aver ottenuto i nuovi valori dei pixel di tutta l'immagine.
 
 %\paragraph{Feature Extraction}
@@ -336,30 +335,30 @@ Nell'esempio in Figura~\ref{fig:mask_example} si è deciso di rimuove l'informaz
 
 % TODO dire che ci sono vari tipi di masking?
 
-\clearpage
-\subsection {Traslazioni e Rotazioni}
-
-Trasformazioni Affini
-% https://en.wikipedia.org/wiki/Digital_image_processing
-% https://en.wikipedia.org/wiki/Affine_transformation
-% https://en.wikipedia.org/wiki/Rotation
-
-Come abbiamo accennato prima, le trasformazioni affini ci permettono di effettuare traslazioni e rotazioni alle immagini.
-
-TODO
-
-Con la matrice per il cambio di base
-% wrap affine e matrici di traslazione / rotazione
-% cfr cambio di base?
-\begin{figure}[ht] % TODO immagini
-  \begin{center}
-    \includegraphics[width=0.3\textwidth]{example-image}
-    \includegraphics[width=0.2\textwidth]{example-image}
-    \includegraphics[width=0.3\textwidth]{example-image}
-    \caption{TODO cambiare immagini}
-    \label{fig:traslation_example}
-  \end{center}
-\end{figure}
+% \clearpage
+% \subsection {Traslazioni e Rotazioni}
+% 
+% Trasformazioni Affini
+% % https://en.wikipedia.org/wiki/Digital_image_processing
+% % https://en.wikipedia.org/wiki/Affine_transformation
+% % https://en.wikipedia.org/wiki/Rotation
+% 
+% Come abbiamo accennato prima, le trasformazioni affini ci permettono di effettuare traslazioni e rotazioni alle immagini.
+% 
+% TODO
+% 
+% Con la matrice per il cambio di base
+% % wrap affine e matrici di traslazione / rotazione
+% % cfr cambio di base?
+% \begin{figure}[ht] % TODO immagini
+%   \begin{center}
+%     \includegraphics[width=0.3\textwidth]{example-image}
+%     \includegraphics[width=0.2\textwidth]{example-image}
+%     \includegraphics[width=0.3\textwidth]{example-image}
+%     \caption{TODO cambiare immagini}
+%     \label{fig:traslation_example}
+%   \end{center}
+% \end{figure}
 
 \clearpage
 \subsection {Image Cropping and Resizing}
@@ -402,7 +401,7 @@ Significa che l'immagine ridotta potrebbe contenere gruppi di pixel di colori sb
 Sfruttando tecniche come l'anti-aliasing si può evitare, o quantomeno limitare, la creazione di tali artefatti.
 Un \textit{low-pass filter} è un tipo di filtro che smorza tutti i valori al di sopra di una certa soglia, mentre lascia passare tutti i valori minori.
 Nel campo del \textit{digital image processing} vengono utilizzati filtri di \textit{blur} applicati tramite convoluzione.
-Il termine \textit{blur} o \textit{smooth} indicano applicare un effetto sfuocato che tende a rendere più dolci le transizioni da un colore all'altro, andando quindi anche a ridurre valori troppo alti (o troppo bassi) avvicinandoli a valori più probabili.
+Il termine \textit{blur} o \textit{smooth} indicano applicare un effetto sfocato che tende a rendere più dolci le transizioni da un colore all'altro, andando quindi anche a ridurre valori troppo alti (o troppo bassi) avvicinandoli a valori più probabili.
 
 
 \clearpage
@@ -782,7 +781,7 @@ Ora verrà illustrato l'ordine in cui sono stati applica gli algoritmi descritti
 
 \subsubsection{1 Centramento con Hough Circle Transform}
 Sappiamo che le immagini del dataset non sono perfettamente centrate, per questo motivo si è deciso di utilizzare la tecnica della \textit{Hough Circle Transform} per ottenere un'approssimazione del centro della carcassa.
-Avendo le coordinate di quest'ultimo si può ottenere una matrice di traslazione con cui riallineare il pezzo con il centro dell'immagine.
+Avendo le coordinate di quest'ultimo si riallineare il pezzo con il centro dell'immagine.
 % TODO si può specificare che l'immagine deve essere
 % - To Grayscale
 % - Equalization Histogram

@@ -39,14 +39,14 @@ La colla è stata depositata correttamente se:
   \item l'anello non presenta né sbavature né discontinuità;
   \item sul fondo non c'è presenza di colla.
 \end{enumerate}
-In questo documento, come si vedrà nella sezione sul dataset, ci concentreremo esclusivamente sul secondo punto.
-La presenza di colla sul sul fondo della carcassa causerà il malfunzionamento del motorino dopo un limitato tempo d'utilizzo, molto inferiore al tempo di vita atteso.
+In questo documento, come si vedrà nella sezione sul \textit{dataset}, ci concentreremo esclusivamente sul secondo punto.
+La presenza di colla sul fondo della carcassa causerà il malfunzionamento del motorino dopo un limitato tempo d'utilizzo, molto inferiore al tempo di vita atteso.
 Per questo motivo è fondamentale che la colla venga depositata correttamente.
 
 
 \section{Il Processo di Produzione}
 Chiarire le modalità con cui le carcasse vengono manipolate, la colla viene depositata e le foto vengono acquisite risulta fondamentale.
-Senza queste informazioni mancherebbe la base sulla quale costruire ipotesi e considerazioni riguardo le immagini del dataset.
+Senza queste informazioni mancherebbe la base sulla quale costruire ipotesi e considerazioni riguardo le immagini del \textit{dataset}.
 Analizzando le condizioni in cui le foto vengono scattate, si definiscono i vincoli ed i confini entro i quali le soluzioni proposte possono considerarsi verosimili ed applicabili al mondo reale.
 
 Le carcasse, già presenti in grandi quantità in magazzino, raggiungono il macchinario e vengono caricate, con la concavità rivolta verso l'alto, su un disco rotante.
@@ -92,7 +92,7 @@ Questi dati possono essere trasformati in probabilità approssimative osservando
 Quindi la probabilità che il macchinario sbagli e pari allo $0.00001\%$.
 %Tenendo ben presente questa probabilità, si vorrebbe riconoscere, e quindi scartare, le carcasse che presentano colla sul fondo.
 Il sistema di intelligenza artificiale deve riconoscere i pezzi non conformi ma soprattutto, tenendo conto della probabilità di cui sopra, deve generare un numero bassissimo di falsi positivi.
-Ricordano che per falsi positivi (riferiti anche come FP o False Positive) si intendono tutte le carcasse che il sistema considera non conformi ma che in realtà non presentano difetti.
+Ricordano che per falsi positivi (riferiti anche come FP o \textit{False Positive}) si intendono tutte le carcasse che il sistema considera non conformi ma che in realtà non presentano difetti.
 Una AI troppo rigida, che, quando indecisa, propende per scartare il pezzo, inciderebbe negativamente sulla produzione.
 Si rischierebbe, infatti di creare un enorme danno economico, andando a scartare molte più carcasse del necessario.
 % usare teorema di bayes per dim che un modello aggressivo è peggio di uno che lascia passare
