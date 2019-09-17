@@ -25,22 +25,20 @@ Infatti questo non solo comprende solamente 1749 immagini ma è anche fortemente
 A questo punto è corretto chiedersi se le quasi duemila immagini del \textit{dataset} siano sufficienti ai nostri scopi.
 Nel campo del \textit{Machine Learning}, ed ancora di più in quello del \textit{Deep Learning}, non è raro che il numero di elementi in un dataset sia dell'ordine delle decine di migliaia se non di quello delle centinaia di migliaia.
 Basti pensare ai dataset più famosi ed usati:
-\todo{ aggiungere refs ai dataset con \cite{pyrl} }
+\todo{cite stuff}
 
 \begin{itemize}
-  \item MNIST è un dataset molto famoso contenente $70000$ cifre disegnate a mano appartenenti a $10$ classi in totale.
+  \item MNIST~\cite{mnist} è un dataset molto famoso contenente $70000$ cifre disegnate a mano appartenenti a $10$ classi in totale.
     È alla stesso tempo sia il punto di partenza dei principianti, perché di facile manipolazione, sia il campo di prova degli esperti, sul quale vengono allenati nuovi modelli prima di testarli su compiti più complessi.
 
-  \item CIFAR-10 contiene $60000$ immagini a colori suddivise in 10 classi da 6000 immagini l'una.
+  \item CIFAR-10~\cite{cifar} contiene $60000$ immagini a colori suddivise in 10 classi da 6000 immagini l'una.
     Le classi comprendono alcuni tipi di veicoli ed animali.
    Date le dimensioni ridotte delle immagini, appena $32$x$32$ pixel, il dataset occupa meno di $200 MB$, questo permette di allenare reti neurali in tempi ragionevoli.
-    % https://www.cs.toronto.edu/~kriz/cifar.html
 
- \item ImageNet con i suoi 14 milioni di immagini è il più grande \textit{dataset} che sia mai stato creato.
+ \item ImageNet~\cite{imagenet} con i suoi 14 milioni di immagini è il più grande \textit{dataset} che sia mai stato creato.
     I più grandi esperti nel campo del \textit{Machine Learning} si sfidano annualmente su questo \textit{dataset}.
     Contiene decine di migliaia di classi e le sue immagini sono in gran parte fotografie scattate da volontari, che quindi hanno condizioni di luminosità e colori molti diversi tra loro.
     Possono variare anche la dimensione e l'orientamento, orizzontale o verticale, delle immagini.
-    % https://en.wikipedia.org/wiki/ImageNet
 
 \end{itemize}
 
@@ -159,7 +157,12 @@ A seconda della posizione dell'ugello rispetto alla carcassa si può immaginare 
 \end{itemize}
 
 Data la grande varietà di modi in cui la colla può presentarsi, concludiamo che gli esemplari forniti per la classe Scarto la descrivono soltanto in modo parziale.
-Ciò rappresenta la maggiore difficoltà del \textit{dataset}, infatti è risaputo che ogni tecnica di \textit{machine learning} richiede che i dati racchiudano tutte le informazioni per poter generalizzare correttamente tutti i dati futuri. \todo{ref a documento in cui si spiega l'importanza del dataset}
+Ciò rappresenta la maggiore difficoltà del \textit{dataset}.
+Alla base di ogni applicazione di tecniche di \textit{machine learning} c'è l'ipotesi che il \textit{training set} \footnote{TODO la parte di \textit{dataset} su cui viene effettuato l'allenamento della rete} contenta informazione sufficiente a descrivere l'intero spazio campionario. % TODO giustificare magari facendo riferimento a cosa fa la linear regression?
+Senza TODO TODO
+
+
+tutte le informazioni per poter generalizzare correttamente tutti i dati futuri. \todo{ref a documento in cui si spiega l'importanza del dataset}
 
 la distribuzione della classe \todo{dire meglio} e che quindi non possono essere utilizzati per allenare un modello veramente generale.
 

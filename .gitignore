@@ -8,3 +8,8 @@
 *.synctex.gz
 *.toc
 *.xmpdata
+*.xml
+*.blg
+*.bcf
+*.bbl
+
