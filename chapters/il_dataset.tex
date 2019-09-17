@@ -16,16 +16,17 @@ Si concluderà con la tecnica del data augmentation.
 
 \subsection{Dataset Piccolo e Sbilanciato}
 La prima difficoltà insorge ancora prima di ispezionare le immagini del \textit{dataset}.
-Infatti il questo non solo comprende solamente 1719 immagini ma è anche fortemente sbilanciato:
+Infatti questo non solo comprende solamente 1749 immagini ma è anche fortemente sbilanciato:
 \begin{itemize}
     \item 1719 immagini sono Conformi;
     \item 30 immagini sono Scarti.
 \end{itemize}
 
-A questo punto è corretto chiedersi se le quasi duemila immagini del dataset siano sufficienti ai nostri scopi.
+A questo punto è corretto chiedersi se le quasi duemila immagini del \textit{dataset} siano sufficienti ai nostri scopi.
 Nel campo del \textit{Machine Learning}, ed ancora di più in quello del \textit{Deep Learning}, non è raro che il numero di elementi in un dataset sia dell'ordine delle decine di migliaia se non di quello delle centinaia di migliaia.
-% TODO aggiungere refs ai dataset
 Basti pensare ai dataset più famosi ed usati:
+\todo{ aggiungere refs ai dataset con \cite{pyrl} }
+
 \begin{itemize}
   \item MNIST è un dataset molto famoso contenente $70000$ cifre disegnate a mano appartenenti a $10$ classi in totale.
     È alla stesso tempo sia il punto di partenza dei principianti, perché di facile manipolazione, sia il campo di prova degli esperti, sul quale vengono allenati nuovi modelli prima di testarli su compiti più complessi.
@@ -35,26 +36,27 @@ Basti pensare ai dataset più famosi ed usati:
    Date le dimensioni ridotte delle immagini, appena $32$x$32$ pixel, il dataset occupa meno di $200 MB$, questo permette di allenare reti neurali in tempi ragionevoli.
     % https://www.cs.toronto.edu/~kriz/cifar.html
 
- \item ImageNet con le sue 14 milioni di immagini è il più grande \textit{dataset} che sia mai stato creato.
+ \item ImageNet con i suoi 14 milioni di immagini è il più grande \textit{dataset} che sia mai stato creato.
     I più grandi esperti nel campo del \textit{Machine Learning} si sfidano annualmente su questo \textit{dataset}.
-    Contiene decine di migliaia di classi e le sue immagini sono in gran parte fotografie, che quindi hanno condizioni di luminosità e colori molti diversi tra loro.
-    Anche la dimensione e l'orientamento delle immagini possono variare.
+    Contiene decine di migliaia di classi e le sue immagini sono in gran parte fotografie scattate da volontari, che quindi hanno condizioni di luminosità e colori molti diversi tra loro.
+    Possono variare anche la dimensione e l'orientamento, orizzontale o verticale, delle immagini.
     % https://en.wikipedia.org/wiki/ImageNet
 
 \end{itemize}
 
 Ciascuno di questi \textit{dataset} è stato etichettato\footnote{in inglese \textit{labeled} da \textit{label}, etichetta} a mano.
 Ciò significa che ad ogni immagine è stata assegnata, a mano, una classe di appartenenza.
-Prendendo in esempio MNIST, se un'immagine raffigura la cifra $7$ allora sarà etichettata con il label \textit{seven} ed apparterrà alla classe di immagini in cui compare la cifra $7$.
-Allo stesso modo le immagini di ImageNet hanno etichette come \textit{dog}, \textit{cat}, \textit{bird}, \textit{car}, \textit{bike}, ecc... %TODO forma corretta??
-Il nostro contiene due classi: Conforme e Scarto.
+Prendendo in esempio MNIST, se un'immagine raffigura la cifra $7$ allora sarà etichettata con il \textit{label seven} ed apparterrà alla classe di immagini in cui compare la cifra $7$.
+Allo stesso modo le immagini di ImageNet hanno etichette come \textit{dog}, \textit{cat}, \textit{bird}, \textit{car}, \textit{bike}, ecc\dots %TODO forma corretta??
+%Il nostro contiene due classi: Conforme e Scarto.
 
 Sembrerebbe che possedere 2000 immagini appena renda impossibile applicare algoritmi di \textit{Machine Learning}.
 In realtà osservando i Conformi, in Figura \ref{fig:esempi_conformi} sono stati riportati alcuni esemplari significativi, ci si accorge che i pezzi sono molto simili.
-Le differenze principali tra un'immagine e l'altra riguardano la posizione delle balze, la luminosità e le imperfezioni superficiali (graffi, macchie, \dots), ciascuna di queste differenze verrà analizzata nel dettaglio tra poco.
-Quindi, come ci si poteva aspettare essendo pezzi creati meccanicamente, la loro distribuzione è nell'intorno del pezzo progettato.
-\todo{TODO dire meglio}
-Concludiamo che il numero di Conformi a nostra disposizione è sufficiente.
+Questo non ci sorprende, dato che i pezzi vengono generati meccanicamente, è perfettamente lecito supporre che nessuna carcassa abbia delle caratteristiche completamente differenti dalle altre.
+Le principali diversità sono dovute ad imperfezioni superficiali come graffi o macchie.
+Si può quindi dire che la distribuzione dei pezzi conformi è descritta bene anche da un numero limitato di esemplari.
+Purtroppo il sistema di acquisizione immagini introduce ulteriori fattori di diversità come la posizione delle balze e la luminosità, ma questi fattori potranno essere gestiti senza troppe difficoltà.
+Concludiamo che il numero di Conformi a nostra disposizione è sufficiente ai nostri scopi.
 
 \begin{figure}[ht] % TODO
   \begin{center}
@@ -91,14 +93,16 @@ Concludiamo che il numero di Conformi a nostra disposizione è sufficiente.
     \end{subfigure} \\
 
     \end{tabular}
-    \caption{TODO rifare caption}
+    \caption{Alcune carcasse conformi}
     \label{fig:esempi_conformi}
   \end{center}
 \end{figure}
 
 % https://tex.stackexchange.com/questions/333249/controlling-subfigure-captions-and-subfigure-placement
 
-Purtroppo non possiamo dire lo stesso per gli Scarti.
+%% TODO TODO
+
+Non possiamo dire lo stesso per gli Scarti.
 Se già la statistica ci lascia sospettare che $30$ esemplari non possono ritenersi significativi, allora questo sospetto diventa certezza quando si analizzano le caratteristiche della colla nelle immagini Scarto.  
 Come si vede in Figura \ref{fig:esempi_scarti} la colla può presentarsi in forma di gocce più o meno circolari oppure come sbaffi di grossezza e lunghezza variabili.
 Anche la quantità di superficie coperta dalla colla può variare notevolmente, passando da aree ridotte e localizzate ad aree estese e di conformazioni singolari.
