@@ -93,14 +93,12 @@ Concludiamo che il numero di Conformi a nostra disposizione è sufficiente ai no
     \end{subfigure} \\
 
     \end{tabular}
-    \caption{Alcune carcasse conformi}
+    \caption{Alcune carcasse Conformi}
     \label{fig:esempi_conformi}
   \end{center}
 \end{figure}
 
 % https://tex.stackexchange.com/questions/333249/controlling-subfigure-captions-and-subfigure-placement
-
-%% TODO TODO
 
 Non possiamo dire lo stesso per gli Scarti.
 Se già la statistica ci lascia sospettare che $30$ esemplari non possono ritenersi significativi, allora questo sospetto diventa certezza quando si analizzano le caratteristiche della colla nelle immagini Scarto.  
@@ -145,7 +143,7 @@ Infine notiamo che la posizione del rimasuglio di colla all'interno della carcas
     \end{subfigure} \\
 
     \end{tabular}
-    \caption{TODO rifare caption}
+    \caption{Alcune carcasse Scarto}
     \label{fig:esempi_scarti}
   \end{center}
 \end{figure}
@@ -156,11 +154,15 @@ A seconda della posizione dell'ugello rispetto alla carcassa si può immaginare 
   \item nel primo caso si immagina che il braccio abbia già depositato l'anello di colla e che si stia allontanando dalla carcassa.
     La colla in esubero cadrebbe sotto forma si goccia fino a raggiungere il fondo del pezzo.
     Questo potrebbe esse il caso per la Figura~\ref{fig:esempi_scarti_goccia};
-  \item nel secondo caso si immagina che la colla in esubero faccia parte dell'anello appena depositato e che, a causa delle vibrazioni o di altri fattori simili, coli raggiungendo il fondo della carcassa.
+  \item nel secondo caso si ipotizza che la colla in esubero faccia parte dell'anello appena depositato e che, a causa delle vibrazioni o di altri fattori simili, coli raggiungendo il fondo della carcassa.
     Questo potrebbe esse il caso per la Figura~\ref{fig:esempi_scarti_sbaffo}.
 \end{itemize}
 
-Concludiamo che gli esemplari forniti per la classe Scarto descrivono soltanto in modo parziale la distribuzione della classe \todo{dire meglio} e che quindi non possono essere utilizzati per allenare un modello veramente generale.
+Data la grande varietà di modi in cui la colla può presentarsi, concludiamo che gli esemplari forniti per la classe Scarto la descrivono soltanto in modo parziale.
+Ciò rappresenta la maggiore difficoltà del \textit{dataset}, infatti è risaputo che ogni tecnica di \textit{machine learning} richiede che i dati racchiudano tutte le informazioni per poter generalizzare correttamente tutti i dati futuri. \todo{ref a documento in cui si spiega l'importanza del dataset}
+
+la distribuzione della classe \todo{dire meglio} e che quindi non possono essere utilizzati per allenare un modello veramente generale.
+
 Infatti se, per esempio, venissero usati per il train di una rete convolutiva, di cui poi verrà illustrata brevemente la struttura, si rischierebbe di creare un modello con forte \textit{overfit} rispetto a quelle specifiche macchie di colla fornite.
 \todo{definire overfit}
 %Dopo queste osservazioni siamo convinti che il problema deve essere affrontato com e un problema di anomaly detection... Piccola introduzione? Meglio parlarne vicino agli AE
