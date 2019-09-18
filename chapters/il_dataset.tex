@@ -21,12 +21,9 @@ Infatti questo non solo comprende solamente 1749 immagini ma è anche fortemente
     \item 1719 immagini sono Conformi;
     \item 30 immagini sono Scarti.
 \end{itemize}
-
 A questo punto è corretto chiedersi se le quasi duemila immagini del \textit{dataset} siano sufficienti ai nostri scopi.
 Nel campo del \textit{Machine Learning}, ed ancora di più in quello del \textit{Deep Learning}, non è raro che il numero di elementi in un dataset sia dell'ordine delle decine di migliaia se non di quello delle centinaia di migliaia.
 Basti pensare ai dataset più famosi ed usati:
-\todo{cite stuff}
-
 \begin{itemize}
   \item MNIST~\cite{mnist} è un dataset molto famoso contenente $70000$ cifre disegnate a mano appartenenti a $10$ classi in totale.
     È alla stesso tempo sia il punto di partenza dei principianti, perché di facile manipolazione, sia il campo di prova degli esperti, sul quale vengono allenati nuovi modelli prima di testarli su compiti più complessi.
@@ -294,36 +291,34 @@ Noi esploreremo tecniche come: rilevamento dei contorni o \textit{edge detection
 
 \subsection {Passaggio da RGB a GrayScale}
 La conversione di un'immagine da RGB in scala di grigi è un'operazione estremamente facile, ma rimane comunque alla base di molti algoritmi di image processing.
-Infatti per molti compiti l'informazione sul colore non è necessaria.
-Il modo più semplice per combinare i tre canali RGB in un unico canale è quello di fare la media dei valori \textit{pixel} per \textit{pixel}
+Infatti per molti compiti l'informazione sul colore non è necessaria, basti pensare al rilevamento di forme od il riconoscimento di testo.
+Il modo più semplice per combinare i tre canali RGB in un unico canale è quello di effettuare la media dei valori \textit{pixel} per \textit{pixel}.
+Siano $R$, $G$ e $B$ i tre canali di un immagine a colori $I$ e sia $Y$ l'immagine in bianco e nero che si vuole ottenere:
 \begin{equation}
   Y = (R + G + B)/3
 \end{equation}
 \label{eq:rgb2gray_avg}
-In questo modo ogni canale partecipa allo stesso modo.
-Però sappiamo che l'occhio umano è più sensibile ai colori verdi, quindi potrebbe essere preferibile dare più importanza al secondo canale:
+Nell'equazione~\ref{eq:rgb2gray_avg} ogni canale partecipa allo stesso modo, quindi $Y$ è semplicemente la media aritmetica dei tre canali di partenza.
+Sappiamo però che l'occhio umano è più sensibile ai colori verdi, quindi per certe applicazioni potrebbe essere preferibile dare più importanza al secondo canale:
 \begin{equation}
   Y = 0.299*R + 0.587*G + 0.114*B
 \end{equation}
 \label{eq:rgb2gray}
-I pesi sono stati definiti nello standard CCIR 601.
-Il risulato di quest'ultimo calcolo è rappresentato in Figura~\ref{fig:rgb2gray_example}.
-
+I pesi utilizzati nell'equazione~\ref{eq:rgb2gray} seguono lo standard CCIR 601~\cite{ccir601}.
+Un esempio di applicazione dell'equazione~\ref{eq:rgb2gray} è illustrato in Figura~\ref{fig:rgb2gray_example}.
 % TODO accennare agli altri metodi?
 % https://www.johndcook.com/blog/2009/08/24/algorithms-convert-color-grayscale/
 % https://docs.opencv.org/3.1.0/de/d25/imgproc_color_conversions.html
 % https://stackoverflow.com/questions/19181323/what-grayscale-conversion-algorithm-does-opencv-cvtcolor-use
 \begin{figure}[ht]
   \begin{center}
-    \includegraphics[width=0.4\textwidth]{RGB}
-    \includegraphics[width=0.4\textwidth]{RGBtoGRAY}
+    \includegraphics[width=0.49\textwidth]{RGB}
+    \includegraphics[width=0.49\textwidth]{RGBtoGRAY}
     \caption{A sinistra l'immagine originale. A destra la versione in scala di grigi}
     \label{fig:rgb2gray_example}
   \end{center}
 \end{figure}
 
-
-\clearpage
 \subsection {Masking}
 La tecnica del masking permette di nascondere parti di immagine a cui non siamo interessati.
 Abbiamo bisogno di una maschera binaria, nella quale ogni \textit{pixel} appartiene all'insieme $\{0,1\}$, che solitamente viene generata a mano, ed ovviamente dell'immagine che si vuole mascherare.
