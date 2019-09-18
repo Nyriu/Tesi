@@ -279,7 +279,7 @@ Solitamente le convoluzioni si effettuano da sinistra a destra e dall'alto verso
 Prima di passare alla descrizione degli algoritmi utilizzati si vuole specificare che cosa significa \textit{Feature Extraction}, in italiano Estrazione di Caratteristiche.
 Citando parte della definizione data in \cite{deepai-feat-ext} :
 \begin{quote}
-Feature extraction is the name for methods that select and/or combine variables into features, effectively reducing the amount of data that must be processed, while still accurately and completely describing the original data set.
+  \textit{Feature extraction is the name for methods that select and/or combine variables into features, effectively reducing the amount of data that must be processed, while still accurately and completely describing the original data set.}
 \end{quote}
 Quindi, in generale, indica un procedimento con cui, da un'insieme di dati complesso, si estrapola un gruppo di informazioni ridotte ma con la stessa capacità espressiva.
 Nell'ambito dell'elaborazione digitale delle immagini le tecniche di estrazione delle caratteristiche possono essere raccolte in varie categorie.
@@ -424,7 +424,7 @@ Andando quindi anche a ridurre valori troppo alti (o troppo bassi) avvicinandoli
 \subsection {Histogram Equalization}
 Citando Wikipedia~\cite{wikipedia-hist-eq}:
 \begin{quote}
-Histogram equalization is a method in image processing of contrast adjustment using the image's histogram.
+  \textit{Histogram equalization is a method in image processing of contrast adjustment using the image's histogram.}
 \end{quote}
 Si ricorda che il contrasto è definito come la differenza in intensità luminosa e colore che permette di distinguere gli oggetti in un'immagine.
 In Figura~\ref{fig:hist_eq_example} sono stati riporta un'immagine a basso contrasto e l'immagine risultato dopo l'applicazione della \textit{histogram equalization}.
@@ -672,58 +672,54 @@ Nell'immagine sottostante viene mostrata l'applicazione dell'operatore Sobel pri
 \clearpage
 \subsection {Canny Edge Detector}
 Composto da vari passaggi ed algoritmi, il \textit{Canny Edge Detector} permette di estrarre i principali \textit{edge} di un'immagine ottenendo risultati soddisfacenti ed adattabili alle necessità dell'utilizzatore.
-Questo rilevatore viene sfruttato largamente come tecnica di \textit{feature extraction} perché permette di rimuovere molta informazione dall'immagine mantenendo solo quella strettamente necessaria.
+Questo rilevatore viene sfruttato largamente come tecnica di estrazione delle caratteristiche perché permette di rimuovere molta informazione dall'immagine, mantenendo solo quella strettamente necessaria.
 Nell'ambito del \textit{edge detection} è bene che tutti gli \textit{edge} presenti nell'immagine vengano identificati correttamente, ma è altrettanto importante che non vengano generati falsi positivi, cioè che delle aree nel risultato presentino contorni che nell'immagine di partenza non esistevano.
-Per questo motivo \textit{Canny edge detector} effettua molte operazioni di rimozione di falsi positivi ed allo stesso tempo tende ad evidenziare molto bene quelli che sembrano essere \textit{edge autentici}.
+Per questo motivo \textit{Canny edge detector} effettua molte operazioni di rimozione di falsi positivi ed allo stesso tempo tende ad evidenziare molto bene quelli che sembrano essere \textit{edge} autentici.
 Ora verranno elencati in ordine i vari passaggi del rilevatore:
 \begin{enumerate}
   \item Viene applicato un filtro gaussiano per effettuare uno \textit{smooth} all'immagine.
     Questo passaggio è fondamentale perché vengono rimossi valori anomali che, risultando come picchi positivi o negativi, potrebbero contribuire a generare falsi positivi.
-    Inoltre rimuove può essere usato per rimuovere dettagli superflui.
+    Inoltre può essere usato per rimuovere dettagli superflui.
 
-  \item Utilizzando il \textit{Sobel operator} si ottiene la magnitudine dei gradienti dell'immagine, ossia tutti gli \textit{edge} candidati, che dovranno poi essere manipolati e selezionati.
+  \item Utilizzando il filtro Sobel si ottiene il modulo dei gradienti dell'immagine, ossia tutti gli \textit{edge} candidati, che dovranno poi essere manipolati e selezionati.
 
   %\item Con il \textit{non-maximum suppression}  % TODO fare se c'e spazio
 
   \item Con una doppia sogliatura si ottengono due effetti:
     come prima cosa vengono rimossi tutti quegli edge con magnitudine troppo bassa, perché considerati rumore;
     successivamente gli edge sopravvissuti vengono classificati come forti e deboli, questa informazione verrà sfruttata nel prossimo passaggio.
-    Effettuare una sogliatura significa semplicemente osservare ogni valore di un'immagine, nel nostro caso ogni pixel indica la magnitudine, e mapparlo ad un valore dato se soddisfa determinate condizioni.
+    Effettuare una sogliatura significa semplicemente osservare ogni valore di un'immagine (nel nostro caso ogni \textit{pixel} indica il modulo del gradiente) e mapparlo ad un valore dato se soddisfa determinate condizioni.
     In questo passaggio sono presenti due soglie.
     La prima ci permette di annullare tutti gli edge con valori troppo piccoli.
-    Con la seconda viene usata per etichettare i pixel superiori come \textit{strong edge}.
-    Tutti i pixel intermedi vengono considerati \textit{weak edge}.
+    La seconda viene usata per etichettare i \textit{pixel} superiori alla soglia come \textit{edge} forti.
+    Tutti i \textit{pixel} intermedi vengono considerati \textit{edge} deboli.
 
-  \item A questo punto si procede con il rimuovere tutti gli edge deboli che non facciamo parte di edge forti.
-    Significa che, per ogni pixel etichettato come \textit{weak edge}, vengono osservati gli otto pixel circostanti.
-    Se nessuno di questi è uno \textit{strong edge} allora il pixel centrale viene annullato.
+  \item A questo punto si procede con il rimuovere tutti gli \textit{edge} deboli che non facciamo parte di nessun \textit{edge} forte.
+    Significa che, per ogni \textit{pixel} etichettato come \textit{edge} debole, vengono osservati gli otto \textit{pixel} circostanti.
+    Se nessuno di questi è un \textit{edge} forte allora il \textit{pixel} centrale viene annullato.
     % TODO cfr Connected Componets
 
 \end{enumerate}
 Va fatto notare che i valori delle due soglie devono essere trovati in modo empirico, a seconda del tipo d'immagine bisognerà impostare soglie più o meno grandi, ma anche più o meno distanti fra loro.
 
-In Figura~\ref{fig:canny_example} è illustrata l'applicazione del \textit{Sobel operator}, notare come il risultato sia molto più pulito di quello illustro in Figura~\ref{fig:sobel_example}.
-\begin{figure}[ht] % TODO
+In Figura~\ref{fig:canny_example} è illustrata l'applicazione del \textit{Sobel operator}, notare come il risultato sia molto più pulito di quello illustrato in Figura~\ref{fig:sobel_example}.
+\begin{figure}[ht]
   \begin{center}
-    \includegraphics[width=0.4\textwidth]{GRAY}
-    \includegraphics[width=0.4\textwidth]{canny_example}
-    \caption{TODO }
+    \includegraphics[width=0.49\textwidth]{masked}
+    \includegraphics[width=0.49\textwidth]{canny_example}
+    \caption{Esempio di applicazione del \textit{Canny Edge Detector}}
     \label{fig:canny_example}
   \end{center}
 \end{figure}
 
-
-% https://en.wikipedia.org/wiki/Canny_edge_detector
-
-\clearpage
 \subsection {Hough Circle Transform}
 Prima di poter spiegare questa tecnica si devono introdurre alcuni concetti come la \textit{Hough Line Transform}, lo \textit{Hough Parameter Space} e la parametrizzazione raggio-angolo di una retta.
-Le trasformate di Hough sono largamente usate come metodi di \textit{feature extraction}, permettono di rilevare semplici figure come linee e cerchi.
+Le trasformate di Hough sono largamente usate come metodi di estrazione delle caratteristiche, permettono di rilevare semplici figure come linee e cerchi.
 Il loro obbiettivo è raggruppare correttamente un'insieme di pixel in modo che l'insieme raffiguri la forma che si vuole trovare.
 Una delle problematiche principali è la possibilità che nell'immagine la forma da rilevare sia discontinua o deformata.
 
-Esploriamo come il metodo di \textit{Hough Line Transform} permette di trovare una linea retta in un'immagine.
-Definiamo tre punti $P_i=(x_i, x_i)$ con $i=1,2,3$ in modo che siano allineati, cioè che esista una retta a alla quale appartengano tutti.
+Esploriamo, facendo riferimento a quanto illustrato in \cite{hough-line}, come il metodo di \textit{Hough Line Transform} permette di trovare una linea retta in un'immagine.
+Definiamo tre punti $P_i=(x_i, x_i)$ con $i=1,2,3$ in modo che siano allineati, cioè che esista una retta alla quale appartengano tutti.
 Sappiamo che per ciascun punto ci sono infinite rette che soddisfano $y_i = m x_i + c$, ma che soltanto una di queste rette passa anche per gli altri due punti.
 L'equazione appena descritta è in funzione di $m$ e $c$, riscrivendola come
 \begin{equation} \label{eq:cm_lines}
@@ -731,34 +727,42 @@ L'equazione appena descritta è in funzione di $m$ e $c$, riscrivendola come
 \end{equation}
 risulta più facile immaginarla (fissato un $i$) come una retta in uno spazio in cui $c$ è sull'asse delle ordinate e $m$ su quello delle ascisse.
 Lo spazio appena descritto prende il nome di \textit{Hough Parameter Space}, in cui ogni punto $(m,c)$ descrive una retta nello spazio di partenza.
-Nello \textit{Hough Parameter Space} le tre rette della formula \ref{eq:cm_lines} si devono necessariamente incontrarsi in esattamente un punto, sia $(m_0,c_0)$, perché sappiamo che deve esistere una coppia di parametri per cui la retta $y = m_0 x + c_0$, nello spazio originale, passa per tutti gli $P_i$.
-L'idea alla base di \textit{Hough Line Transform} è quella di, definito un range di valori per $m$ e per $c$, trovare quello che soddisfa il maggior numero di equazioni.
-In pratica ad ogni cella nello spazio $m$-$c$ viene associato un intero che indica quante delle rette di equazione~\ref{eq:cm_lines} ref passano per quella cella.
+Nello spazio dei parametri di Hough, le tre rette della formula \ref{eq:cm_lines} si devono necessariamente incontrare in esattamente un punto, sia $(m_0,c_0)$.
+Questo è dovuto al fatto che sappiamo che deve esistere una coppia di parametri per cui la retta $y = m_0 x + c_0$, nello spazio originale, passa per tutti i $P_i$.
+L'idea alla base della \textit{Hough Line Transform} è quella di, definito un range di valori per $m$ e per $c$, trovare quello che soddisfa il maggior numero di equazioni.
+In pratica ad ogni cella nello spazio $m$-$c$ viene associato un intero che indica quante delle rette di equazione~\ref{eq:cm_lines} passano per quella cella.
 
 Ci si accorge facilmente che questo metodo non ci permette di rilevare rette parallele all'asse delle $y$, infatti bisognerebbe avere un parametro $m$ con valore che tende all'infinito.
 Per risolvere questa problematica viene usata la parametrizzazione raggio-angolo.
-Come si vede in figura~\ref{fig:hough_parametr_raggio-angolo}, ogni retta viene identificata da una coppia univoca $(r,\theta)$.
+Come si vede in figura~\ref{fig:hough_parametr_parametr}, ogni retta viene identificata da una coppia univoca $(r,\theta)$.
 Nella coppia $r$ indica la distanza dall'origine al punto più vicino della retta, mentre $\theta$ indica l'angolo tra il segmento appena generato e l'asse delle $x$.
 Ogni retta viene identificata dall'equazione:
 \begin{equation} \label{eq:raggio_angolo_parametr}
   r = x_i cos \theta + y_i sin \theta \quad con \quad i=1,2,3
 \end{equation}
 ottenibile con semplici calcoli geometrici.
-Questo significa che il fascio di rette nello spazio di partenza verrà descritto da curve nello \textit{Hough Parameter Space} $\theta$-$r$, come si vede in figura~\ref{fig:hough_parametr_raggio-angolo}.
+Questo significa che il fascio di rette nello spazio di partenza verrà descritto da curve nello spazio dei parametri di Hough con assi $\theta$-$r$, come si vede in figura~\ref{fig:hough_parametr_curve}.
 Valutando le celle nello stesso modo di prima si ottiene la retta passante per i tre punti ma identificata dalla coppia $(r_0,\theta_0)$.
 
-\begin{figure}[ht] % TODO
+\begin{figure}[ht]
   \begin{center}
-    \includegraphics[width=0.3\textwidth]{raggio_angolo}
-    \includegraphics[width=0.3\textwidth]{example-image}
-    \caption{TODO }
-    \label{fig:hough_parametr_raggio-angolo}
+    \begin{subfigure}{.49\linewidth}
+      \centering\includegraphics[width=\textwidth]{raggio_angolo}
+      \caption{}
+      \label{fig:hough_parametr_parametr}
+    \end{subfigure}
+    \begin{subfigure}{.49\linewidth}
+      \centering\includegraphics[width=\textwidth]{example-image}
+      \caption{}
+      \label{fig:hough_parametr_curve}
+    \end{subfigure}
   \end{center}
+  \caption{Parametrizzazione raggio-angolo e rappresentazione dello spazio dei parametri di Hough}
+  \label{fig:hough_parametr_raggio-angolo}
 \end{figure}
 
-
 Vediamo ora come si può modificare la tecnica appena descritta per rilevare cerchi anziché linee rette.
-L'idea principale ruota sempre attorno al concetto di voto di celle nello spazio di parametri.
+L'idea principale ruota sempre attorno al concetto di voto di celle nello spazio dei parametri.
 
 In questo caso si sfrutta il fatto che, in una circonferenza $c$ di raggio $r$, ogni punto è equidistante dal centro.
 Per ogni punto $P_i$ di $c$ può essere tracciata una circonferenza $c_i$ di centro $P_i$ e raggio $r$.
@@ -770,19 +774,25 @@ Si ricorda che l'equazione di una circonferenza di centro $(a,b)$ e raggio $r$ �
 \end{equation}
 Supponiamo di conoscere il raggio $r_0$ della circonferenza che vogliamo rilevare e di avere un insieme di punti $P_i$ che sappiamo appartenere alla circonferenza.
 Lo spazio dei parametri $a$-$b$ ci permette di creare le circonferenze centrate nei $P_i$ e di assegnare un punteggio alto alla cella in $(a_0,b_0)$ perché votata da molte circonferenze.
+In figura~\ref{fig:hough_parametr_circ} si vede la griglia su cui vengono votate le circonferenze.
 
-Se anche il raggio fosse incognito allora lo \textit{Hough Parameter Space} avrebbe tre dimensioni ed ogni punto sarebbe una tripla $(a,b,r)$ appartenente alla superficie di un cono.
-In figura~\ref{fig:hough_parametr_3d} è illustrata una rappresentazione di questo spazio.
+Se anche il raggio fosse incognito allora lo spazio dei parametri di Hough avrebbe tre dimensioni ed ogni punto sarebbe una tripla $(a,b,r)$ appartenente alla superficie di un cono.
+In figura~\ref{fig:hough_parametr_coni} è illustrata una rappresentazione di questo spazio.
 
 Le implementazioni della \textit{Hough Circle Transform} sfruttano una matrice di supporto, chiamata accumulatore, che corrisponde allo spazio dei parametri di Hough.
-Ciascun elemento è un intero con valore iniziale zero, che verrà incrementato di uno per ogni linea passante.
-
-\begin{figure}[ht] % TODO
+Ciascun elemento è un intero con valore iniziale zero, che verrà incrementato di uno per ogni linea passante per quelle coordinate.
+\begin{figure}[ht]
   \begin{center}
-    \includegraphics[width=0.3\textwidth]{example-image}
-    \includegraphics[width=0.3\textwidth]{example-image}
-    \caption{TODO }
-    \label{fig:hough_parametr_3d}
+      \includegraphics[width=0.6\textwidth]{example-image}
+      \caption{Spazio dei parametri di Hough per le circonferenze con raggio dato}
+      \label{fig:hough_parametr_circ}
+  \end{center}
+\end{figure}
+\begin{figure}[ht]
+  \begin{center}
+      \includegraphics[width=0.6\textwidth]{example-image}
+      \caption{Spazio dei parametri di Hough per le circonferenze con raggio ignoto}
+      \label{fig:hough_parametr_coni}
   \end{center}
 \end{figure}
 
@@ -790,7 +800,6 @@ Ciascun elemento è un intero con valore iniziale zero, che verrà incrementato 
 % - immagine deve essere canny edge
 % - threshold per fare pochi FP
 % - min e max radius per restringere la ricerca
-
 
 % Risorse
 % https://docs.opencv.org/2.4/doc/tutorials/imgproc/imgtrans/hough_circle/hough_circle.html
@@ -840,6 +849,22 @@ Nella Figura~\ref{fig:centramento} sono illustrati, a sinistra, il cerchio rilev
     \label{fig:centramento}
   \end{center}
 \end{figure}
+%\begin{figure}[ht]
+%  \begin{center}
+%    \begin{subfigure}{.49\linewidth}
+%      \centering\includegraphics[width=\textwidth]{raggio_angolo}
+%      \caption{}
+%      \label{fig:hough_parametr_parametr}
+%    \end{subfigure}
+%    \begin{subfigure}{.49\linewidth}
+%      \centering\includegraphics[width=\textwidth]{example-image}
+%      \caption{}
+%      \label{fig:hough_parametr_curve}
+%    \end{subfigure}
+%  \end{center}
+%  \caption{Parametrizzazione raggio-angolo e rappresentazione dello spazio dei parametri di Hough}
+%  \label{fig:hough_parametr_raggio-angolo}
+%\end{figure}
 
 \subsubsection{2 Equalizzazione}
 Per gestire la variazione di luminosità tra immagini si utilizza \textit{equalization histogram}.
