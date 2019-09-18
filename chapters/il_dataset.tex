@@ -16,21 +16,21 @@ Si concluderà con la tecnica del data augmentation.
 
 \subsection{Dataset Piccolo e Sbilanciato}
 La prima difficoltà insorge ancora prima di ispezionare le immagini del \textit{dataset}.
-Infatti questo non solo comprende solamente 1749 immagini ma è anche fortemente sbilanciato:
+Infatti questo non solo comprende solamente 1749 immagini, ma è anche fortemente sbilanciato:
 \begin{itemize}
     \item 1719 immagini sono Conformi;
     \item 30 immagini sono Scarti.
 \end{itemize}
 A questo punto è corretto chiedersi se le quasi duemila immagini del \textit{dataset} siano sufficienti ai nostri scopi.
-Nel campo del \textit{Machine Learning}, ed ancora di più in quello del \textit{Deep Learning}, non è raro che il numero di elementi in un dataset sia dell'ordine delle decine di migliaia se non di quello delle centinaia di migliaia.
-Basti pensare ai dataset più famosi ed usati:
+Nel campo del \textit{Machine Learning}, ed ancora di più in quello del \textit{Deep Learning}, non è raro che il numero di elementi in un \textit{dataset} sia dell'ordine delle decine di migliaia se non di quello delle centinaia di migliaia.
+Basti pensare ai \textit{dataset} più famosi ed usati:
 \begin{itemize}
-  \item MNIST~\cite{mnist} è un dataset molto famoso contenente $70000$ cifre disegnate a mano appartenenti a $10$ classi in totale.
-    È alla stesso tempo sia il punto di partenza dei principianti, perché di facile manipolazione, sia il campo di prova degli esperti, sul quale vengono allenati nuovi modelli prima di testarli su compiti più complessi.
+  \item MNIST~\cite{mnist} è un \textit{dataset} molto famoso contenente $70000$ cifre disegnate a mano appartenenti a $10$ classi in totale.
+    È allo stesso tempo sia il punto di partenza dei principianti, perché di facile manipolazione, sia il campo di prova degli esperti, sul quale vengono allenati nuovi modelli prima di testarli su compiti più complessi.
 
   \item CIFAR-10~\cite{cifar} contiene $60000$ immagini a colori suddivise in 10 classi da 6000 immagini l'una.
     Le classi comprendono alcuni tipi di veicoli ed animali.
-   Date le dimensioni ridotte delle immagini, appena $32$x$32$ pixel, il dataset occupa meno di $200 MB$, questo permette di allenare reti neurali in tempi ragionevoli.
+    Date le dimensioni ridotte delle immagini, appena $32$x$32$ pixel, il \textit{dataset} occupa meno di $200 MB$, questo permette di allenare reti neurali in tempi ragionevoli.
 
  \item ImageNet~\cite{imagenet} con i suoi 14 milioni di immagini è il più grande \textit{dataset} che sia mai stato creato.
     I più grandi esperti nel campo del \textit{Machine Learning} si sfidano annualmente su questo \textit{dataset}.
@@ -147,7 +147,7 @@ Per analizzare meglio le modalità con cui potrebbe essere generato uno Scarto s
 A seconda della posizione dell'ugello rispetto alla carcassa si può immaginare che la colla raggiunga il fondo in vari modi, proviamo ora ad illustrarne due:
 \begin{itemize}
   \item nel primo caso si immagina che il braccio abbia già depositato l'anello di colla e che si stia allontanando dalla carcassa.
-    La colla in esubero cadrebbe sotto forma si goccia fino a raggiungere il fondo del pezzo.
+    La colla in esubero cadrebbe sotto forma di goccia fino a raggiungere il fondo del pezzo.
     Questo potrebbe esse il caso per la Figura~\ref{fig:esempi_scarti_goccia};
   \item nel secondo caso si ipotizza che la colla in esubero faccia parte dell'anello appena depositato e che, a causa delle vibrazioni o di altri fattori simili, coli raggiungendo il fondo della carcassa.
     Questo potrebbe esse il caso per la Figura~\ref{fig:esempi_scarti_sbaffo}.
@@ -175,10 +175,10 @@ Come vedremo poi le immagini verranno trasformate in scala di grigi quindi, nono
 \subsection{Differenze tra Immagini}
 Ora che abbiamo una visione d'insieme sul dataset possiamo concentrare la nostra attenzione sulle proprietà principali delle immagini.
 Innanzitutto ogni immagine ha una risoluzione di $896$x$896$ $pixel$, dimensione che ci permette di esplorare varie possibilità.
-Ad esempio si può pensare di ridurre l'immagine ad una dimensione tale da: occupare meno spazio in memoria, quindi in RAM durante l'allenamento della rete, ed allo stesso tempo di mantenere un livello di dettaglio sufficiente ai nostri scopi.
+Ad esempio si può pensare di ridurre l'immagine ad una dimensione tale da: occupare meno spazio in memoria, quindi in RAM durante l'allenamento della rete ed allo stesso tempo di mantenere un livello di dettaglio sufficiente ai nostri scopi.
 Oppure di suddividere l'immagine in quadranti da analizzare singolarmente così da mantenere la qualità dell'immagine originale ma senza dover creare una rete che accetti immagini troppo grandi.
 Infatti una rete che prende in input immagini di grandi dimensioni, solitamente, avrà un numero di parametri maggiore di una che accetta immagini piccole.
-Questo porta non solo ad occupare più spazio in memoria ma significa anche che la rete impiegherà più tempo in fase d'allenamento, perché dovranno essere trovati un maggior numero di parametri.
+Questo porta non solo ad occupare più spazio in memoria, ma significa anche che la rete impiegherà più tempo in fase d'allenamento, perché dovranno essere trovati un maggior numero di parametri.
 Per avere un termine di paragone basti pensare che le immagini di MNIST sono $64$x$64$ $pixel$ mentre quelle di ImageNet, che ricordiamo hanno dimensioni variabili, vengono solitamente scalate a $224$x$224px$.
 Quest'ultima è la dimensione accettata da due delle reti che storicamente hanno ottenuto risultati allo stato dell'arte su ImageNet.
 Prima, nel 2014, la rete VGG~\cite{vgg} e, l'anno dopo, l'architettura ResNet~\cite{resnet}.
@@ -232,7 +232,7 @@ In questo caso sono tutte non problematiche, anzi sono sfruttabili poiché rappr
   \item La colla ha alcune caratteristiche particolari: ha un colore bianco-verde solitamente più chiaro della superficie della carcassa e presenta sempre delle zone con dei riflessi.
 
   \item La colla è localizzata.
-    Significa che, se presente, non appare come tante gocce sparse ma come un corpo unico più o meno allungato.
+    Significa che, se presente, non appare come tante gocce sparse, ma come un corpo unico più o meno allungato.
 
   \item Tracciando una diametro a piacere ci si accorge che gli Scarti sono sempre asimmetrici, invece i conformi, a meno di piccole differenze superficiali, sono sempre simmetrici.
 
@@ -284,13 +284,13 @@ Citando parte della definizione data in \cite{deepai-feat-ext} :
 Quindi, in generale, indica un procedimento con cui, da un'insieme di dati complesso, si estrapola un gruppo di informazioni ridotte ma con la stessa capacità espressiva.
 Nell'ambito dell'elaborazione digitale delle immagini le tecniche di estrazione delle caratteristiche possono essere raccolte in varie categorie.
 Ciascuna permette di ottenere, a partire da immagini digitali, nuove immagini oppure coordinate di zone d'interesse dell'immagine in ingresso.
-Noi esploreremo tecniche come: rilevamento dei contorni o \textit{edge detection}, sogliatura o \textit{thresholding} e le trasformate di Hough.
+Noi esploreremo tecniche come: il rilevamento dei contorni o \textit{edge detection}, la sogliatura o \textit{thresholding} e le trasformate di Hough.
 
 % TODO aggiungere applicazioni principali per ogni tecnica?
 % TODO sono da riscrivere meglio.
 
 \subsection {Passaggio da RGB a GrayScale}
-La conversione di un'immagine da RGB in scala di grigi è un'operazione estremamente facile, ma rimane comunque alla base di molti algoritmi di image processing.
+La conversione di un'immagine da RGB in scala di grigi è un'operazione estremamente facile, ma rimane comunque alla base di molti algoritmi di elaborazione delle immagini.
 Infatti per molti compiti l'informazione sul colore non è necessaria, basti pensare al rilevamento di forme od il riconoscimento di testo.
 Il modo più semplice per combinare i tre canali RGB in un unico canale è quello di effettuare la media dei valori \textit{pixel} per \textit{pixel}.
 Siano $R$, $G$ e $B$ i tre canali di un immagine a colori $I$ e sia $Y$ l'immagine in bianco e nero che si vuole ottenere:
@@ -320,7 +320,7 @@ Un esempio di applicazione dell'equazione~\ref{eq:rgb2gray} è illustrato in Fig
 \end{figure}
 
 \subsection {Masking}
-La tecnica del masking permette di nascondere parti di immagine a cui non siamo interessati.
+La tecnica del \textit{masking} permette di nascondere parti di immagine a cui non siamo interessati.
 Abbiamo bisogno di una maschera binaria e dell'immagine che si vuole mascherare.
 Per immagine binaria si intende un'immagine in cui ogni \textit{pixel} appartiene all'insieme $\{0,1\}$, cioè è nero oppure bianco.
 Solitamente la maschera viene generata a mano con semplici editor.
@@ -959,6 +959,11 @@ Si ricorda che molte architetture di reti neurali accettano immagini di dimensio
 
 \clearpage
 \section {Data Augmentation}
+La \textit{Data Augmentation} è una tecnica che permette di aumentare le dimensioni del \textit{dataset}, generando nuovi elementi in modo che 
+Non è una novità che chi affronta
+% TODO ref a documento magari
+
+Nel nostro 
 % Com'è stato sfruttato la Data Aug
 % Colle sintetiche
 Due metodi principali:

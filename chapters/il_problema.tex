@@ -55,7 +55,7 @@ Le carcasse, già presenti in grandi quantità in magazzino, raggiungono il macc
 %TODO il processo è giusto?
 Ad ogni ciclo macchina la colla, tramite due ugelli, viene depositata simultaneamente su due carcasse distinte.
 Al contempo due sonde dotate di luce scendono nelle due carcasse su cui la colla era stata depositata il ciclo precedente, fino ad una distanza di circa $3cm$ dal fondo.
-Le carcasse ritenute conformi procedono lungo un rullo trasportatore, mentre quelle che non idonee vengono scartate.
+Le carcasse ritenute conformi procedono lungo un rullo trasportatore, mentre quelle che non sono idonee vengono scartate.
 
 Vanno precisati vari aspetti.
 Le carcasse, nonostante siano tutte dello stesso tipo, possono differire per quanto riguarda colore, graffi superficiali, sporco, incrostazioni oppure macchie.
@@ -97,7 +97,7 @@ Quindi la probabilità che il macchinario sbagli e pari allo $0.00001\%$.
 Il sistema di intelligenza artificiale deve riconoscere i pezzi non conformi ma soprattutto, tenendo conto della probabilità di cui sopra, deve generare un numero bassissimo di falsi positivi.
 Ricordano che per falsi positivi (detti anche FP o \textit{False Positive}) si intendono tutte le carcasse che il sistema considera non conformi ma che in realtà non presentano difetti.
 Una AI troppo rigida, che, quando indecisa, propende per scartare il pezzo, inciderebbe negativamente sulla produzione.
-Si rischierebbe, infatti di creare un enorme danno economico, andando a scartare molte più carcasse del necessario.
+Si rischierebbe infatti di creare un enorme danno economico andando a scartare molte più carcasse del necessario.
 % TODO usare teorema di bayes per dim che un modello aggressivo è peggio di uno che lascia passare
 
 Il nostro obbiettivo è creare un sistema che generi un numero di falsi positivi che sia inferiore al $2\%$, cercando di riconoscere più carcasse non conformi possibili.
