@@ -512,20 +512,23 @@ in cui $x$ ed $y$ sono le distanze dagli assi di riferimento, mentre $\sigma$ è
 % {\displaystyle O\left(w_{\text{kernel}}h_{\text{kernel}}w_{\text{image}}h_{\text{image}}\right)}
 % $
 
-La matrice sottostante rappresenta un filtro gaussiano quadrato di lato $7$ con $\sigma = 2$.
+La matrice sottostante rappresenta un'approssimazione di un filtro gaussiano quadrato di lato $7$ con $\sigma = 2$.
 
 \begin{equation*} % TODO 
+  \frac{1}{100}*
   \begin{bmatrix}
-    0&0&0&0&0&0&0\\
-    0&0&0&0&0&0&0\\
-    0&0&0&0&0&0&0\\
-    0&0&0&0&0&0&0\\
-    0&0&0&0&0&0&0\\
-    0&0&0&0&0&0&0\\
-    0&0&0&0&0&0&0
+
+    0.5 & 0.9 & 1.3 & 1.5 & 1.3 & 0.9 & 0.5\\
+    0.9 & 1.7 & 2.4 & 2.8 & 2.4 & 1.7 & 0.9\\
+    1.3 & 2.4 & 3.6 & 4.0 & 3.6 & 2.4 & 1.3\\
+    1.5 & 2.8 & 4.0 & 4.6 & 4.0 & 2.8 & 1.5\\
+    1.3 & 2.4 & 3.6 & 4.0 & 3.6 & 2.4 & 1.3\\
+    0.9 & 1.7 & 2.4 & 2.8 & 2.4 & 1.7 & 0.9\\
+    0.5 & 0.9 & 1.3 & 1.5 & 1.3 & 0.9 & 0.5
+
   \end{bmatrix}
 \end{equation*}
-\todo[noline]{inserire valori}
+% http://dev.theomader.com/gaussian-kernel-calculator/
 
 Ricordiamo che durante una convoluzione si effettua la somma di prodotti elemento per elemento, ossia una media pesata in cui i pesi sono definiti nel kernel.
 Dato che i valori al centro del filtro sono più grandi di quelli ai bordi, daremo maggior peso ai pixel nell'intorno dell'elemento su cui il kernel viene centrato.
