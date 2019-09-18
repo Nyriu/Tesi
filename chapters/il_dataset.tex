@@ -321,21 +321,33 @@ Un esempio di applicazione dell'equazione~\ref{eq:rgb2gray} è illustrato in Fig
 
 \subsection {Masking}
 La tecnica del masking permette di nascondere parti di immagine a cui non siamo interessati.
-Abbiamo bisogno di una maschera binaria, nella quale ogni \textit{pixel} appartiene all'insieme $\{0,1\}$, che solitamente viene generata a mano, ed ovviamente dell'immagine che si vuole mascherare.
-La maschera deve avere le stesse dimensioni dell'immagine di partenza.
+Abbiamo bisogno di una maschera binaria e dell'immagine che si vuole mascherare.
+Per immagine binaria si intende un'immagine in cui ogni \textit{pixel} appartiene all'insieme $\{0,1\}$, cioè è nero oppure bianco.
+Solitamente la maschera viene generata a mano con semplici editor.
+Si fa notare che quest'ultima deve avere le stesse dimensioni dell'immagine di partenza.
 L'operazione consiste nell'effettuare un AND logico, \textit{pixel} per \textit{pixel},  tra l'immagine e la maschera.
 Così facendo tutti i \textit{pixel} dell'immagine di partenza corrispondenti a zone di valore $0$ della maschera verranno impostati a $0$, diventando quindi neri.
-Il resto dell'immagine rimane con i colori originali.
+Il resto dell'immagine non viene alterato.
 
 Nell'esempio in Figura~\ref{fig:mask_example} si è deciso di rimuove l'informazione relativa allo sfondo.
-\begin{figure}[ht] % TODO migliorare caption
+
+\begin{figure}[ht] % TODO
   \begin{center}
-    \includegraphics[width=0.3\textwidth]{RGB}
-    \includegraphics[width=0.3\textwidth]{mask}
-    \includegraphics[width=0.3\textwidth]{masked}
-    \caption{Da sinistra a destra: immagine originale, maschera binaria, risultato del masking}
-    \label{fig:mask_example}
+  \begin{subfigure}{.49\linewidth}
+    \centering\includegraphics[width=\textwidth]{RGB}
+    \caption{Immagine originale}
+  \end{subfigure}
+  \begin{subfigure}{.49\linewidth}
+    \centering\includegraphics[width=\textwidth]{mask}
+    \caption{Maschera binaria}
+  \end{subfigure}
+  \begin{subfigure}{.49\linewidth}
+    \centering\includegraphics[width=\textwidth]{masked}
+    \caption{Risultato del mascheramento}
+  \end{subfigure}
   \end{center}
+    \caption{Esempio di mascheramento di un'immagine a colori}
+    \label{fig:mask_example}
 \end{figure}
 
 % TODO dire che ci sono vari tipi di masking?
@@ -367,18 +379,18 @@ Nell'esempio in Figura~\ref{fig:mask_example} si è deciso di rimuove l'informaz
 
 \clearpage
 \subsection {Image Cropping and Resizing}
-Quando si effettua un \textit{image cropping} si ritaglia una porzione dell'immagine, che viene chiamata ROI (\textit{Region Of Interest}), sulla quale vogliamo concentrare la nostra attenzione.
+Quando si effettua un \textit{image cropping} si ritaglia una porzione dell'immagine, che viene chiamata ROI (\textit{Region Of Interest}), sulla quale si vuole concentrare l'attenzione.
 Dato che ogni immagine è rappresentata con una matrice, una ROI non sarà nient'altro che una matrice di dimensioni minori in cui sono stati copiati i valori dell'area interessata.
-Una matrice di questo tipo viene anche chiamata \textit{view}.
+Una matrice di questo tipo viene anche chiamata vista o \textit{view}.
 % https://en.wikipedia.org/wiki/Cropping_(image)
 
 Con l'\textit{image resizing} si aumentano (o diminuiscono) le dimensioni di un'immagine.
-Nel primo caso, poiché si vuole aumentare il numero di \textit{pixel} dell'immagine finale,bisognerà utilizzare tecniche di upsampling ed interpolare i dati a disposizione per generarne di nuovi che siano verosimili.
+Nel primo caso, poiché si vuole aumentare il numero di \textit{pixel} dell'immagine finale,bisognerà utilizzare tecniche di \textit{upsampling} ed interpolare i dati a disposizione per generarne di nuovi che siano verosimili.
 
-Uno fra gli algoritmi più semplici è Nearest-Neighbor Interpolation:
+Uno fra gli algoritmi più semplici è \textit{Nearest-Neighbor Interpolation}:
 il \textit{pixel} che deve essere aggiunto ottiene il valore del \textit{pixel} a lui più vicino.
 Un criterio di scelta dovrà essere definito nel caso in cui ci siano più \textit{pixel} alla stessa distanza ma con valori differenti.
-Un criterio possibile è quello di assegnare al nuovo \textit{pixel} sempre il valore del \textit{pixel} in alto a sinistra.
+Un criterio possibile è quello di assegnare al nuovo \textit{pixel} il valore del \textit{pixel} alla sua sinistra ed in alto.
 % https://en.wikipedia.org/wiki/Nearest-neighbor_interpolation
 % https://docs.opencv.org/2.4/modules/imgproc/doc/geometric_transformations.html
 % https://en.wikipedia.org/wiki/Image_scaling
@@ -388,25 +400,18 @@ Una tecnica leggermente più complessa, ma che fornisce risultati soddisfacenti 
 Con questa tecnica si effettuano, in cascata, due interpolazioni lineari, una orizzontale ed una verticale.
 Con l'interpolazione bilineare i nuovi \textit{pixel} si ottengono come media dei valori noti, pesata rispetto allo loro distanza dal \textit{pixel} che si vuole colorare.
 In questo modo si ottengono immagini con transazioni di colore più dolci.
-
-% TODO
-% Parentesi sulle formule?
-% Linear Interpolation
-% % https://en.wikipedia.org/wiki/Linear_interpolation
-% per poi spiegare Bilinear Interpolation?
-% % https://en.wikipedia.org/wiki/Bilinear_interpolation
-% %https://theailearner.com/2018/12/29/image-processing-bilinear-interpolation/
-
+Maggiori informazioni ed immagini esemplificative possono essere trovate, per quanto riguarda l'interpolazione lineare, in \cite{linear-interpolation} e, per l'interpolazione bilineare, in \cite{bilinear-interpolation}.
 
 Nel caso in cui si voglia ridurre le dimensioni dell'immagine si dovranno usare tecniche di \textit{downsampling} ed \textit{anti-aliasing}.
 % https://en.wikipedia.org/wiki/Anti-aliasing_filter
-Il downsampling permette di selezionare un numero limitato di \textit{pixel} che poi verranno usati per colorare la matrice di dimensione ridotta.
+Il \textit{downsampling} permette di selezionare un numero limitato di \textit{pixel} che poi verranno usati per colorare la matrice di dimensione ridotta.
 Applicare soltanto questa tecnica può portare alla creazione di artefatti sintetici nell'immagine risultato.
 Significa che l'immagine ridotta potrebbe contenere gruppi di \textit{pixel} di colori sbagliati.
-Sfruttando tecniche come l'anti-aliasing si può evitare, o quantomeno limitare, la creazione di tali artefatti.
-Un \textit{low-pass filter} è un tipo di filtro che smorza tutti i valori al di sopra di una certa soglia, mentre lascia passare tutti i valori minori.
-Nel campo del \textit{digital image processing} vengono utilizzati filtri di \textit{blur} applicati tramite convoluzione.
-Il termine \textit{blur} o \textit{smooth} indicano applicare un effetto sfocato che tende a rendere più dolci le transizioni da un colore all'altro, andando quindi anche a ridurre valori troppo alti (o troppo bassi) avvicinandoli a valori più probabili.
+Sfruttando tecniche come l'\textit{anti-aliasing} si può evitare, o quantomeno limitare, la creazione di tali artefatti.
+Un \textit{low-pass filter} è un tipo di filtro che smorza tutti i valori al di sopra di una certa soglia, mentre lascia passare tutti i valori al di sotto.
+Nel campo dell'elaborazione digitale delle immagini vengono utilizzati filtri di \textit{blur} applicati tramite convoluzione.
+Il termine \textit{blur} o \textit{smooth} indica applicare un effetto sfocato, che tende a rendere più dolci le transizioni da un colore all'altro.
+Andando quindi anche a ridurre valori troppo alti (o troppo bassi) avvicinandoli a valori più probabili.
 
 
 \clearpage
