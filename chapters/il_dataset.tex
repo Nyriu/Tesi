@@ -416,19 +416,20 @@ Andando quindi anche a ridurre valori troppo alti (o troppo bassi) avvicinandoli
 
 \clearpage
 \subsection {Histogram Equalization}
-Questa tecnica permette di "aggiustare" il contrasto di un'immagine sfruttandone l'istogramma.
-Il contrasto è definito come la differenza in intensità luminosa e colore che permette di distinguere gli oggetti.
-
+Citando Wikipedia~\cite{wikipedia-hist-eq}:
+\begin{quote}
+Histogram equalization is a method in image processing of contrast adjustment using the image's histogram.
+\end{quote}
+Si ricorda che il contrasto è definito come la differenza in intensità luminosa e colore che permette di distinguere gli oggetti in un'immagine.
 In Figura~\ref{fig:hist_eq_example} sono stati riporta un'immagine a basso contrasto e l'immagine risultato dopo l'applicazione della \textit{histogram equalization}.
-Sotto ogni immagine si possono osservare i relativi istogrammi: sull'asse delle $x$ abbiamo ogni possibile valore di un \textit{pixel}, quindi da 0 a 255; sull'asse delle $y$ è riportato il numero di occorrenze di quel colore nell'immagine.
-Notare che l'immagine in input deve essere in scala di grigi.
+Sotto ogni immagine si possono osservare i relativi istogrammi: sull'asse delle $x$ abbiamo ogni possibile valore di un \textit{pixel}, quindi nell'intervallo da 0 a 255; sull'asse delle $y$ è riportato il numero di occorrenze di quel colore nell'immagine.
+Notare che l'immagine in ingresso deve essere in scala di grigi.
 
-Vediamo ora come possiamo formulare matematicamente la costruzione dell'istogramma e la sua manipolazione.
+Vediamo ora come la costruzione dell'istogramma e la sua manipolazione possono essere formulate matematicamente.
 Siano $X$ l'immagine di partenza ed $Y$ l'immagine risultato.
-Facendo riferimento a quanto scritto nel documento l'istogramma può essere definito come:
-\todo{TODO AGGIUNGERE REF A DOC}
+Facendo riferimento a quanto scritto nel documento~\cite{hist-eq} l'istogramma può essere definito come:
 \begin{equation*}
-p_n = \frac{\text{\# di pixel di colore} \quad n}{\text{\# totale di pixel}} \quad \text{con} \quad n \in [0,255]
+p_n = \frac{\text{numero di pixel di colore $n$}}{\text{numero totale di pixel}} \quad \text{con $n$} \in [0,255]
 \end{equation*}
 Poiché $p_n$ descrive la probabilità che un pixel, scelto a caso dall'immagine, abbia valore $n$, possiamo considerare $X$ una variabile casuale discreta in $[0,255]$.
 Quindi $X$ avrà funzione di ripartizione, tracciata in nero nel grafico, pari ad:
@@ -840,7 +841,7 @@ Nella Figura~\ref{fig:equalizzazione} sono illustrate due carcasse conformi con 
 % - Equalization Histogram
 
 \subsubsection{3 Smooth dell'immagine}
-Utilizzando un filtro gaussiano è stato rimosso il rumore principale, ossi quello dovuto a graffi ed effetto "sale e pepe".
+Utilizzando un filtro gaussiano è stato rimosso il rumore principale, ossi quello dovuto a graffi ed effetto ``sale e pepe''.
 È stato fondamentale definire il filtro in modo che non fosse troppo aggressivo altrimenti si sarebbe rischiato di perdere l'informazione della colla.
 
 In Figura~\ref{fig:smooth} si mostra l'effetto dell'applicazione del kernel.
