@@ -158,19 +158,17 @@ A seconda della posizione dell'ugello rispetto alla carcassa si può immaginare 
 
 Data la grande varietà di modi in cui la colla può presentarsi, concludiamo che gli esemplari forniti per la classe Scarto la descrivono soltanto in modo parziale.
 Ciò rappresenta la maggiore difficoltà del \textit{dataset}.
-Alla base di ogni applicazione di tecniche di \textit{machine learning} c'è l'ipotesi che il \textit{training set} \footnote{TODO la parte di \textit{dataset} su cui viene effettuato l'allenamento della rete} contenta informazione sufficiente a descrivere l'intero spazio campionario. % TODO giustificare magari facendo riferimento a cosa fa la linear regression?
-Senza TODO TODO
-
-
-tutte le informazioni per poter generalizzare correttamente tutti i dati futuri. \todo{ref a documento in cui si spiega l'importanza del dataset}
-
-la distribuzione della classe \todo{dire meglio} e che quindi non possono essere utilizzati per allenare un modello veramente generale.
-
-Infatti se, per esempio, venissero usati per il train di una rete convolutiva, di cui poi verrà illustrata brevemente la struttura, si rischierebbe di creare un modello con forte \textit{overfit} rispetto a quelle specifiche macchie di colla fornite.
-\todo{definire overfit}
+Alla base di ogni applicazione di tecniche di \textit{machine learning} c'è l'ipotesi che il \textit{training set} \footnote{Sezione del \textit{dataset} su cui viene effettuato l'allenamento della rete.} contenga informazione sufficiente a descrivere l'intero spazio campionario.
+% TODO giustificare magari facendo riferimento a cosa fa la linear regression?
+Senza questa assunzione non è possibile pretendere che il modello sia performante su \textit{input} non ancora osservati.
+% TODO forse si può dire meglio
+Si conclude che il numero di Scarti fornito non è sufficiente per effettuare un allenamento classico di un qualche classificatore binario.
+% TODO
+%Infatti se, per esempio, venissero usati per il train di una rete convolutiva, di cui poi verrà illustrata brevemente la struttura, si rischierebbe di creare un modello con forte \textit{overfit} rispetto a quelle specifiche macchie di colla fornite.
+%\todo{definire overfit}
 %Dopo queste osservazioni siamo convinti che il problema deve essere affrontato com e un problema di anomaly detection... Piccola introduzione? Meglio parlarne vicino agli AE
 
-Prima di proseguire con le prossime problematiche dobbiamo spendere alcune parole per commentare la colorazione delle immagini rispetto ai veri colori delle carcasse e della colla.
+Ora è doveroso spendere alcune parole per commentare la colorazione delle immagini rispetto ai veri colori delle carcasse e della colla.
 In figura~\ref{fig:carc} a pagina \pageref{fig:carc} abbiamo visto che la superficie del pezzo è di colore grigio ma nella foto risulta di colore verdastro.
 Allo stesso modo anche la colla, in realtà di colore bianco sporco, nella fotografia assume tonalità verdognole.
 Per certi compiti possedere immagini in falsi colori può risultare problematico ma fortunatamente non è questo il caso: l'importante è che venga mantenuta l'informazione che ci permette di distinguere la colla dalla superficie della carcassa.
@@ -178,12 +176,17 @@ Come vedremo poi le immagini verranno trasformate in scala di grigi quindi, nono
 
 \subsection{Differenze tra Immagini}
 Ora che abbiamo una visione d'insieme sul dataset possiamo concentrare la nostra attenzione sulle proprietà principali delle immagini.
-Innanzitutto ogni immagine ha una risoluzione di $896$x$896$ pixel, dimensione che ci permette di esplorare varie possibilità.
+Innanzitutto ogni immagine ha una risoluzione di $896$x$896$ $pixel$, dimensione che ci permette di esplorare varie possibilità.
 Ad esempio si può pensare di ridurre l'immagine ad una dimensione tale da: occupare meno spazio in memoria, quindi in RAM durante l'allenamento della rete, ed allo stesso tempo di mantenere un livello di dettaglio sufficiente ai nostri scopi.
 Oppure di suddividere l'immagine in quadranti da analizzare singolarmente così da mantenere la qualità dell'immagine originale ma senza dover creare una rete che accetti immagini troppo grandi.
 Infatti una rete che prende in input immagini di grandi dimensioni, solitamente, avrà un numero di parametri maggiore di una che accetta immagini piccole.
-Questo porta non solo ad occupare più spazio in memoria ma significa anche che la rete impiegherà più tempo in fase di \textit{train}, perché dovrà impostare correttamente un maggior numero di parametri.
-Per avere un termine di paragone basti pensare che le immagini di MNIST sono $64$x$64$ pixel mentre quelle di ImageNet, che ricordiamo hanno dimensioni variabili, vengono solitamente scalate a $224$x$224px$. \todo{ref a documento}
+Questo porta non solo ad occupare più spazio in memoria ma significa anche che la rete impiegherà più tempo in fase d'allenamento, perché dovranno essere trovati un maggior numero di parametri.
+Per avere un termine di paragone basti pensare che le immagini di MNIST sono $64$x$64$ $pixel$ mentre quelle di ImageNet, che ricordiamo hanno dimensioni variabili, vengono solitamente scalate a $224$x$224px$.
+Quest'ultima è la dimensione accettata da due delle reti che storicamente hanno ottenuto risultati allo stato dell'arte su ImageNet.
+Prima, nel 2014, la rete VGG~\cite{vgg} e, l'anno dopo, l'architettura ResNet~\cite{resnet}.
+%TODO 
+% Non ci sono vere e proprie motivazioni, semplicemente è una dimensione che funziona bene LOL
+%Le motivazioni per cui 
 
 %% falsi colori, contrasti differenti, centramenti
 Osservando nuovamente Figura \ref{fig:esempi_conformi} ci si accorge che le immagini hanno varie proprietà.
@@ -193,22 +196,23 @@ Verranno ora elencate a partire da quella da considerarsi meno problematica fino
   \item Ogni immagine presenta tre circonferenze concentriche, con centro il centro del pezzo.
     Ciascuna circonferenza è definita da una transizione da una zona più scura ad una più chiara.
     Sappiamo che le zone più scure corrispondono alle pareti verticali del pezzo mentre le zone chiare ai tre gradini sul fondo.
-    Questa proprietà non è problematica, anzi potrà essere sfruttata a nostro vantaggio.
+    Questa proprietà non è problematica, anzi può essere sfruttata a nostro vantaggio.
 
-  \item Dato che le immagini vengono raccolte ad una distanza costante dal fondo, la dimensioni delle circonferenze sono fissate e si mantengono coerenti tra le immagini. Anche questa proprietà verrà usata a nostro vantaggio.
+  \item Dato che le immagini vengono raccolte ad una distanza costante dal fondo, la dimensioni delle circonferenze sono fissate e si mantengono coerenti tra le immagini.
+    Anche questa proprietà può essere usata a nostro vantaggio.
 
   \item Le due balze sulla parete verticale sono ben visibili e possono presentarsi, sempre una di fronte all'altra, in ogni posizione lungo una circonferenza di raggio pari al raggio della cavità cilindrica.
     Possono essere considerate un problema in quanto rappresentano informazione superflua e variabile.
     Ricordiamo che la posizione delle balze non ha alcuna correlazione con la presenza della colla, tanto meno con la sua posizione.
 
-  \item Le superfici dei pezzi si assomigliano: presentano tutte un effetto chiamato "sale e pepe" con granuli di grandezze e luminosità varia.
+  \item Le superfici dei pezzi si assomigliano: tutte presentano un effetto chiamato ``sale e pepe'' con granuli di grandezze e luminosità variabili.
     %Questo è un bene perché è una costante ma anche un male perché ognuno ha una particolare disposizione di quella texture. TODO dire meglio.
     Bisogna prestare particolare attenzione alle macchie scure presenti sul fondo di alcune carcasse.
     La posizione delle macchie non è fissa, perdipiù anche la loro dimensione è variabile.
-    Queste qualità superficiali non saranno da sottovalutare in fase di elaborazione delle immagini.
+    Queste caratteristiche superficiali non saranno da sottovalutare in fase di elaborazione delle immagini.
 
   \item Ad un primo sguardo potrebbe sembrare che le immagini siano tutte centrate allo stesso modo, invece in molte il centro dell'immagine non corrisponde con il centro del pezzo.
-    Nonostante la distanza massima tra centro del pezzo e centro dell'immagine è tale che il fondo della carcassa sia sempre visibile interamente, è preferibile che le carcasse vengano centrate correttamente.\todo{dire meglio}
+    Nonostante la distanza massima tra centro del pezzo e centro dell'immagine è tale che il fondo della carcassa sia sempre visibile interamente, sarebbe stato preferibile fossero centrate tutte correttamente.
   
   % TODO decidere se metterlo
   %\item La luminosità del gradino più piccolo, quello al centro dell'immagine, varia di molto.
@@ -217,7 +221,7 @@ Verranno ora elencate a partire da quella da considerarsi meno problematica fino
   %  Questo sarebbe una problematica secondaria se non fosse che la colla può colare fino al centro.
   %  Poiché la colorazione della colla è nell'intorno del bianco bisognerà trovare un modo per smorzare la luminosità del fondo.
 
-  \item La variazione di luminosità tra le varie foto è una problematica che dovrà essere assolutamente gestita.
+  \item La variazione di luminosità tra le varie foto è una problematica da gestire assolutamente.
     Infatti alcune immagini hanno una luminosità così alta da far risultare alcune superfici bianche.
     Altre immagini, invece, sono molto più scure, tanto che anche le zone che normalmente rifletterebbero sono illuminate appena.
 
@@ -232,7 +236,7 @@ In questo caso sono tutte non problematiche, anzi sono sfruttabili poiché rappr
   \item La colla è localizzata.
     Significa che, se presente, non appare come tante gocce sparse ma come un corpo unico più o meno allungato.
 
-  \item Tracciando una diametro a piacere ci si accorge che gli Scarti sono sempre asimmetrici, invece i conformi, a meno di piccole differenze superficiali, sono sempre simmetrici. % (TODO dire meglio).
+  \item Tracciando una diametro a piacere ci si accorge che gli Scarti sono sempre asimmetrici, invece i conformi, a meno di piccole differenze superficiali, sono sempre simmetrici.
 
 \end{itemize}
 
@@ -242,15 +246,12 @@ In questo caso sono tutte non problematiche, anzi sono sfruttabili poiché rappr
 
 \clearpage
 \section{Pre-Processing}
-Questa sezione è divisa in due parti: nella prima verranno illustrate alcune tra le principali tecniche di \textit{Digital Image Processing} nonché di \textit{Computer Vision}, esponendo i dettagli matematici ed esplorando le loro applicazioni; nella seconda si spiegherà quali di queste tecniche, in che ordine e per quali motivi sono state utilizzate.
-\todo{TODO Descrivere cose'è preprocesing resto(DIP, Machine e Compute Vision) lasciamolo all'introduzione}
+Questa sezione è divisa in due parti: nella prima verranno illustrate alcune tra le principali tecniche di elaborazione digitale delle immagini, esponendo i dettagli matematici ed esplorando le loro applicazioni; nella seconda si spiegherà quali di queste tecniche, in che ordine e per quali motivi sono state utilizzate.
 
-Come prima cosa è bene ricordare che con \textit{Digital Image Processing} si intende il modificare immagini digitali per mezzo di algoritmi eseguibili da un calcolatore.
+Come prima cosa è bene ricordare che con \textit{elaborazione digitale delle immagini} si intende il modificare immagini digitali per mezzo di algoritmi eseguibili da un calcolatore.
+Mentre con \textit{pre-processing} si indica il manipolare le immagini digitali per renderle utilizzabili da altri algoritmi.
 
-TODO descrivere pre-processing anziché Digital Image Processing?(Il DIP nelle altr sezioni o mai)
-Il pre-processing è il manipolare le immagini digitali per renderle utilizzabili da altri algoritmi, nel nostro caso si manipoler
-
-Gli algoritmi utilizzati in questi campi hanno precise formulazioni matematiche perché ogni immagine viene rappresentata come una matrice bidimensionale, se in scala di grigi, oppure tridimensionale se a colori.
+Gli algoritmi utilizzati hanno precise formulazioni matematiche perché ogni immagine viene rappresentata come una matrice bidimensionale, se in scala di grigi, oppure tridimensionale se a colori.
 Gli elementi di una matrice bidimensionale appartengono all'intervallo $[0,255]$, nel quale $0$ corrisponde al colore nero mentre $255$ corrisponde al bianco.
 Disponendo una sopra l'altra tre matrici come quelle appena descritte si ottiene un'immagine a colori: ogni matrice rappresenta uno dei canali principali (Red, Green, Blue da cui il famoso acronimo RGB) dell'immagine.
 Sia $I$ un'immagine a tre canali (RGB), il colore del pixel in posizione $(i,j)$ è dato dalla tripletta $(I[i,j,0], I[i,j,1], I[i,j,2])$, in cui: $(0,0,0)$ indica il colore nero, $(255,255,255)$ indica il colore bianco, $(255,0,0)$ indica il colore rosso, $(0,255,0)$ indica il colore verde, e così via \dots
