@@ -825,12 +825,9 @@ Immagini scarto verranno mostrate nella prossima sezione, interamente dedicata a
   \end{center}
 \end{figure}
 
-Ora verrà illustrato l'ordine in cui sono stati applica gli algoritmi descritti precedentemente e i principali motivi per cui sono stati scelti.
-
 \subsubsection{1 Centramento con Hough Circle Transform}
 Sappiamo che le immagini del \textit{dataset} non sono perfettamente centrate, per questo motivo si è deciso di utilizzare la tecnica della \textit{Hough Circle Transform} per ottenere un'approssimazione del centro della carcassa.
 Avendo le coordinate di quest'ultimo si può riallineare il pezzo con il centro dell'immagine.
-\todo{manca motivo per cui si centra}
 Ottenere un algoritmo che fosse capace di centrare correttamente tutte le immagini, non è stato facile, ma può essere riassunto nei seguenti passaggi:
 \begin{itemize}
   \item creazione di una copia dell'immagine;
