@@ -483,21 +483,20 @@ Sostanzialmente abbiamo ricolorato ogni pixel dell'immagine di partenza con colo
 Conosciuto anche come \textit{Gaussian smoothing}, il \textit{Gaussian blur} permette di sfocare un immagine sfruttando una convoluzione con \textit{kernel} gaussiano.
 L'immagine così ottenuta risulta meno nitida, con meno dettagli e, quindi, con meno rumore.
 L'obbiettivo principale di questa tecnica è mantenere soltanto l'informazione caratterizzante, rimuovendo quella non necessaria od anomala.
-Si può dimostrare che il \textit{Gaussian blur} è un \textit{low-pass filter}.
-
+%Si può dimostrare che il \textit{Gaussian blur} è un \textit{low-pass filter}.
 Si ricorda che la funzione di Gauss ad un parametro è
 \begin{equation*}
   G(x) = \frac{1}{\sqrt{2\pi\sigma^2}}
          \exp{\Bigl(- \frac{ x^2 }{ 2 \sigma^2 } \Bigr)} 
 \end{equation*}
 Si dimostra che la funzione di Gauss a due parametri equivale al prodotto di due funzioni come quella appena definita, in formule
-\begin{equation}
+\begin{equation*}
   \begin{split}
     G(x,y) & = G(x)G(y) \\
            & = \frac{1}{2\pi\sigma^2}
                \exp{\Bigl(- \frac{ x^2 + y^2 }{ 2 \sigma^2 } \Bigr)} 
   \end{split}
-\end{equation}
+\end{equation*}
 in cui $x$ ed $y$ sono le distanze dagli assi di riferimento, mentre $\sigma$ è la deviazione standard.
 % In termini di calcolo computazionale ciò può essere sfruttato eseguendo due computazioni lineari,
 % rispetto alle dimensioni dell'immagine e del kernel, %non corretto
