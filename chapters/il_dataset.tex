@@ -415,6 +415,12 @@ Andando quindi anche a ridurre valori troppo alti (o troppo bassi) avvicinandoli
 
 
 \clearpage
+% TODO LEGGERE PER BENE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+% TODO LEGGERE PER BENE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+% TODO LEGGERE PER BENE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+% TODO LEGGERE PER BENE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+% TODO LEGGERE PER BENE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+% TODO LEGGERE PER BENE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 \subsection {Histogram Equalization}
 Citando Wikipedia~\cite{wikipedia-hist-eq}:
 \begin{quote}
@@ -526,30 +532,20 @@ Dato che i valori al centro del filtro sono più grandi di quelli ai bordi, dare
 Sappiamo che all'aumentare di $\sigma$ cresce il raggio alla base della campana di Gauss, questo significa che verrà data sempre più importanza ai pixel distanti.
 Ciò farà risultare l'immagine in uscita molto più sfocata.
 
-%\begin{figure}[ht] % TODO
-%  \begin{center}
-%    \includegraphics[width=0.3\textwidth]{mask} % plot 3d del kernel
-%    \caption{TODO plot 3d del kernel}
-%    \label{fig:gaussian_kernel}
-%  \end{center}
-%\end{figure}
-
 In Figura~\ref{fig:gaussian_blur_example} è riportata un'immagine prima e dopo l'applicazione del filtro appena descritto, si nota come i dettagli più piccoli sono stati rimossi, mentre l'oggetto dell'immagine rimane distinguibile.
 
 \begin{figure}[ht] % TODO
   \begin{center}
-    \includegraphics[width=0.4\textwidth]{GRAY}
-    \includegraphics[width=0.4\textwidth]{gaussian_blur_example}
-    \caption{TODO rifare caption}
+    \includegraphics[width=0.49\textwidth]{GRAY}
+    \includegraphics[width=0.49\textwidth]{gaussian_blur_example}
+    \caption{A sinistra l'immagine originale. A destra il risultato del \textit{blur}}
     \label{fig:gaussian_blur_example}
   \end{center}
 \end{figure}
 
-Va fatta un'ultima considerazione: cosa succede se applico due volte lo stesso filtro?
-Se si applica più volte uno stesso filtro gaussiano si ottiene lo stesso risultato che si otterrebbe dopo un'unica applicazione di un filtro 
-\todo{TODO completare}
-
-% https://en.wikipedia.org/wiki/Gaussian_blur
+%Va fatta un'ultima considerazione: cosa succede se applico due volte lo stesso filtro?
+%Se si applica più volte uno stesso filtro gaussiano si ottiene lo stesso risultato che si otterrebbe dopo un'unica applicazione di un filtro 
+%\todo{TODO completare}
 
 %\clearpage
 %\subsection {Bilateral Filter}
@@ -561,7 +557,7 @@ Se si applica più volte uno stesso filtro gaussiano si ottiene lo stesso risult
 % http://homepages.inf.ed.ac.uk/rbf/CVonline/LOCAL_COPIES/MANDUCHI1/Bilateral_Filtering.htmlhttp://homepages.inf.ed.ac.uk/rbf/CVonline/LOCAL_COPIES/MANDUCHI1/Bilateral_Filtering.html
 
 
-\clearpage
+%\clearpage
 \subsection {Sobel Operator}
 Prima di descrivere cosa sia il \textit{Sobel operator}, detto anche \textit{Sobel filter}, bisogna dare una definizione di gradiente.
 % TODO formattare correttamente la citazione
