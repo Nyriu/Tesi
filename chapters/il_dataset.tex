@@ -810,9 +810,9 @@ Ciascun elemento è un intero con valore iniziale zero, che verrà incrementato 
 \subsection {Applicazione degli algoritmi descritti}
 Si fa notare che prima di ottenere immagini come quella illustrata in Figura~\ref{fig:prima_dopo_prep} e soprattutto prima di essere sicuri che questo è il tipo di immagine migliore per i nostri scopi, sono stati necessari numerosi esperimenti e tentativi.
 In particolar modo è stato importante capire che tipo di informazione potesse essere gestita interamente dalla rete neurale e quale invece dovesse essere rimossa o modificata.
-Lo scopo del nostro \textit{pre-processing} è quello di fornire un'immagine contenente solo l'informazione necessaria e sufficiente per poter discriminare un pezzo conforme da uno scarto.
+Lo scopo del nostro \textit{pre-processing} è quello di fornire un'immagine contenente solo l'informazione necessaria e sufficiente per poter discriminare un pezzo Conforme da uno Scarto.
 
-Nonostante in questa sezione vengano mostrate solo immagini di carcasse conformi, il processo iterativo appena descritto è stato eseguito confrontando costantemente immagini conformi e scarto.
+Nonostante in questa sezione vengano mostrate solo immagini di carcasse conformi, il processo iterativo appena descritto è stato eseguito confrontando costantemente immagini Conformi e Scarto.
 Immagini scarto verranno mostrate nella prossima sezione, interamente dedicata a loro.
 
 % https://tex.stackexchange.com/questions/343605/latex-code-for-subcaption-of-image
@@ -820,16 +820,15 @@ Immagini scarto verranno mostrate nella prossima sezione, interamente dedicata a
   \begin{center}
     \includegraphics[width=0.5\textwidth]{128___1362_1_1_1_OnLineAnalysis}
     \includegraphics[width=0.35\textwidth]{128___1362_1_1_1_OnLineAnalysis_prep}
-    \caption{TODO }
+    \caption{Un Conforme prima e dopo il \textit{pre-processing}}
     \label{fig:prima_dopo_prep}
   \end{center}
 \end{figure}
 
-\clearpage
 Ora verrà illustrato l'ordine in cui sono stati applica gli algoritmi descritti precedentemente e i principali motivi per cui sono stati scelti.
 
 \subsubsection{1 Centramento con Hough Circle Transform}
-Sappiamo che le immagini del dataset non sono perfettamente centrate, per questo motivo si è deciso di utilizzare la tecnica della \textit{Hough Circle Transform} per ottenere un'approssimazione del centro della carcassa.
+Sappiamo che le immagini del \textit{dataset} non sono perfettamente centrate, per questo motivo si è deciso di utilizzare la tecnica della \textit{Hough Circle Transform} per ottenere un'approssimazione del centro della carcassa.
 Avendo le coordinate di quest'ultimo si riallineare il pezzo con il centro dell'immagine.
 % TODO si può specificare che l'immagine deve essere
 % - To Grayscale
@@ -966,7 +965,6 @@ Scarti Sintetici
 
  la luminosità della colla è stata modificata per avvicinarsi a quella del pezzo conforme;
  dopo aver aggiunto la colla è stato praticato uno smooth lungo il contorno, per evitare che ci fosse una transizione netta fra sofndo ed inizio bordo della colla.
-
 
 
 
