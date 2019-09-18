@@ -843,17 +843,17 @@ Nella Figura~\ref{fig:centramento} sono illustrati l'immagine prima e dopo il ce
 \begin{figure}[ht] % TODO
   \begin{center}
     \begin{subfigure}{.49\linewidth}
-      \centering\includegraphics[width=\textwidth]{example-image}
+      \centering\includegraphics[width=\textwidth]{128___16740_0_0_1_OnLineAnalysis_0_hough_original}
       \caption{Immagine originale}
       \label{fig:p1_originale}
     \end{subfigure}
     \begin{subfigure}{.49\linewidth}
-      \centering\includegraphics[width=\textwidth]{example-image}
+      \centering\includegraphics[width=\textwidth]{128___16740_0_0_1_OnLineAnalysis_0_hough}
       \caption{Immagine dopo il centramento}
       \label{fig:p1_centrata}
     \end{subfigure}
     \begin{subfigure}{.49\linewidth}
-      \centering\includegraphics[width=\textwidth]{example-image}
+      \centering\includegraphics[width=\textwidth]{128___16740_0_0_1_OnLineAnalysis_0_hough_temp_pre_houghCirc}
       \caption{Circonferenza rilevata}
       \label{fig:p1_circ}
     \end{subfigure}
@@ -876,23 +876,23 @@ Nella Figura~\ref{fig:equalizzazione} sono illustrate due carcasse conformi con 
 \begin{figure}[ht] % TODO
   \begin{center}
     \begin{subfigure}{.49\linewidth}
-      \centering\includegraphics[width=\textwidth]{example-image}
+      \centering\includegraphics[width=\textwidth]{128___289_1_0_1_OnLineAnalysis}
       \caption{Immagine originale con alta luminosità}
       \label{fig:p2_originale_lum}
     \end{subfigure}
     \begin{subfigure}{.49\linewidth}
-      \centering\includegraphics[width=\textwidth]{example-image}
+      \centering\includegraphics[width=\textwidth]{128___289_1_0_1_OnLineAnalysis_1_hist}
       \caption{Risultato dell'equalizzazione dell'immagine con alta luminosità}
       \label{fig:p2_equalizzata_lum}
     \end{subfigure}
 
     \begin{subfigure}{.49\linewidth}
-      \centering\includegraphics[width=\textwidth]{example-image}
+      \centering\includegraphics[width=\textwidth]{128___290_1_1_1_OnLineAnalysis}
       \caption{Immagine originale con bassa luminosità}
       \label{fig:p2_originale_scura}
     \end{subfigure}
     \begin{subfigure}{.49\linewidth}
-      \centering\includegraphics[width=\textwidth]{example-image}
+      \centering\includegraphics[width=\textwidth]{128___290_1_1_1_OnLineAnalysis_1_hist}
       \caption{Risultato dell'equalizzazione dell'immagine con bassa luminosità}
       \label{fig:p2_equalizzata_scura}
     \end{subfigure}
@@ -910,8 +910,8 @@ In Figura~\ref{fig:smooth} si mostra l'effetto dell'applicazione del kernel.
 % TODO mostrare anche cosa succede se si esagera col filtro?
 \begin{figure}[ht] % TODO
   \begin{center}
-    \includegraphics[width=0.49\textwidth]{example-image}
-    \includegraphics[width=0.49\textwidth]{example-image}
+    \includegraphics[width=0.49\textwidth]{128___290_1_1_1_OnLineAnalysis_1_hist}
+    \includegraphics[width=0.49\textwidth]{128___290_1_1_1_OnLineAnalysis_2_bilFilt}
     \caption{Immagine prima e dopo l'applicazione del filtro di Gauss}
     \label{fig:smooth}
   \end{center}
@@ -926,8 +926,8 @@ Nella Figura~\ref{fig:mask} è illustrato un conforme prima e dopo il mascherame
 
 \begin{figure}[ht] % TODO
   \begin{center}
-    \includegraphics[width=0.49\textwidth]{example-image}
-    \includegraphics[width=0.49\textwidth]{example-image}
+    \includegraphics[width=0.49\textwidth]{128___290_1_1_1_OnLineAnalysis_2_bilFilt}
+    \includegraphics[width=0.49\textwidth]{128___290_1_1_1_OnLineAnalysis_3_mask}
     \caption{Immagine prima e dopo il mascheramento}
     \label{fig:mask}
   \end{center}
@@ -940,8 +940,8 @@ Osservando Figura~\ref{fig:crop} ci si accorge che dopo il ritaglio l'immagine t
 
 \begin{figure}[ht] % TODO
   \begin{center}
-    \includegraphics[width=0.49\textwidth]{example-image}
-    \includegraphics[width=0.49\textwidth]{example-image}
+    \includegraphics[width=0.5\textwidth]{128___290_1_1_1_OnLineAnalysis_3_mask}
+    \includegraphics[width=0.35\textwidth]{128___290_1_1_1_OnLineAnalysis_4_crop}
     \caption{Immagine prima e dopo l'operazione di \textit{crop}}
     \label{fig:crop}
   \end{center}
@@ -957,6 +957,7 @@ Si ricorda che molte architetture di reti neurali accettano immagini di dimensio
 % $580$x$580$
 % $224$x$224$
 
+\clearpage
 \section {Data Augmentation}
 % Com'è stato sfruttato la Data Aug
 % Colle sintetiche
