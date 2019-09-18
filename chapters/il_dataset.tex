@@ -164,6 +164,7 @@ Senza questa assunzione non è possibile pretendere che il modello sia performan
 % TODO forse si può dire meglio
 Si conclude che il numero di Scarti fornito non è sufficiente per effettuare un allenamento classico di un qualche classificatore binario.
 % TODO
+% https://insidebigdata.com/2017/10/11/importance-machine-learning-building-data-sets/
 %Infatti se, per esempio, venissero usati per il train di una rete convolutiva, di cui poi verrà illustrata brevemente la struttura, si rischierebbe di creare un modello con forte \textit{overfit} rispetto a quelle specifiche macchie di colla fornite.
 %\todo{definire overfit}
 %Dopo queste osservazioni siamo convinti che il problema deve essere affrontato com e un problema di anomaly detection... Piccola introduzione? Meglio parlarne vicino agli AE
@@ -253,49 +254,48 @@ Mentre con \textit{pre-processing} si indica il manipolare le immagini digitali 
 
 Gli algoritmi utilizzati hanno precise formulazioni matematiche perché ogni immagine viene rappresentata come una matrice bidimensionale, se in scala di grigi, oppure tridimensionale se a colori.
 Gli elementi di una matrice bidimensionale appartengono all'intervallo $[0,255]$, nel quale $0$ corrisponde al colore nero mentre $255$ corrisponde al bianco.
-Disponendo una sopra l'altra tre matrici come quelle appena descritte si ottiene un'immagine a colori: ogni matrice rappresenta uno dei canali principali (Red, Green, Blue da cui il famoso acronimo RGB) dell'immagine.
-Sia $I$ un'immagine a tre canali (RGB), il colore del pixel in posizione $(i,j)$ è dato dalla tripletta $(I[i,j,0], I[i,j,1], I[i,j,2])$, in cui: $(0,0,0)$ indica il colore nero, $(255,255,255)$ indica il colore bianco, $(255,0,0)$ indica il colore rosso, $(0,255,0)$ indica il colore verde, e così via \dots
-Quindi un'immagine avrà un numero finito di elementi, detti \textit{pixel}, il cui numero si può ottenere moltiplicando il numero di colonne della matrice per il numero di righe.
+Disponendo una sopra l'altra tre matrici come quelle appena descritte si ottiene un'immagine a colori: ogni matrice rappresenta uno dei canali principali (\textit{Red}, \textit{Green}, \textit{Blue} da cui il famoso acronimo RGB) dell'immagine.
+Sia $I$ un'immagine a tre canali (RGB), il colore del \textit{pixel} in posizione $(i,j)$ è dato dalla tripletta $(I[i,j,0], I[i,j,1], I[i,j,2])$, in cui: $(0,0,0)$ indica il colore nero, $(255,255,255)$ indica il colore bianco, $(255,0,0)$ indica il colore rosso, $(0,255,0)$ indica il colore verde, e così via.
+Quindi un'immagine avrà un numero finito di elementi, detti \textit{pixel}, la cui quantità si può ottenere moltiplicando il numero di colonne della matrice per il numero di righe. % TODO riformulare...
 % potrei definire qua lo aspect ratio
 
+% TODO
 % La definizione di immagine appena data prende il nome di \textit{raster-image}.
 % https://en.wikipedia.org/wiki/Raster_graphics
 
 Uno dei vantaggi del rappresentare le immagini come matrici è quello di poter applicare operazioni classiche come somma, sottrazione, prodotto e divisione.
 Ma la nostra attenzione si concentrerà soprattutto sulle convoluzioni.
 
-Nell'ambito del \textit{Image Processing} con convoluzione si intende l'operazione che permette di effettuare, per ogni pixel dell'immagine, una somma pesata tra il pixel e gli elementi a lui vicini.
+\paragraph{Convoluzioni}
+Nell'ambito dell'elaborazione digitale delle immagini con convoluzione si intende l'operazione che permette di effettuare, per ogni \textit{pixel} dell'immagine, una somma pesata tra il \textit{pixel} e gli elementi a lui vicini.
 I pesi sono definiti in una matrice, detta \textit{kernel} o filtro, di dimensioni non superiori a quelle dell'immagine di partenza.
-Solitamente i kernel hanno dimensione $3x3$ o $5x5$.%\todo{ref alla risorsa?}
-Una convoluzione è composta da semplici passi.
-Prima il filtro viene centrato su un pixel.
-A questo punto è come se il kernel coprisse un'area quadrata dell'immagine: moltiplichiamo i valori dei pixel con i rispettivi valori del filtro.
-I prodotti così ottenuti dovranno essere sommati assieme, il risultato della somma sarà il nuovo valore del pixel su cui il kernel era stato centrato.
+Solitamente i \textit{kernel} hanno dimensione $3x3$ o $5x5$.%\todo{ref alla risorsa?}
+Una convoluzione è composta da semplici passi, come illustrato in \cite{kernel-conv}.
+Prima il filtro viene centrato su un \textit{pixel}.
+A questo punto è come se il \textit{kernel} coprisse un'area quadrata dell'immagine: moltiplichiamo i valori dei \textit{pixel} con i rispettivi valori del filtro.
+I prodotti così ottenuti dovranno essere sommati assieme, il risultato della somma sarà il nuovo valore del \textit{pixel} su cui il \textit{kernel} era stato centrato.
 Effettuiamo questa operazione per ogni elemento dell'immagine.
-Si fa presente che di solito le convoluzioni si effettuano da sinistra a destra e dall'alto verso il basso, ma si fa presente che l'ordine d'esecuzione non deve modificare il risultato.
-Infatti è importante aggiornare i pixel solo dopo aver ottenuto i nuovi valori dei pixel di tutta l'immagine.
+Solitamente le convoluzioni si effettuano da sinistra a destra e dall'alto verso il basso, ma si fa presente che l'ordine d'esecuzione non deve modificare il risultato.
+È infatti importante aggiornare i \textit{pixel} solo dopo aver ottenuto i nuovi valori di tutta l'immagine.
 
-%\paragraph{Feature Extraction}
-Prima di cominciare a descrivere gli algoritmi, si vuole specificare cosa significa \textit{Feature Extraction}.
-\todo[noline]{completare}
-In generale indica un procedimento con cui si estrapolano, da un'insieme di dati formato,  un sottoinsieme ...
-
-
-% https://en.wikipedia.org/wiki/Feature_extraction
-% https://deepai.org/machine-learning-glossary-and-terms/feature-extraction
-
-\clearpage
-Ora verranno introdotti alcuni algoritmi fondamentali nel campo della \textit{Computer Vision}.
-\todo{TODO machine o computer?}
+\paragraph{Feature Extraction}
+Prima di passare alla descrizione degli algoritmi utilizzati si vuole specificare che cosa significa \textit{Feature Extraction}, in italiano Estrazione di Caratteristiche.
+Citando parte della definizione data in \cite{deepai-feat-ext} :
+\begin{quote}
+Feature extraction is the name for methods that select and/or combine variables into features, effectively reducing the amount of data that must be processed, while still accurately and completely describing the original data set.
+\end{quote}
+Quindi, in generale, indica un procedimento con cui, da un'insieme di dati complesso, si estrapola un gruppo di informazioni ridotte ma con la stessa capacità espressiva.
+Nell'ambito dell'elaborazione digitale delle immagini le tecniche di estrazione delle caratteristiche possono essere raccolte in varie categorie.
+Ciascuna permette di ottenere, a partire da immagini digitali, nuove immagini oppure coordinate di zone d'interesse dell'immagine in ingresso.
+Noi esploreremo tecniche come: rilevamento dei contorni o \textit{edge detection}, sogliatura o \textit{thresholding} e le trasformate di Hough.
 
 % TODO aggiungere applicazioni principali per ogni tecnica?
 % TODO sono da riscrivere meglio.
 
-
 \subsection {Passaggio da RGB a GrayScale}
 La conversione di un'immagine da RGB in scala di grigi è un'operazione estremamente facile, ma rimane comunque alla base di molti algoritmi di image processing.
 Infatti per molti compiti l'informazione sul colore non è necessaria.
-Il modo più semplice per combinare i tre canali RGB in un unico canale è quello di fare la media dei valori pixel per pixel:
+Il modo più semplice per combinare i tre canali RGB in un unico canale è quello di fare la media dei valori \textit{pixel} per \textit{pixel}
 \begin{equation}
   Y = (R + G + B)/3
 \end{equation}
@@ -326,10 +326,10 @@ Il risulato di quest'ultimo calcolo è rappresentato in Figura~\ref{fig:rgb2gray
 \clearpage
 \subsection {Masking}
 La tecnica del masking permette di nascondere parti di immagine a cui non siamo interessati.
-Abbiamo bisogno di una maschera binaria, nella quale ogni pixel appartiene all'insieme $\{0,1\}$, che solitamente viene generata a mano, ed ovviamente dell'immagine che si vuole mascherare.
+Abbiamo bisogno di una maschera binaria, nella quale ogni \textit{pixel} appartiene all'insieme $\{0,1\}$, che solitamente viene generata a mano, ed ovviamente dell'immagine che si vuole mascherare.
 La maschera deve avere le stesse dimensioni dell'immagine di partenza.
-L'operazione consiste nell'effettuare un AND logico, pixel per pixel,  tra l'immagine e la maschera.
-Così facendo tutti i pixel dell'immagine di partenza corrispondenti a zone di valore $0$ della maschera verranno impostati a $0$, diventando quindi neri.
+L'operazione consiste nell'effettuare un AND logico, \textit{pixel} per \textit{pixel},  tra l'immagine e la maschera.
+Così facendo tutti i \textit{pixel} dell'immagine di partenza corrispondenti a zone di valore $0$ della maschera verranno impostati a $0$, diventando quindi neri.
 Il resto dell'immagine rimane con i colori originali.
 
 Nell'esempio in Figura~\ref{fig:mask_example} si è deciso di rimuove l'informazione relativa allo sfondo.
@@ -378,12 +378,12 @@ Una matrice di questo tipo viene anche chiamata \textit{view}.
 % https://en.wikipedia.org/wiki/Cropping_(image)
 
 Con l'\textit{image resizing} si aumentano (o diminuiscono) le dimensioni di un'immagine.
-Nel primo caso, poiché si vuole aumentare il numero di pixel dell'immagine finale,bisognerà utilizzare tecniche di upsampling ed interpolare i dati a disposizione per generarne di nuovi che siano verosimili.
+Nel primo caso, poiché si vuole aumentare il numero di \textit{pixel} dell'immagine finale,bisognerà utilizzare tecniche di upsampling ed interpolare i dati a disposizione per generarne di nuovi che siano verosimili.
 
 Uno fra gli algoritmi più semplici è Nearest-Neighbor Interpolation:
-il pixel che deve essere aggiunto ottiene il valore del pixel a lui più vicino.
-Un criterio di scelta dovrà essere definito nel caso in cui ci siano più pixel alla stessa distanza ma con valori differenti.
-Un criterio possibile è quello di assegnare al nuovo pixel sempre il valore del pixel in alto a sinistra.
+il \textit{pixel} che deve essere aggiunto ottiene il valore del \textit{pixel} a lui più vicino.
+Un criterio di scelta dovrà essere definito nel caso in cui ci siano più \textit{pixel} alla stessa distanza ma con valori differenti.
+Un criterio possibile è quello di assegnare al nuovo \textit{pixel} sempre il valore del \textit{pixel} in alto a sinistra.
 % https://en.wikipedia.org/wiki/Nearest-neighbor_interpolation
 % https://docs.opencv.org/2.4/modules/imgproc/doc/geometric_transformations.html
 % https://en.wikipedia.org/wiki/Image_scaling
@@ -391,7 +391,7 @@ Un criterio possibile è quello di assegnare al nuovo pixel sempre il valore del
 
 Una tecnica leggermente più complessa, ma che fornisce risultati soddisfacenti nella maggior parte delle occasioni, è l'interpolazione bilineare.
 Con questa tecnica si effettuano, in cascata, due interpolazioni lineari, una orizzontale ed una verticale.
-Con l'interpolazione bilineare i nuovi pixel si ottengono come media dei valori noti, pesata rispetto allo loro distanza dal pixel che si vuole colorare.
+Con l'interpolazione bilineare i nuovi \textit{pixel} si ottengono come media dei valori noti, pesata rispetto allo loro distanza dal \textit{pixel} che si vuole colorare.
 In questo modo si ottengono immagini con transazioni di colore più dolci.
 
 % TODO
@@ -405,9 +405,9 @@ In questo modo si ottengono immagini con transazioni di colore più dolci.
 
 Nel caso in cui si voglia ridurre le dimensioni dell'immagine si dovranno usare tecniche di \textit{downsampling} ed \textit{anti-aliasing}.
 % https://en.wikipedia.org/wiki/Anti-aliasing_filter
-Il downsampling permette di selezionare un numero limitato di pixel che poi verranno usati per colorare la matrice di dimensione ridotta.
+Il downsampling permette di selezionare un numero limitato di \textit{pixel} che poi verranno usati per colorare la matrice di dimensione ridotta.
 Applicare soltanto questa tecnica può portare alla creazione di artefatti sintetici nell'immagine risultato.
-Significa che l'immagine ridotta potrebbe contenere gruppi di pixel di colori sbagliati.
+Significa che l'immagine ridotta potrebbe contenere gruppi di \textit{pixel} di colori sbagliati.
 Sfruttando tecniche come l'anti-aliasing si può evitare, o quantomeno limitare, la creazione di tali artefatti.
 Un \textit{low-pass filter} è un tipo di filtro che smorza tutti i valori al di sopra di una certa soglia, mentre lascia passare tutti i valori minori.
 Nel campo del \textit{digital image processing} vengono utilizzati filtri di \textit{blur} applicati tramite convoluzione.
@@ -420,7 +420,7 @@ Questa tecnica permette di "aggiustare" il contrasto di un'immagine sfruttandone
 Il contrasto è definito come la differenza in intensità luminosa e colore che permette di distinguere gli oggetti.
 
 In Figura~\ref{fig:hist_eq_example} sono stati riporta un'immagine a basso contrasto e l'immagine risultato dopo l'applicazione della \textit{histogram equalization}.
-Sotto ogni immagine si possono osservare i relativi istogrammi: sull'asse delle $x$ abbiamo ogni possibile valore di un pixel, quindi da 0 a 255; sull'asse delle $y$ è riportato il numero di occorrenze di quel colore nell'immagine.
+Sotto ogni immagine si possono osservare i relativi istogrammi: sull'asse delle $x$ abbiamo ogni possibile valore di un \textit{pixel}, quindi da 0 a 255; sull'asse delle $y$ è riportato il numero di occorrenze di quel colore nell'immagine.
 Notare che l'immagine in input deve essere in scala di grigi.
 
 Vediamo ora come possiamo formulare matematicamente la costruzione dell'istogramma e la sua manipolazione.
@@ -462,7 +462,7 @@ Sostanzialmente abbiamo ricolorato ogni pixel dell'immagine di partenza con colo
 
 \clearpage
 \subsection {Gaussian Blur}
-Conosciuto anche come \textit{Gaussian smoothing}, il \textit{Gaussian blur} permette di sfocare un immagine sfruttando una convoluzione con kernel gaussiano.
+Conosciuto anche come \textit{Gaussian smoothing}, il \textit{Gaussian blur} permette di sfocare un immagine sfruttando una convoluzione con \textit{kernel} gaussiano.
 L'immagine così ottenuta risulta meno nitida, con meno dettagli e, quindi, con meno rumore.
 L'obbiettivo principale di questa tecnica è mantenere soltanto l'informazione caratterizzante, rimuovendo quella non necessaria od anomala.
 Si può dimostrare che il \textit{Gaussian blur} è un \textit{low-pass filter}.
