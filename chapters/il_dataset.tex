@@ -829,99 +829,109 @@ Ora verrà illustrato l'ordine in cui sono stati applica gli algoritmi descritti
 
 \subsubsection{1 Centramento con Hough Circle Transform}
 Sappiamo che le immagini del \textit{dataset} non sono perfettamente centrate, per questo motivo si è deciso di utilizzare la tecnica della \textit{Hough Circle Transform} per ottenere un'approssimazione del centro della carcassa.
-Avendo le coordinate di quest'ultimo si riallineare il pezzo con il centro dell'immagine.
-% TODO si può specificare che l'immagine deve essere
-% - To Grayscale
-% - Equalization Histogram
-% - ottenere i cerchi con Hough Circle
-% - media tra centri
-% - trasformazione affine
-% - l'immagine uscita è ancora a colori
+Avendo le coordinate di quest'ultimo si può riallineare il pezzo con il centro dell'immagine.
+\todo{manca motivo per cui si centra}
+Ottenere un algoritmo che fosse capace di centrare correttamente tutte le immagini, non è stato facile, ma può essere riassunto nei seguenti passaggi:
+\begin{itemize}
+  \item creazione di una copia dell'immagine;
+  \item conversione della copia in scala di grigi;
+  \item equalizzazione dell'istogramma della copia;
+  \item ottenimento di alcuni cerchi candidati tramite trasformate di Hough applicate alla copia, qui si sfrutta l'informazione circa le dimensioni tipiche della circonferenza dello scalino più grande;
+  \item viene effettuata la media tra i centri dei cerchi ottenuti nel passaggio precedente;
+  \item l'immagine originale viene traslata in modo che il centro stimato si trovi in mezzo all'immagine;
+\end{itemize}
 
-Nella Figura~\ref{fig:centramento} sono illustrati, a sinistra, il cerchio rilevato, mentre sulla destra l'immagine prima e dopo il centramento.
+Nella Figura~\ref{fig:centramento} sono illustrati l'immagine prima e dopo il centramento ed il cerchio rilevato.
+
 \begin{figure}[ht] % TODO
   \begin{center}
-    \includegraphics[width=0.3\textwidth]{example-image}
-    \includegraphics[width=0.3\textwidth]{example-image}
-    \includegraphics[width=0.3\textwidth]{example-image}
-    \caption{TODO }
-    \label{fig:centramento}
+    \begin{subfigure}{.49\linewidth}
+      \centering\includegraphics[width=\textwidth]{example-image}
+      \caption{Immagine originale}
+      \label{fig:p1_originale}
+    \end{subfigure}
+    \begin{subfigure}{.49\linewidth}
+      \centering\includegraphics[width=\textwidth]{example-image}
+      \caption{Immagine dopo il centramento}
+      \label{fig:p1_centrata}
+    \end{subfigure}
+    \begin{subfigure}{.49\linewidth}
+      \centering\includegraphics[width=\textwidth]{example-image}
+      \caption{Circonferenza rilevata}
+      \label{fig:p1_circ}
+    \end{subfigure}
   \end{center}
+  \caption{Esempio di centramento}
+  \label{fig:centramento}
 \end{figure}
-%\begin{figure}[ht]
-%  \begin{center}
-%    \begin{subfigure}{.49\linewidth}
-%      \centering\includegraphics[width=\textwidth]{raggio_angolo}
-%      \caption{}
-%      \label{fig:hough_parametr_parametr}
-%    \end{subfigure}
-%    \begin{subfigure}{.49\linewidth}
-%      \centering\includegraphics[width=\textwidth]{example-image}
-%      \caption{}
-%      \label{fig:hough_parametr_curve}
-%    \end{subfigure}
-%  \end{center}
-%  \caption{Parametrizzazione raggio-angolo e rappresentazione dello spazio dei parametri di Hough}
-%  \label{fig:hough_parametr_raggio-angolo}
-%\end{figure}
 
 \subsubsection{2 Equalizzazione}
-Per gestire la variazione di luminosità tra immagini si utilizza \textit{equalization histogram}.
+Per gestire la variazione di luminosità tra immagini si utilizza \textit{histogram equalization}.
 In questo modo le immagini in bianco e nero delle carcasse risultano molto più simili tra di loro e si vanno a mitigare i fastidiosi effetti di sovra illuminazione.
 
 D'ora in poi verranno manipolate immagini in scala di grigi.
-Questa scelta, validata dagli esperimenti, nasce principalmente dalla prossima considerazione.
-Le immagini sono in falsi colori, manterremmo informazione non reale ma soprattutto richiederemmo alla nostra rete neurale uno sforzo molto maggiore.
-La rete, infatti, dovrebbe imparare a gestire non solo le forme geometriche del pezzo ma anche le sue colorazioni.
+Questa scelta, validata dagli esperimenti, nasce principalmente considerando il fatto che le immagini sono in falsi colori.
+Mantenendo il \textit{dataset} a colori manterremmo informazione che non ci è di alcuna utilità, ma soprattutto richiederemmo alla nostra rete neurale uno sforzo molto maggiore.
+La rete, infatti, dovrebbe imparare a gestire, non solo le forme geometriche del pezzo, ma anche le sue colorazioni.
 
 Nella Figura~\ref{fig:equalizzazione} sono illustrate due carcasse conformi con luminosità differenti, affiancate dalla loro trasformazione.
 % TODO mostrare l'immagine gray scale prima e dopo
 \begin{figure}[ht] % TODO
   \begin{center}
-    \begin{tabular}{cc}
-      \includegraphics[width=0.3\textwidth]{example-image} &
-      \includegraphics[width=0.3\textwidth]{example-image} \\
-      \includegraphics[width=0.3\textwidth]{example-image} &
-      \includegraphics[width=0.3\textwidth]{example-image}
-    \end{tabular}
-    \caption{TODO}
-    \label{fig:equalizzazione}
+    \begin{subfigure}{.49\linewidth}
+      \centering\includegraphics[width=\textwidth]{example-image}
+      \caption{Immagine originale con alta luminosità}
+      \label{fig:p2_originale_lum}
+    \end{subfigure}
+    \begin{subfigure}{.49\linewidth}
+      \centering\includegraphics[width=\textwidth]{example-image}
+      \caption{Risultato dell'equalizzazione dell'immagine con alta luminosità}
+      \label{fig:p2_equalizzata_lum}
+    \end{subfigure}
+
+    \begin{subfigure}{.49\linewidth}
+      \centering\includegraphics[width=\textwidth]{example-image}
+      \caption{Immagine originale con bassa luminosità}
+      \label{fig:p2_originale_scura}
+    \end{subfigure}
+    \begin{subfigure}{.49\linewidth}
+      \centering\includegraphics[width=\textwidth]{example-image}
+      \caption{Risultato dell'equalizzazione dell'immagine con bassa luminosità}
+      \label{fig:p2_equalizzata_scura}
+    \end{subfigure}
+
   \end{center}
+  \caption{Esempio di centramento}
+  \label{fig:equalizzazione}
 \end{figure}
 
-% TODO si può specificare che l'immagine deve essere
-% - To Grayscale
-% - Equalization Histogram
-
 \subsubsection{3 Smooth dell'immagine}
-Utilizzando un filtro gaussiano è stato rimosso il rumore principale, ossi quello dovuto a graffi ed effetto ``sale e pepe''.
-È stato fondamentale definire il filtro in modo che non fosse troppo aggressivo altrimenti si sarebbe rischiato di perdere l'informazione della colla.
+Utilizzando un filtro gaussiano è stato rimosso il rumore principale, ossia quello dovuto a graffi ed effetto ``sale e pepe''.
+È stato fondamentale definire il filtro in modo che non fosse troppo aggressivo altrimenti si sarebbe rischiato di perdere anche l'informazione relativa alla colla.
 
 In Figura~\ref{fig:smooth} si mostra l'effetto dell'applicazione del kernel.
 % TODO mostrare anche cosa succede se si esagera col filtro?
 \begin{figure}[ht] % TODO
   \begin{center}
-    \includegraphics[width=0.3\textwidth]{example-image}
-    \includegraphics[width=0.3\textwidth]{example-image}
-    \caption{TODO}
+    \includegraphics[width=0.49\textwidth]{example-image}
+    \includegraphics[width=0.49\textwidth]{example-image}
+    \caption{Immagine prima e dopo l'applicazione del filtro di Gauss}
     \label{fig:smooth}
   \end{center}
 \end{figure}
 
 \subsubsection{4 Mascheramento}
 L'area che nell'immagine corrisponde alla parete verticale della carcassa, ed in particolar modo alle due balze, deve essere rimossa.
-Come abbiamo già sottolineato precedentemente la posizione delle balze non è correlata con la presenza della colla.
+Come abbiamo già sottolineato la posizione delle balze non è correlata con la presenza della colla.
 Mentre si suppone che la colla non si presenti soltanto sulla parete verticale, ma che coli almeno fino a raggiungere il gradino più ampio.
 
 Nella Figura~\ref{fig:mask} è illustrato un conforme prima e dopo il mascheramento.
-Fra le due immagini si presenta la maschera utilizzata.
 
 \begin{figure}[ht] % TODO
   \begin{center}
-    \includegraphics[width=0.3\textwidth]{example-image}
-    \includegraphics[width=0.3\textwidth]{example-image}
-    \includegraphics[width=0.3\textwidth]{example-image}
-    \caption{TODO}
+    \includegraphics[width=0.49\textwidth]{example-image}
+    \includegraphics[width=0.49\textwidth]{example-image}
+    \caption{Immagine prima e dopo il mascheramento}
     \label{fig:mask}
   \end{center}
 \end{figure}
@@ -933,21 +943,21 @@ Osservando Figura~\ref{fig:crop} ci si accorge che dopo il ritaglio l'immagine t
 
 \begin{figure}[ht] % TODO
   \begin{center}
-    \includegraphics[width=0.3\textwidth]{example-image}
-    \includegraphics[width=0.3\textwidth]{example-image}
-    \caption{TODO}
+    \includegraphics[width=0.49\textwidth]{example-image}
+    \includegraphics[width=0.49\textwidth]{example-image}
+    \caption{Immagine prima e dopo l'operazione di \textit{crop}}
     \label{fig:crop}
   \end{center}
 \end{figure}
 
 \subsubsection{6 Resizing}
 Come ultima cosa viene effettuato un resizing dell'immagine.
-Ogni elemento del dataset ha originariamente una dimensione di $896$x$896$ pixel, dopo le trasformazioni effettuate abbiamo un'immagine di dimensione circa $580$x$580$.
-Si fa notare che molte architetture di reti neurali accettano immagini di dimensione $224$x$224$.
-Abbiamo verificato se questa dimensione fosse accettabile anche nella nostra applicazione: risulta che mantenere l'immagine ad una dimensione maggiore non comporta alcun vantaggio, mentre ridurla al di sotto dei $200$ pixel di lato rende la classificazione difficile anche per un essere umano.
+Ogni elemento del dataset ha originariamente una dimensione di $896$x$896$ $pixel$, dopo le trasformazioni effettuate abbiamo un'immagine di dimensione circa $580$x$580px$.
+Si ricorda che molte architetture di reti neurali accettano immagini di dimensione $224$x$224$.
+È stato verificato se questa dimensione fosse accettabile anche nel caso di questo \textit{dataset)}: risulta che mantenere l'immagine ad una dimensione maggiore non comporta alcun vantaggio, mentre ridurla al di sotto dei $200$ $pixel$ di lato rende la classificazione difficile anche per un essere umano.
 
 % $896$x$896$
-% $580$x$580$ % TODO verificare dimensione effettiva
+% $580$x$580$
 % $224$x$224$
 
 \section {Data Augmentation}
