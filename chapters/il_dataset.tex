@@ -438,7 +438,7 @@ Facendo riferimento a quanto scritto nel documento~\cite{hist-eq} l'istogramma p
 p_n = \frac{\text{numero di pixel di colore $n$}}{\text{numero totale di pixel}} \quad \text{con $n$} \in [0,255]
 \end{equation*}
 Poiché $p_n$ descrive la probabilità che un \textit{pixel}, scelto a caso dall'immagine, abbia valore $n$, possiamo considerare $X$ una variabile casuale discreta in $[0,255]$.
-Quindi $X$ avrà funzione di ripartizione, tracciata in nero nel grafico in figura~\ref{fig:hist_pre_eq_example}, pari ad:
+Quindi $X$ avrà funzione di ripartizione, tracciata in blu nel grafico in figura~\ref{fig:hist_pre_eq_example}, pari ad:
 \begin{equation*}
   F_X(x) = \sum_{n=0}^{x} p_n
 \end{equation*}
@@ -746,13 +746,13 @@ Valutando le celle nello stesso modo di prima si ottiene la retta passante per i
 
 \begin{figure}[ht]
   \begin{center}
-    \begin{subfigure}{.49\linewidth}
+    \begin{subfigure}{.4\linewidth}
       \centering\includegraphics[width=\textwidth]{raggio_angolo}
       \caption{}
       \label{fig:hough_parametr_parametr}
     \end{subfigure}
-    \begin{subfigure}{.49\linewidth}
-      \centering\includegraphics[width=\textwidth]{example-image}
+    \begin{subfigure}{.4\linewidth}
+      \centering\includegraphics[width=\textwidth]{raggio_angolo_sp}
       \caption{}
       \label{fig:hough_parametr_curve}
     \end{subfigure}
@@ -777,22 +777,14 @@ Lo spazio dei parametri $a$-$b$ ci permette di creare le circonferenze centrate 
 In figura~\ref{fig:hough_parametr_circ} si vede la griglia su cui vengono votate le circonferenze.
 
 Se anche il raggio fosse incognito allora lo spazio dei parametri di Hough avrebbe tre dimensioni ed ogni punto sarebbe una tripla $(a,b,r)$ appartenente alla superficie di un cono.
-In figura~\ref{fig:hough_parametr_coni} è illustrata una rappresentazione di questo spazio.
 
 Le implementazioni della \textit{Hough Circle Transform} sfruttano una matrice di supporto, chiamata accumulatore, che corrisponde allo spazio dei parametri di Hough.
 Ciascun elemento è un intero con valore iniziale zero, che verrà incrementato di uno per ogni linea passante per quelle coordinate.
 \begin{figure}[ht]
   \begin{center}
-      \includegraphics[width=0.6\textwidth]{example-image}
-      \caption{Spazio dei parametri di Hough per le circonferenze con raggio dato}
+      \includegraphics[width=0.75\textwidth]{circle_hough_parameter}
+      \caption{Circonferenza e spazio dei parametri di Hough per le circonferenze con raggio dato}
       \label{fig:hough_parametr_circ}
-  \end{center}
-\end{figure}
-\begin{figure}[ht]
-  \begin{center}
-      \includegraphics[width=0.6\textwidth]{example-image}
-      \caption{Spazio dei parametri di Hough per le circonferenze con raggio ignoto}
-      \label{fig:hough_parametr_coni}
   \end{center}
 \end{figure}
 
