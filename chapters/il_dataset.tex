@@ -46,7 +46,7 @@ Allo stesso modo le immagini di ImageNet hanno etichette come \textit{dog}, \tex
 %Il nostro contiene due classi: Conforme e Scarto.
 
 Sembrerebbe che possedere 2000 immagini appena renda impossibile applicare algoritmi di \textit{Machine Learning}.
-In realtà osservando i Conformi, in Figura \ref{fig:esempi_conformi} sono stati riportati alcuni esemplari significativi, ci si accorge che i pezzi sono molto simili.
+In realtà osservando i Conformi, in figura~\ref{fig:esempi_conformi} sono stati riportati alcuni esemplari significativi, ci si accorge che i pezzi sono molto simili.
 Questo non ci sorprende, dato che i pezzi vengono generati meccanicamente, è perfettamente lecito supporre che nessuna carcassa abbia delle caratteristiche completamente differenti dalle altre.
 Le principali diversità sono dovute ad imperfezioni superficiali come graffi o macchie.
 Si può quindi dire che la distribuzione dei pezzi conformi è descritta bene anche da un numero limitato di esemplari.
@@ -97,7 +97,7 @@ Concludiamo che il numero di Conformi a nostra disposizione è sufficiente ai no
 
 Non possiamo dire lo stesso per gli Scarti.
 Se già la statistica ci lascia sospettare che $30$ esemplari non possono ritenersi significativi, allora questo sospetto diventa certezza quando si analizzano le caratteristiche della colla nelle immagini Scarto.  
-Come si vede in Figura \ref{fig:esempi_scarti} la colla può presentarsi in forma di gocce più o meno circolari oppure come sbaffi di grossezza e lunghezza variabili.
+Come si vede in figura~\ref{fig:esempi_scarti} la colla può presentarsi in forma di gocce più o meno circolari oppure come sbaffi di grossezza e lunghezza variabili.
 Anche la quantità di superficie coperta dalla colla può variare notevolmente, passando da aree ridotte e localizzate ad aree estese e di conformazioni singolari.
 Infine notiamo che la posizione del rimasuglio di colla all'interno della carcassa non è in relazione con la posizione delle balze e che la presenza dei gradini sul fondo non la obbliga in alcun modo a scivolare fino al centro.
 
@@ -148,9 +148,9 @@ A seconda della posizione dell'ugello rispetto alla carcassa si può immaginare 
 \begin{itemize}
   \item nel primo caso si immagina che il braccio abbia già depositato l'anello di colla e che si stia allontanando dalla carcassa.
     La colla in esubero cadrebbe sotto forma di goccia fino a raggiungere il fondo del pezzo.
-    Questo potrebbe esse il caso per la Figura~\ref{fig:esempi_scarti_goccia};
+    Questo potrebbe esse il caso per la figura~\ref{fig:esempi_scarti_goccia};
   \item nel secondo caso si ipotizza che la colla in esubero faccia parte dell'anello appena depositato e che, a causa delle vibrazioni o di altri fattori simili, coli raggiungendo il fondo della carcassa.
-    Questo potrebbe esse il caso per la Figura~\ref{fig:esempi_scarti_sbaffo}.
+    Questo potrebbe esse il caso per la figura~\ref{fig:esempi_scarti_sbaffo}.
 \end{itemize}
 
 Data la grande varietà di modi in cui la colla può presentarsi, concludiamo che gli esemplari forniti per la classe Scarto la descrivono soltanto in modo parziale.
@@ -187,7 +187,7 @@ Prima, nel 2014, la rete VGG~\cite{vgg} e, l'anno dopo, l'architettura ResNet~\c
 %Le motivazioni per cui 
 
 %% falsi colori, contrasti differenti, centramenti
-Osservando nuovamente Figura \ref{fig:esempi_conformi} ci si accorge che le immagini hanno varie proprietà.
+Osservando nuovamente figura~\ref{fig:esempi_conformi} ci si accorge che le immagini hanno varie proprietà.
 Verranno ora elencate a partire da quella da considerarsi meno problematica fino ad arrivare a quella più problematica.
 \begin{itemize}
 
@@ -226,7 +226,7 @@ Verranno ora elencate a partire da quella da considerarsi meno problematica fino
 \end{itemize}
 
 % TODO 3 immagini conformi vicine il più diverse possibile??
-Ora, facendo riferimento alla Figura \ref{fig:esempi_scarti}, possiamo elencare le proprietà esclusive degli Scarti.
+Ora, facendo riferimento alla figura~\ref{fig:esempi_scarti}, possiamo elencare le proprietà esclusive degli Scarti.
 In questo caso sono tutte non problematiche, anzi sono sfruttabili poiché rappresentano informazione con cui si può distingue uno scarto da un conforme:
 \begin{itemize}
   \item La colla ha alcune caratteristiche particolari: ha un colore bianco-verde solitamente più chiaro della superficie della carcassa e presenta sempre delle zone con dei riflessi.
@@ -305,7 +305,7 @@ Sappiamo però che l'occhio umano è più sensibile ai colori verdi, quindi per 
 \end{equation}
 \label{eq:rgb2gray}
 I pesi utilizzati nell'equazione~\ref{eq:rgb2gray} seguono lo standard CCIR 601~\cite{ccir601}.
-Un esempio di applicazione dell'equazione~\ref{eq:rgb2gray} è illustrato in Figura~\ref{fig:rgb2gray_example}.
+Un esempio di applicazione dell'equazione~\ref{eq:rgb2gray} è illustrato in figura~\ref{fig:rgb2gray_example}.
 % TODO accennare agli altri metodi?
 % https://www.johndcook.com/blog/2009/08/24/algorithms-convert-color-grayscale/
 % https://docs.opencv.org/3.1.0/de/d25/imgproc_color_conversions.html
@@ -329,7 +329,7 @@ L'operazione consiste nell'effettuare un AND logico, \textit{pixel} per \textit{
 Così facendo tutti i \textit{pixel} dell'immagine di partenza corrispondenti a zone di valore $0$ della maschera verranno impostati a $0$, diventando quindi neri.
 Il resto dell'immagine non viene alterato.
 
-Nell'esempio in Figura~\ref{fig:mask_example} si è deciso di rimuove l'informazione relativa allo sfondo.
+Nell'esempio in figura~\ref{fig:mask_example} si è deciso di rimuove l'informazione relativa allo sfondo.
 
 \begin{figure}[ht] % TODO
   \begin{center}
@@ -421,7 +421,7 @@ Citando Wikipedia~\cite{wikipedia-hist-eq}:
   \textit{Histogram equalization is a method in image processing of contrast adjustment using the image's histogram.}
 \end{quote}
 Si ricorda che il contrasto è definito come la differenza in intensità luminosa e colore che permette di distinguere gli oggetti in un'immagine.
-In Figura~\ref{fig:hist_eq_example} sono stati riporta un'immagine a basso contrasto e l'immagine risultato dopo l'applicazione della \textit{histogram equalization}.
+In figura~\ref{fig:hist_eq_example} sono stati riporta un'immagine a basso contrasto e l'immagine risultato dopo l'applicazione della \textit{histogram equalization}.
 Nella figura si possono osservare anche gli istogrammi relativi alle immagini: sull'asse delle $x$ abbiamo ogni possibile valore di un \textit{pixel}, quindi nell'intervallo da 0 a 255; sull'asse delle $y$ è riportato il numero di occorrenze di quel colore nell'immagine.
 Notare che l'immagine in ingresso deve essere in scala di grigi.
 
@@ -529,7 +529,7 @@ Dato che i valori al centro del filtro sono più grandi di quelli ai bordi, dare
 All'aumentare di $\sigma$ cresce il raggio alla base della campana di Gauss, questo significa che, con $\sigma$ grandi, verrà data importanza anche ai pixel distanti.
 Ciò farà risultare l'immagine in uscita molto più sfocata.
 
-In Figura~\ref{fig:gaussian_blur_example} è riportata un'immagine prima e dopo l'applicazione del filtro riportato in \ref{eq:gauss_kernel}, si fa notare come i dettagli più piccoli sono stati rimossi, mentre l'oggetto dell'immagine rimane distinguibile.
+In figura~\ref{fig:gaussian_blur_example} è riportata un'immagine prima e dopo l'applicazione del filtro riportato in \ref{eq:gauss_kernel}, si fa notare come i dettagli più piccoli sono stati rimossi, mentre l'oggetto dell'immagine rimane distinguibile.
 
 \begin{figure}[ht] % TODO
   \begin{center}
@@ -567,7 +567,7 @@ La sua direzione indica il più grande incremento della funzione mentre il modul
 Possiamo pensare un'immagine (in scala di grigi) come una funzione a due variabili che associa ad ogni punto $(x,y)$ un valore in $[0,255]$.
 Il gradiente dell'immagine sarà composto da vettori direzionati in modo da uscire dalle zone scure ed entrare nelle zone più chiare (mantenendo la convenzione per cui a zero è associato il colore nero).
 La magnitudine sarà tanto più grande quanto più grande il contrasto, quindi la differenza di colore e luminosità.
-%In Figura~\ref{fig:gradient} è presentato un esempio di gradiente di un'immagine.
+%In figura~\ref{fig:gradient} è presentato un esempio di gradiente di un'immagine.
 %\begin{figure}[ht] % TODO
 %  \begin{center}
 %    \includegraphics[width=0.2\textwidth]{gradient}
@@ -696,7 +696,7 @@ Ora verranno elencati in ordine i vari passaggi del rilevatore:
 \end{enumerate}
 Va fatto notare che i valori delle due soglie devono essere trovati in modo empirico, a seconda del tipo d'immagine bisognerà impostare soglie più o meno grandi, ma anche più o meno distanti fra loro.
 
-In Figura~\ref{fig:canny_example} è illustrata l'applicazione del \textit{Sobel operator}, notare come il risultato sia molto più pulito di quello illustrato in Figura~\ref{fig:sobel_example}.
+In figura~\ref{fig:canny_example} è illustrata l'applicazione del \textit{Sobel operator}, notare come il risultato sia molto più pulito di quello illustrato in figura~\ref{fig:sobel_example}.
 \begin{figure}[ht]
   \begin{center}
     \includegraphics[width=0.49\textwidth]{masked}
@@ -794,7 +794,7 @@ Ciascun elemento è un intero con valore iniziale zero, che verrà incrementato 
 
 \clearpage
 \subsection {Applicazione degli algoritmi descritti}
-Si fa notare che prima di ottenere immagini come quella illustrata in Figura~\ref{fig:prima_dopo_prep} e soprattutto prima di essere sicuri che questo è il tipo di immagine migliore per i nostri scopi, sono stati necessari numerosi esperimenti e tentativi.
+Si fa notare che prima di ottenere immagini come quella illustrata in figura~\ref{fig:prima_dopo_prep} e soprattutto prima di essere sicuri che questo è il tipo di immagine migliore per i nostri scopi, sono stati necessari numerosi esperimenti e tentativi.
 In particolar modo è stato importante capire che tipo di informazione potesse essere gestita interamente dalla rete neurale e quale invece dovesse essere rimossa o modificata.
 Lo scopo del nostro \textit{pre-processing} è quello di fornire un'immagine contenente solo l'informazione necessaria e sufficiente per poter discriminare un pezzo Conforme da uno Scarto.
 
@@ -824,7 +824,7 @@ Ottenere un algoritmo che fosse capace di centrare correttamente tutte le immagi
   \item l'immagine originale viene traslata in modo che il centro stimato si trovi in mezzo all'immagine;
 \end{itemize}
 
-Nella Figura~\ref{fig:centramento} sono illustrati l'immagine prima e dopo il centramento ed il cerchio rilevato.
+Nella figura~\ref{fig:centramento} sono illustrati l'immagine prima e dopo il centramento ed il cerchio rilevato.
 
 \begin{figure}[ht] % TODO
   \begin{center}
@@ -857,7 +857,7 @@ Questa scelta, validata dagli esperimenti, nasce principalmente considerando il 
 Mantenendo il \textit{dataset} a colori manterremmo informazione che non ci è di alcuna utilità, ma soprattutto richiederemmo alla nostra rete neurale uno sforzo molto maggiore.
 La rete, infatti, dovrebbe imparare a gestire, non solo le forme geometriche del pezzo, ma anche le sue colorazioni.
 
-Nella Figura~\ref{fig:equalizzazione} sono illustrate due carcasse conformi con luminosità differenti, affiancate dalla loro trasformazione.
+Nella figura~\ref{fig:equalizzazione} sono illustrate due carcasse conformi con luminosità differenti, affiancate dalla loro trasformazione.
 % TODO mostrare l'immagine gray scale prima e dopo
 \begin{figure}[ht] % TODO
   \begin{center}
@@ -884,7 +884,7 @@ Nella Figura~\ref{fig:equalizzazione} sono illustrate due carcasse conformi con 
     \end{subfigure}
 
   \end{center}
-  \caption{Esempio di centramento}
+  \caption{Esempio di equalizzazione}
   \label{fig:equalizzazione}
 \end{figure}
 
@@ -892,7 +892,7 @@ Nella Figura~\ref{fig:equalizzazione} sono illustrate due carcasse conformi con 
 Utilizzando un filtro gaussiano è stato rimosso il rumore principale, ossia quello dovuto a graffi ed effetto ``sale e pepe''.
 È stato fondamentale definire il filtro in modo che non fosse troppo aggressivo altrimenti si sarebbe rischiato di perdere anche l'informazione relativa alla colla.
 
-In Figura~\ref{fig:smooth} si mostra l'effetto dell'applicazione del kernel.
+In figura~\ref{fig:smooth} si mostra l'effetto dell'applicazione del kernel.
 % TODO mostrare anche cosa succede se si esagera col filtro?
 \begin{figure}[ht] % TODO
   \begin{center}
@@ -908,7 +908,7 @@ L'area che nell'immagine corrisponde alla parete verticale della carcassa, ed in
 Come abbiamo già sottolineato la posizione delle balze non è correlata con la presenza della colla.
 Mentre si suppone che la colla non si presenti soltanto sulla parete verticale, ma che coli almeno fino a raggiungere il gradino più ampio.
 
-Nella Figura~\ref{fig:mask} è illustrato un conforme prima e dopo il mascheramento.
+Nella figura~\ref{fig:mask} è illustrato un conforme prima e dopo il mascheramento.
 
 \begin{figure}[ht] % TODO
   \begin{center}
@@ -922,7 +922,7 @@ Nella Figura~\ref{fig:mask} è illustrato un conforme prima e dopo il mascherame
 \subsubsection{5 Crop}
 A questo punto l'immagine contiene una grande porzione di pixel di colore nero, a causa del mascheramento.
 Possiamo effettuare in operazione di \textit{crop} sapendo che il pezzo è centrato nell'immagine e conoscendo il raggio dell'area nera.
-Osservando Figura~\ref{fig:crop} ci si accorge che dopo il ritaglio l'immagine trasporta, in proporzione, molta più informazione.
+Osservando figura~\ref{fig:crop} ci si accorge che dopo il ritaglio l'immagine trasporta, in proporzione, molta più informazione.
 
 \begin{figure}[ht] % TODO
   \begin{center}
@@ -945,55 +945,71 @@ Si ricorda che molte architetture di reti neurali accettano immagini di dimensio
 
 \clearpage
 \section {Data Augmentation}
-La \textit{Data Augmentation} è una tecnica che permette di aumentare le dimensioni del \textit{dataset}, generando nuovi elementi verosimili.
+Il \textit{Data Augmentation} è una tecnica che permette di aumentare le dimensioni del \textit{dataset}, generando nuovi elementi con caratteristiche verosimili.
 Ciò risulta molto facile quando si manipolano immagini.
-Queste possono essere facilmente traslate, ruotate o specchiate così da ottenere immagini differenti dall'originale, ma che contengono informazione molto vicina a quello di partenza.
+Queste possono essere facilmente traslate, ruotate o specchiate così da ottenere immagini differenti dall'originale, ma che contengono dell'informazione molto vicina a quello di partenza.
 L'idea alla base della di queste trasformazioni è quella di incentivare la rete neurale a riconoscere gli oggetti a prescindere dalla loro orientazione.
 
 Nel nostro caso si è deciso di ruotare i Conformi con angoli multipli di $45^\circ$.
 Così facendo le macchioline ed i graffi compariranno in modo più uniforme, essendo distribuiti su più immagini.
-Dopo questa operazione il numero di immagini Conformi a nostra disposizione è pari a $13752=1719*8$.
+Dopo questa operazione il numero di immagini Conformi a nostra disposizione è pari a $13752$, ossia $8$ immagini per ciascuno dei $1719$ campioni di partenza.
 
 \subsection {Generazione Scarti Sintetici}
-Scarti Sintetici
- I ritagli non sono stati semplicemente incollati sui conformi:
+L'operazione di rotazione potrebbe essere applicata anche alle immagini Scarto, ma si è preferito optare per una manipolazione più complessa.
 
- la luminosità della colla è stata modificata per avvicinarsi a quella del pezzo conforme;
- dopo aver aggiunto la colla è stato praticato uno smooth lungo il contorno, per evitare che ci fosse una transizione netta fra sofndo ed inizio bordo della colla.
+Sappiamo che le immagini degli Scarti sono state raccolte in un arco di tempo maggiore rispetto a quello dei Conformi.
+Ciò può essere verificato confrontando alcune immagini delle due classi, prendiamo in esempio figura~\ref{fig:esempi_conformi} e figura~\ref{fig:esempi_scarti}, di pagine \pageref{fig:esempi_conformi} e \pageref{fig:esempi_scarti} rispettivamente.
+Si può notare che alcuni Scarti presentano degli anelli di colore più scuro, come se la superficie fosse più sporca.
+Questa caratteristica non compare in nessuna immagine della classe Conforme e sappiamo non essere in relazione con la presenza di colla.
+Alcuni esemplari appartengono a lotti di carcasse molto più vecchi di quelli fotografati nei Conformi, per questo motivo si è cercato di ricreare degli Scarti che fossero più vicini ai pezzi recenti.
+Si è prestata particolare attenzione a non generare immagini irreali, perché avrebbero invalidato qualsiasi tipo di risultato.
+Infatti allenare un modello su un \textit{dataset} che non rispecchia la realtà renderebbe impossibile prevedere che il suo comportamento a livello applicativo.
+
+In figura~\ref{fig:esempi_scarti_sintetici} è illustrato uno Scarto, il ritaglio della sua colla ed il risultato dell'applicazione di questa su due Conformi.
+Innanzitutto tutte i tipi di colla sono stati ritagliati manualmente con un programma di manipolazione di immagini digitali.
+Per ogni Scarto si è ottenuta un'immagine come quella riportata in figura~\ref{fig:ritaglio_colla}.
+Notare come sia stato importante mantenere l'informazione riguardo la posizione della colla:
+certe forme sono dovute al fatto che la colla è scivolata lungo i gradini del pezzo.
+Si è preferito evitare di posizionare queste colle in zone prive di gradini o che avrebbero fatto si che la colla avesse altre conformazioni. % TODO ocio..
+
+I ritagli appena creati non possono essere semplicemente applicati  sui conformi, basti pensare a come risulterebbe una colla fotografata in condizioni di grandi luminosità su una foto molto scura.
+Per questo motivo la luminosità del ritaglio viene adattata a quello della zona che verrà coperta.
+La figura~\ref{fig:scarto_sintetico_c} e la figura~\ref{fig:scarto_sintetico_d} mostrano come questo accorgimento dia risultati assolutamente verosimili: gli Scarti Sintetici sono stati ottenuti a partire da due Conformi distinti su cui è stata applicata la colla in figura~\ref{fig:ritaglio_colla}.
+Per scrupolo è stato anche effettuato uno \textit{smooth} lungo il contorno della colla applicata, così da rendere più dolce la transizione tra il fondo della carcassa e il corpo della colla.
+Si può dire che gli Scarti Sintetici siano indistinguibili dagli Scarti originali.
 
 
 
+\begin{figure}[ht] % TODO
+  \begin{center}
+    \begin{tabular}{cc}
+      \begin{subfigure}{.4\linewidth}
+        \centering\includegraphics[width=\textwidth]{128___14097_1_0_1_OnLineAnalysis}
+        \caption{Scarto}
+      \end{subfigure} &
 
+      \begin{subfigure}{.4\linewidth}
+        \centering\includegraphics[width=\textwidth]{data_aug/colla_09}
+        \caption{Colla ritagliata}
+        \label{fig:ritaglio_colla}
+      \end{subfigure} \\ \\
 
- \begin{figure}[ht] % TODO
-   \begin{center}
-     \begin{tabular}{cc}
+      \begin{subfigure}{.4\linewidth}
+        \centering\includegraphics[width=\textwidth]{data_aug/128___372_1_1_1_OnLineAnalysis_colla_09}
+        \caption{Scarto Sintetico}
+        \label{fig:scarto_sintetico_c}
+      \end{subfigure} &
 
-       \begin{subfigure}{.4\linewidth}
-         \centering\includegraphics[width=\textwidth]{128___14097_1_0_1_OnLineAnalysis}
-         \caption{Scarto}
-       \end{subfigure} &
-
-       \begin{subfigure}{.4\linewidth}
-         \centering\includegraphics[width=\textwidth]{data_aug/colla_09}
-         \caption{Colla ritagliata}
-       \end{subfigure} \\ \\
-
-       \begin{subfigure}{.4\linewidth}
-         \centering\includegraphics[width=\textwidth]{data_aug/128___372_1_1_1_OnLineAnalysis_colla_09}
-         \caption{Scarto Sintetico}
-       \end{subfigure} &
-
-       \begin{subfigure}{.4\linewidth}
-         \centering\includegraphics[width=\textwidth]{data_aug/128___1283_1_0_1_OnLineAnalysis_colla_09}
-         \caption{Scarto Sintetico}
-       \end{subfigure} \\
-
-     \end{tabular}
-   \caption{Scarto e Scarti Sintetici a confronto}
-   \label{fig:esempi_scarti_sintetici}
-   \end{center}
- \end{figure}
+      \begin{subfigure}{.4\linewidth}
+        \centering\includegraphics[width=\textwidth]{data_aug/128___1283_1_0_1_OnLineAnalysis_colla_09}
+        \caption{Scarto Sintetico}
+        \label{fig:scarto_sintetico_d}
+      \end{subfigure}
+    \end{tabular}
+    \caption{Scarto e Scarti Sintetici a confronto}
+    \label{fig:esempi_scarti_sintetici}
+  \end{center}
+\end{figure}
 
 
 
