@@ -4,11 +4,13 @@
 
 \chapter{Il Dataset}
 
-Innanzitutto si specifica che con la parola Scarto si indica l'immagine di una carcassa che presenta colla sul fondo, pezzo che quindi dovrà essere scartato.
+Innanzitutto si specifica che con la parola Scarto si indica l'immagine di una carcassa che presenta colla sul fondo, pezzo che, quindi, dovrà essere scartato.
 Invece con la parola Conforme si indica l'immagine di una carcassa nella quale la colla è stata depositata correttamente, quindi con fondo pulito.
 
-In questo capitolo verranno descritti il \textit{dataset}, le problematiche più importanti delle immagini e gli algoritmi principali con cui sono state manipolate.
-Si concluderà con la tecnica del \textit{data augmentation}.
+In questo capitolo verrà descritto il \textit{dataset} e gli algoritmi principali e la loro applicazione.
+Si concluderà con la tecnica del data augmentation.
+\todo{recap capitolo}
+
 
 \section{Problematiche Principali}
 
@@ -413,12 +415,6 @@ Andando quindi anche a ridurre valori troppo alti (o troppo bassi) avvicinandoli
 
 
 \clearpage
-% TODO LEGGERE PER BENE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-% TODO LEGGERE PER BENE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-% TODO LEGGERE PER BENE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-% TODO LEGGERE PER BENE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-% TODO LEGGERE PER BENE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-% TODO LEGGERE PER BENE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 \subsection {Histogram Equalization}
 Citando Wikipedia~\cite{wikipedia-hist-eq}:
 \begin{quote}
@@ -949,33 +945,55 @@ Si ricorda che molte architetture di reti neurali accettano immagini di dimensio
 
 \clearpage
 \section {Data Augmentation}
-%La \textit{Data Augmentation} è una tecnica che permette di aumentare le dimensioni del \textit{dataset}, generando nuovi elementi in modo che 
-%Non è una novità che chi affronta
-%% TODO ref a documento magari
-%
-%Nel nostro 
-%% Com'è stato sfruttato la Data Aug
-%% Colle sintetiche
-%Due metodi principali:
-% - rotazione
-% - generazione degli scarti sintetici
+La \textit{Data Augmentation} è una tecnica che permette di aumentare le dimensioni del \textit{dataset}, generando nuovi elementi verosimili.
+Ciò risulta molto facile quando si manipolano immagini.
+Queste possono essere facilmente traslate, ruotate o specchiate così da ottenere immagini differenti dall'originale, ma che contengono informazione molto vicina a quello di partenza.
+L'idea alla base della di queste trasformazioni è quella di incentivare la rete neurale a riconoscere gli oggetti a prescindere dalla loro orientazione.
+
+Nel nostro caso si è deciso di ruotare i Conformi con angoli multipli di $45^\circ$.
+Così facendo le macchioline ed i graffi compariranno in modo più uniforme, essendo distribuiti su più immagini.
+Dopo questa operazione il numero di immagini Conformi a nostra disposizione è pari a $13752=1719*8$.
 
 \subsection {Generazione Scarti Sintetici}
-%
-%
-%Scarti Sintetici
-% I ritagli non sono stati semplicemente incollati sui conformi:
-%
-% la luminosità della colla è stata modificata per avvicinarsi a quella del pezzo conforme;
-% dopo aver aggiunto la colla è stato praticato uno smooth lungo il contorno, per evitare che ci fosse una transizione netta fra sofndo ed inizio bordo della colla.
-%
-%
-%
+Scarti Sintetici
+ I ritagli non sono stati semplicemente incollati sui conformi:
+
+ la luminosità della colla è stata modificata per avvicinarsi a quella del pezzo conforme;
+ dopo aver aggiunto la colla è stato praticato uno smooth lungo il contorno, per evitare che ci fosse una transizione netta fra sofndo ed inizio bordo della colla.
 
 
 
 
 
+ \begin{figure}[ht] % TODO
+   \begin{center}
+     \begin{tabular}{cc}
+
+       \begin{subfigure}{.4\linewidth}
+         \centering\includegraphics[width=\textwidth]{128___14097_1_0_1_OnLineAnalysis}
+         \caption{Scarto}
+       \end{subfigure} &
+
+       \begin{subfigure}{.4\linewidth}
+         \centering\includegraphics[width=\textwidth]{data_aug/colla_09}
+         \caption{Colla ritagliata}
+       \end{subfigure} \\ \\
+
+       \begin{subfigure}{.4\linewidth}
+         \centering\includegraphics[width=\textwidth]{data_aug/128___372_1_1_1_OnLineAnalysis_colla_09}
+         \caption{Scarto Sintetico}
+       \end{subfigure} &
+
+       \begin{subfigure}{.4\linewidth}
+         \centering\includegraphics[width=\textwidth]{data_aug/128___1283_1_0_1_OnLineAnalysis_colla_09}
+         \caption{Scarto Sintetico}
+       \end{subfigure} \\
+
+     \end{tabular}
+   \caption{Scarto e Scarti Sintetici a confronto}
+   \label{fig:esempi_scarti_sintetici}
+   \end{center}
+ \end{figure}
 
 
 
