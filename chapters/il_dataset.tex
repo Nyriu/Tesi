@@ -758,7 +758,7 @@ L'idea principale ruota sempre attorno al concetto di voto di celle nello spazio
 
 In questo caso si sfrutta il fatto che, in una circonferenza $c$ di raggio $r$, ogni punto è equidistante dal centro.
 Per ogni punto $P_i$ di $c$ può essere tracciata una circonferenza $c_i$ di centro $P_i$ e raggio $r$.
-Sappiamo che tutte le circonferenze $c_i$ si incontrano in un unico punto, il centro di $c$, perché è l'unico equidistante da tutti i centri delle $c_i$.
+Sappiamo che tutte le circonferenze $c_i$ si incontrano in un unico punto: il centro di $c$, poiché è l'unico equidistante da tutti i centri delle $c_i$.
 
 Si ricorda che l'equazione di una circonferenza di centro $(a,b)$ e raggio $r$ è
 \begin{equation} \label{eq:circonferenza}
@@ -822,7 +822,7 @@ Ottenere un algoritmo che fosse capace di centrare correttamente tutte le immagi
   \item l'immagine originale viene traslata in modo che il centro stimato si trovi in mezzo all'immagine;
 \end{itemize}
 
-Nella figura~\ref{fig:centramento} sono illustrati l'immagine prima e dopo il centramento ed il cerchio rilevato.
+Nella figura~\ref{fig:centramento} sono $illustrate$ l'immagine prima e dopo il centramento ed il cerchio rilevato.
 
 \begin{figure}[ht] % TODO
   \begin{center}
@@ -852,8 +852,8 @@ In questo modo le immagini in bianco e nero delle carcasse risultano molto più 
 
 D'ora in poi verranno manipolate immagini in scala di grigi.
 Questa scelta, validata dagli esperimenti, nasce principalmente considerando il fatto che le immagini sono in falsi colori.
-Mantenendo il \textit{dataset} a colori manterremmo informazione che non ci è di alcuna utilità, ma soprattutto richiederemmo alla nostra rete neurale uno sforzo molto maggiore.
-La rete, infatti, dovrebbe imparare a gestire, non solo le forme geometriche del pezzo, ma anche le sue colorazioni.
+Mantenendo il \textit{dataset} a colori manterremmo dell'informazione che non ci è di alcuna utilità, ma soprattutto richiederemmo alla nostra rete neurale uno sforzo maggiore.
+La rete infatti dovrebbe imparare a gestire, non solo le forme geometriche del pezzo, ma anche le sue colorazioni.
 
 Nella figura~\ref{fig:equalizzazione} sono illustrate due carcasse conformi con luminosità differenti, affiancate dalla loro trasformazione.
 % TODO mostrare l'immagine gray scale prima e dopo
@@ -888,9 +888,9 @@ Nella figura~\ref{fig:equalizzazione} sono illustrate due carcasse conformi con 
 
 \subsubsection{3 Smooth dell'immagine}
 Utilizzando un filtro gaussiano è stato rimosso il rumore principale, ossia quello dovuto a graffi ed effetto ``sale e pepe''.
-È stato fondamentale definire il filtro in modo che non fosse troppo aggressivo altrimenti si sarebbe rischiato di perdere anche l'informazione relativa alla colla.
+È stato fondamentale definire il filtro in modo che non fosse troppo aggressivo altrimenti ci sarebbe stato il rischio di perdere anche l'informazione relativa alla colla.
 
-In figura~\ref{fig:smooth} si mostra l'effetto dell'applicazione del kernel.
+In figura~\ref{fig:smooth} si mostra l'effetto dell'applicazione del \textit{kernel}.
 % TODO mostrare anche cosa succede se si esagera col filtro?
 \begin{figure}[ht] % TODO
   \begin{center}
@@ -903,7 +903,7 @@ In figura~\ref{fig:smooth} si mostra l'effetto dell'applicazione del kernel.
 
 \subsubsection{4 Mascheramento}
 L'area che nell'immagine corrisponde alla parete verticale della carcassa, ed in particolar modo alle due balze, deve essere rimossa.
-Come abbiamo già sottolineato la posizione delle balze non è correlata con la presenza della colla.
+Come abbiamo già sottolineato la posizione delle balze non è correlata alla presenza della colla.
 Mentre si suppone che la colla non si presenti soltanto sulla parete verticale, ma che coli almeno fino a raggiungere il gradino più ampio.
 
 Nella figura~\ref{fig:mask} è illustrato un conforme prima e dopo il mascheramento.
@@ -932,10 +932,10 @@ Osservando figura~\ref{fig:crop} ci si accorge che dopo il ritaglio l'immagine t
 \end{figure}
 
 \subsubsection{6 Resizing}
-Come ultima cosa viene effettuato un resizing dell'immagine.
-Ogni elemento del dataset ha originariamente una dimensione di $896$x$896$ $pixel$, dopo le trasformazioni effettuate abbiamo un'immagine di dimensione circa $580$x$580px$.
+Come ultima cosa viene effettuato un \textit{resizing} dell'immagine.
+Ogni elemento del \textit{dataset} ha originariamente una dimensione di $896$x$896$ $pixel$, dopo le trasformazioni effettuate abbiamo un'immagine di dimensione circa $580$x$580px$.
 Si ricorda che molte architetture di reti neurali accettano immagini di dimensione $224$x$224$.
-È stato verificato se questa dimensione fosse accettabile anche nel caso di questo \textit{dataset)}: risulta che mantenere l'immagine ad una dimensione maggiore non comporta alcun vantaggio, mentre ridurla al di sotto dei $200$ $pixel$ di lato rende la classificazione difficile anche per un essere umano.
+È stato verificato se questa dimensione fosse accettabile anche nel caso di questo \textit{dataset}: risulta che mantenere l'immagine ad una dimensione maggiore non comporta alcun vantaggio, mentre ridurla al di sotto dei $200$ $pixel$ di lato rende la classificazione difficile anche per un essere umano.
 
 % $896$x$896$
 % $580$x$580$
