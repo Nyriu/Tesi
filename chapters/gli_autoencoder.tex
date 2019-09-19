@@ -2,6 +2,23 @@
 %!TEX root = tesi.tex
 %!TEX encoding = UTF-8 Unicode
 
+%\begin{figure}[ht] % TODO remove me
+%  \begin{center}
+%    \begin{tabular}{ccc}
+%
+%  \begin{subfigure}{.3\linewidth}
+%    \centering\includegraphics[width=\textwidth]{example-image}
+%    \caption{}
+%  \end{subfigure} &
+%
+%    \end{tabular}
+%    \caption{Alcune carcasse Conformi}
+%    \label{fig:esempi_conformi}
+%  \end{center}
+%\end{figure}
+
+
+
 \chapter{Gli Autoencoder}
 
 Breve intuizione sugli AE
@@ -25,11 +42,21 @@ Come viene spiegato da Andrew Ng in \cite{ng_sparse_ae}, gli \textit{autoencoder
 Cioè di quella classe di algoritmi, in contrapposizione a quelli ad apprendimento supervisionato, che non ha bisogno di dati etichettati; anzi vengono usati proprio per trovare nuovi pattern e correlazioni tra gli elementi del \textit{dataset}.
 Come gli algoritmi \textit{K-Means} e \textit{DBSCAN}, entrambi di \textit{clustering}, permettono di raggruppare nuvole di punti con caratteristiche simili. % TODO citare?
 %I gruppi così creati possono far risaltare degli andamenti dei dati 
-Un AE è non supervisionato perché, a priori, non conosciamo la forma che verrà data allo spazio latente.
+Un AE è non supervisionato perché, a priori, non conosciamo la forma che verrà data allo spazio latente. % TODO espandere?
 
+Gli \textit{autoencoder} più semplici sono composti da due \textit{layer fully connected}: il primo funge da \textit{encoder}, ha un numero di unità nascoste pari alla dimensione dello spazio latente; il secondo ha tante unità quanto la dimension e dell'\textit{input}, quindi funge da \textit{decoder}.
+L'architettura appena descritta può essere osservata in figura~\ref{fig:semplice_ae}, notare la tipica forma a clessidra.
 
+\begin{figure}[ht] % TODO rifare con tikz
+  \begin{center}
+    %\centering\includegraphics[width=.4\textwidth]{example-image}
+    \centering\includegraphics[width=\textwidth]{simple_ae}
+  \end{center}
+  \caption{Architettura di un semplice \textit{autoencoder}}
+  \label{fig:semplice_ae}
+\end{figure}
 
-
+\todo[inline]{spiegare Conv, ConvTransposed, MaxPool, Upsampling}
 
 
 
