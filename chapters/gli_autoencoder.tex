@@ -23,6 +23,10 @@
 
 Breve intuizione sugli AE
 \todo[inline]{TODO recap capitolo}
+\todo[inline]{TODO recap capitolo}
+\todo[inline]{TODO recap capitolo}
+\todo[inline]{TODO recap capitolo}
+\todo[inline]{ipotizzo almeno 5 righe}
 
 \section{La Struttura di un Autoencoder}
 Un \textit{Autoencoder}(AE) è un particolare tipo di rete neurale.
@@ -88,17 +92,116 @@ Allo stesso modo è anche possibile aggiungere strati convolutivi, convolutivi t
 \begin{figure}[ht] % TODO rifare con tikz
   \begin{center}
   % https://www.researchgate.net/figure/Stacked-autoencoders-architecture_fig21_319524552
-    \centering\includegraphics[width=\textwidth]{stacked_ae}
+    \centering\includegraphics[width=0.7\textwidth]{stacked_ae}
   \end{center}
   \caption{Architettura di un \textit{stacked autoencoder}}
   \label{fig:stacked_ae}
 \end{figure}
 
 \paragraph{Strati Convolutivi}
+Un \textit{convolutional layer} è uno strato in cui i pesi hanno la forma di un filtro convolutivo, in questo modo verrà mantenuta anche dell'informazione spaziale.
+In pratica la rete si adatta in modo che i filtri lascino passare, o mettano in evidenza, soltanto quelle caratteristiche utili allo svolgimento del compito.
+Come viene mostrato molto bene in \cite{conv_arithm}, questo tipo di convoluzioni è una generalizzazione parametrica delle convoluzioni descritte a pagina \pageref{conv_para}.
+
+Innanzitutto è bene elencare i parametri che caratterizzano uno strato di questo tipo, per semplicità si suppone che le immagini ed i \textit{kernel} utilizzati siano sempre quadrati:
+\begin{itemize}
+  \item $n$ indica il lato dell'immagine in ingresso;
+
+  %\item $m$ indica il lato dell'immagine in uscita;
+
+  \item $k$ indica il lato del filtro.
+    Si ricorda che i valori all'interno del filtro sono i pesi che dovranno essere imparati;
+
+  \item $p$ indica quanto \textit{zero padding} aggiungere all'immagine in ingresso.
+    Con \textit{zero padding} si intende l'aumentare la dimensione dell'input aggiungendo righe e colonne di zeri.
+    Il risultato dell'applicazione del \textit{padding} con $p=1$ può essere osservato in figura~\ref{fig:conv_layer_1ch_p1_s2};
+
+  \item $s$ indica il passo, in inglese \textit{stride}, con cui il filtro viene mosso sull'immagine in ingresso.
+    In figura~\ref{fig:conv_layer} sono riportati i risultati che si ottengono con passi differenti;
+
+  \item con $ch_{in}$ si specifica quanti sono i canali in ingresso, ad esempio se l'immagine in \textit{input} è in scala di grigi si avrà $ch_{in} = 1$;
+
+  \item con $ch_{out}$ si specifica quanti sono i canali in uscita.
+
+\end{itemize}
+% TODO
+%Fissata un valore $k$ per la dimensione del \textit{kernel}, in figura~\ref{fig:conv_layer_1ch} $k=3$, 
+L'equazione \ref{eq:conv} mostra la relazione che intercorre tra i vari parametri dello strato convolutivo e la dimensione $m$ dell'immagine in uscita.
+\begin{equation} \label{eq:conv}
+  m = \frac
+  {n + 2p - f}
+  {s} 
+  + 1
+\end{equation}
+Si fa notare che le convoluzioni descritte a pagina \pageref{conv_para} equivalgono ad impostare, con $k$ dispari, i parametri $p=\lfloor k/2 \rfloor$, $s=1$, $ch_{in}=1$ (oppure 3 a seconda del caso) e $ch_{out}=1$.
+Infatti l'immagine in uscita che si ottiene ad esempio con l'operatore Sobel ha dimensioni pari a quelle dell'immagine in ingresso.
+
+Osservando le architetture delle reti convolutive VGG~\cite{vgg} e ResNet~\cite{resnet} ci si accorge che, fatta eccezione per i primi \textit{layer}, gli strati hanno un numero di canali in ingresso ed in uscita dell'ordine delle centinaia.
+Nel caso del primo \textit{layer} dell'architettura VGG11 si ha $ch_{in} = 3$ e $ch_{out} = 64$, mentre per il secondo si ha $ch_{in} = 64$ e $ch_{out} = 128$.
+Una delle motivazioni è che avere più canali significa avere più \textit{kernel}, quindi anche più possibilità di apprendimento.
+Infatti, prendendo in considerazione un solo strato convolutivo, il numero di kernel è dato da $n_k = ch_{in}*ch_{out}$, mentre il numero di parametri modificabili durante l'allenamento è $n_k * k * k$.
+%Infatti, prendendo in considerazione uno strato convolutivo che prende in ingresso un'immagine in scala di grigi
+%Con semplici calcoli si può vedere come il numero di parametri 
+% TODO nota sul numero di parametri da imparare 
+% TODO cosa manca da dire??
+
+% TODO magari si può mettere in modo più carino
+\begin{figure}[ht]
+  \begin{center}
+  \begin{tabular}{cc}
+    \begin{subfigure}{.45\linewidth}
+      \centering\includegraphics[width=\textwidth]{conv_example}
+      \caption{Ad un canale con $p=0$ e $s=1$}
+      \label{fig:conv_layer_1ch}
+    \end{subfigure} &
+
+    \begin{subfigure}{.45\linewidth}
+      \centering\includegraphics[width=\textwidth]{conv_example_1}
+      \caption{Ad un canale con $p=1$ e $s=2$}
+      \label{fig:conv_layer_1ch_p1_s2}
+    \end{subfigure}
+
+    %\begin{subfigure}{.45\linewidth} % TODO
+    %  \centering\includegraphics[width=\textwidth]{example-image} % mettere immagine con volumi simile a quella di Ng nel video
+    %  \caption{A tre canali}
+    %  \label{fig:conv_layer_3ch}
+    %\end{subfigure}
+
+  \end{tabular}
+  \caption{Esempio di strati convolutivi}
+  \label{fig:conv_layer}
+  \end{center}
+\end{figure}
+
+\paragraph{Strati di Down-Sampling}
+È stato dimostrato empiricamente che inserire degli strati il cui compito è ridurre le dimensioni dell'\textit{input}, aiuta le reti convolutive ad ottenere risultati migliori.
+Infatti sia l'architettura VGG che quella ResNet sfruttano ampiamente un tipo di \textit{layer} chiamato Max-Pooling.
+Quest'ultimo, osservabile in figura~\ref{fig:pool_layer}, assomiglia ad un \textit{convolutional layer} ma non ha parametri apprendibili.
+Infatti il filtro ritorna semplicemente il massimo dell'area su cui è stato posizionato.
+La dimensione del \textit{kernel} e lo \textit{stride} scelto definiscono la dimensione dell'output.
+Solitamente uno strato di questo tipo viene utilizzato per dimezzare $n$, cioè è ottenibile impostando $k=2$ e $s=2$.
+
+\clearpage % TODO rimuovere se necessario
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[width=0.7\textwidth]{max-pool}
+    \caption{Esempio di strato max-pooling}
+    \label{fig:pool_layer}
+  \end{center}
+\end{figure}
+
+Fin'ora sono stati descritti gli strati comuni a tutte le reti convolutive, ora verranno illustrati due \textit{layer} elusivi degli \textit{autoencoder}.
+
+\paragraph{Strati di Up-Sampling}
+Come il nome suggerisce, lo Up-Sampling \textit{layer} effettua un'operazione opposta a quella di uno strato di Down-Sampling.
+Nello specifico aumenta le dimensioni dell'\textit{input} riempendo gli spazi creati con medie tra gli elementi esistenti oppure ripetendoli.
 
 \paragraph{Strati Convolutivi Trasposti}
+Più interessanti sono i \textit{transposed convolutional layers} il cui scopo è simulare l'opposto di un'operazione convolutiva.
+Osservando nuovamente quanto spiegato in \cite{conv_arithm}
+\todo[inline]{WIP}
 
-\paragraph{Strati di Down e Up-Sampling}
 
 
 
