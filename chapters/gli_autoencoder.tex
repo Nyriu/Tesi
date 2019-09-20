@@ -78,8 +78,12 @@ Ciò risulta utile per vari motivi:
 Quando uno strato della rete è composto da più neuroni, ciascuno di essi riceverà una copia di $x$ e ritornerà un \textit{output} in base ai propri $W$ e $b$.
 In figura~\ref{fig:semplice_ae} si può notare come gli $x_i$ vengano distribuiti su tutti i nodi del primo strato e come il loro risultato venga a sua volta distribuito sulle altre unità.
 Dato che il numero di connessioni cresce rapidamente, essendo pari a $n*m$ per ogni strato (con $n$ la dimensione del vettore in ingresso ed $m$ di quello in uscita), questi strati vengono chiamati densamente connessi o, più semplicemente, densi.
+% TODO qui parentesi sulla  back prop?
 
-Nonostante gli Ae semplici abbiano dato ottimi risulatati cfr. AE vs PCA si è esplocratta la possibilità di aumentare il numero di strati
+Gli \textit{autoencoder} come quello in figura~\ref{fig:semplice_ae} hanno dato risultati equiparabili, se non migliori, a quelli ottenuti con metodi di \textit{dimensionality reduction} classici (\textit{cfr}. \cite{ng_sparse_ae},\cite{pca_vs_ae_1}).
+Essendo gli AE delle reti neurali, è possibile aggiungere vari strati densi, come si vede in figura~\ref{fig:stacked_ae}.
+Questi \textit{autoencoder} prendono il nome di AE multi-strato o \textit{stacked autoencoder} ed hanno capacità astrattive maggiori. % TODO stai attento
+Allo stesso modo è anche possibile aggiungere strati convolutivi, convolutivi trasposti oppure di \textit{down} ed \textit{up-sampling}.
 
 \begin{figure}[ht] % TODO rifare con tikz
   \begin{center}
@@ -90,6 +94,11 @@ Nonostante gli Ae semplici abbiano dato ottimi risulatati cfr. AE vs PCA si è e
   \label{fig:stacked_ae}
 \end{figure}
 
+\paragraph{Strati Convolutivi}
+
+\paragraph{Strati Convolutivi Trasposti}
+
+\paragraph{Strati di Down e Up-Sampling}
 
 
 
@@ -101,8 +110,8 @@ Nonostante gli Ae semplici abbiano dato ottimi risulatati cfr. AE vs PCA si è e
 
 
 
-\clearpage
-\todo[inline]{spiegare Conv, ConvTransposed, MaxPool, Upsampling}
+
+
 \clearpage
 \subsection{Applicazioni principali}
 
