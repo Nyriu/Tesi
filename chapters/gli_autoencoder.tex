@@ -82,7 +82,8 @@ Ciò risulta utile per vari motivi:
 Quando uno strato della rete è composto da più neuroni, ciascuno di essi riceverà una copia di $x$ e ritornerà un \textit{output} in base ai propri $W$ e $b$.
 In figura~\ref{fig:semplice_ae} si può notare come gli $x_i$ vengano distribuiti su tutti i nodi del primo strato e come il loro risultato venga a sua volta distribuito sulle altre unità.
 Dato che il numero di connessioni cresce rapidamente, essendo pari a $n*m$ per ogni strato (con $n$ la dimensione del vettore in ingresso ed $m$ di quello in uscita), questi strati vengono chiamati densamente connessi o, più semplicemente, densi.
-% TODO qui parentesi sulla  back prop?
+% TODO qui parentesi sulla back prop?
+\todo[inline]{qui parentesi sulla back prop?}
 
 Gli \textit{autoencoder} come quello in figura~\ref{fig:semplice_ae} hanno dato risultati equiparabili, se non migliori, a quelli ottenuti con metodi di \textit{dimensionality reduction} classici (\textit{cfr}. \cite{ng_sparse_ae},\cite{pca_vs_ae_1}).
 Essendo gli AE delle reti neurali, è possibile aggiungere vari strati densi, come si vede in figura~\ref{fig:stacked_ae}.
@@ -185,7 +186,7 @@ Solitamente uno strato di questo tipo viene utilizzato per dimezzare $n$, cioè 
 
 \begin{figure}[ht]
   \begin{center}
-    \includegraphics[width=0.7\textwidth]{max-pool}
+    \includegraphics[width=0.6\textwidth]{max-pool}
     \caption{Esempio di strato max-pooling}
     \label{fig:pool_layer}
   \end{center}
@@ -198,28 +199,32 @@ Come il nome suggerisce, lo Up-Sampling \textit{layer} effettua un'operazione op
 Nello specifico aumenta le dimensioni dell'\textit{input} riempendo gli spazi creati con medie tra gli elementi esistenti oppure ripetendoli.
 
 \paragraph{Strati Convolutivi Trasposti}
-Più interessanti sono i \textit{transposed convolutional layers} il cui scopo è simulare l'opposto di un'operazione convolutiva.
-Osservando nuovamente quanto spiegato in \cite{conv_arithm}
-\todo[inline]{WIP}
+Lo scopo di questi strati è simulare l'opposto di un'operazione convolutiva: se una convoluzione riduce la dimensione del dato in ingesso, una convoluzione trasposta deve aumentarlo.
+Il modo più semplice per ottenere questo effetto è effettuare una convoluzione con un \textit{zero padding} sufficientemente grande, come si vede in figura~\ref{fig:conv-transposed}.
+% TODO spiegare perché trasposto
+%Viene usato il termine trasposto perché una convoluzione può 
 
-
-
-
-
-
-
-
-
-
-
-
-
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[width=0.35\textwidth]{conv-transposed}
+    \caption{Esempio di strato convolutivo trasposto}
+    \label{fig:conv-transposed}
+  \end{center}
+\end{figure}
 
 \clearpage
 \subsection{Applicazioni principali}
+Gli autoencoder non sono stati usati solamente come tecniche alternative per la \textit{dimensionality reduction}, seguono due delle principali applicazioni.
 
 \paragraph{Denoising}
+Con \textit{denoising} si intende rimuovere del rumore dai dati in \textit{input}.
+All'AE viene richiesto, a partire da dati con del rumore
 
-\paragraph{Variational}
+
+%\paragraph{Variational}
 
 \paragraph{Anomaly Detection}
+
+
+\clearpage
+\todo[inline]{La nostra applicazione si trova a cavallo tra le due appena descritte}
