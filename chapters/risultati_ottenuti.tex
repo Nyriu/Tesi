@@ -72,7 +72,7 @@ Tali dati numerici sono stati ottenuti soltanto quando le immagini differenza so
 
 
 \clearpage
-\section{Architettura del modello}
+\section{Il modello}
 \todo[inline]{dire meglio}
 Dopo molte iterazioni e tentativi si è ottenuta l'architettura in figura~\ref{fig:ae16_arch}\footnote{L'immagine è stata generata usando \url{https://github.com/HarisIqbal88/PlotNeuralNet}}.
 Elenchiamo le sue caratteristiche principali:
@@ -113,20 +113,86 @@ I quattro \textit{layer} convolutivi e convolutivi trasposti da 32 canali in ing
 \todo[noline]{rifai disegno architettura i conv trans sono svaccati}
 
 \clearpage
+L'allenamento del modello in figura~\ref{fig:ae16_arch} è stato effettuato sui Conformi del \textit{dataset}, processati come descritto a pagina~\pageref{prep} e seguenti.
+In questa fase non sono stati utilizzati né gli Scarti né gli Scarti Sintetici.
 
 Durante l'allenamento si è utilizzata la \textit{MSE Loss} confrontando lo scarto tra l'immagine in ingresso e l'immagine ricostruita.
-Nel grafico in figura~\ref{fig:loss_plot} si può notare come la loss scenda in modo repentino nelle prime 5 epoche per poi stabilizzarsi.
-Il tasso di apprendimento\footnote{In inglese \textit{learning rate}}
+Nel grafico in figura~\ref{fig:loss_plot} si può notare come la \textit{loss} scenda in modo repentino nelle prime 5 epoche per poi stabilizzarsi.
+Il tasso di apprendimento\footnote{In inglese \textit{learning rate}} è stato gestito dinamicamente: se al passare delle epoche la \textit{loss} non è calata, allora il tasso di apprendimento viene diviso per un fattore dieci.
 
-
-
-\begin{figure}[ht]
+\begin{figure}[ht] % TODO sarebbe da cambiare
   \begin{center}
-    \includegraphics[width=0.8\textwidth]{loss_plot}
-    \caption{TODO plot della loss}
+    \includegraphics[width=0.55\textwidth]{loss_plot}
+    \caption{Andamento della \textit{loss} e del \textit{learning rate} al passare delle epoche}
     \label{fig:loss_plot}
   \end{center}
 \end{figure}
 
+Ogni cinque epoche è stata generata un'immagine con alcuni conformi in ingresso  ed in uscita.
+È interessante notare, osservando figura~\ref{fig:epoch_0}, come le prime ricostruzioni siano tutte uguali.
+Nella figura sono riportati, in alto, i sei esemplari dati in \textit{input} alla rete, mentre in basso sono mostrate le loro ricostruzioni.
+Probabilmente questo è dovuto al fatto che i pesi si distribuiscono fin da subito in modo da catturare le proprietà comuni a tutte le immagini, ad esempio l'area nera della maschera e gli anelli concentrici.
+In figura~\ref{fig:epoch_45} è riportato un altro gruppo di Conformi assieme alle ricostruzioni relative all'epoca numero quarantacinque.
+Ci si accorge subito che le immagini in uscita risultano meno sgranate e che in alcune di esse sono state generate perfino macchie ed aree più scure.
+Come ci si poteva aspettare la superficie delle immagini in \textit{output} risulta molto più lisca e priva della maggior parte dei graffi.
+
+\begin{figure}[ht] % TODO sarebbe da cambiare
+  \begin{center}
+    \includegraphics[width=.75\textwidth]{in_out_epoch_0}
+    \caption{In alto 6 immagini Conformi in \textit{input}, in basso la loro ricostruzione alla prima epoca}
+    \label{fig:epoch_0}
+  \end{center}
+\end{figure}
+
+\begin{figure}[ht] % TODO sarebbe da cambiare
+  \begin{center}
+    \includegraphics[width=.75\textwidth]{in_out_epoch_45}
+    \caption{In alto 6 immagini Conformi in \textit{input}, in basso la loro ricostruzione alla 45-esima epoca}
+    \label{fig:epoch_45}
+  \end{center}
+\end{figure}
+
+
 \clearpage
 \section{Post-Processing}
+Dopo aver osservato la precisione con cui i conformi vengono riprodotti
+
+\begin{figure}[ht] % TODO
+  \begin{center}
+    \begin{tabular}{cc}
+
+      \begin{subfigure}{.3\linewidth}
+        \centering\includegraphics[width=\textwidth]{128___1315_1_0_1_OnLineAnalysis_in}
+        \caption{}
+      \end{subfigure} &
+
+
+      \begin{subfigure}{.3\linewidth}
+        \centering\includegraphics[width=\textwidth]{example-image}
+        \caption{}
+      \end{subfigure} \\
+
+      \begin{subfigure}{.3\linewidth}
+        \centering\includegraphics[width=\textwidth]{128___13863_1_0_1_OnLineAnalysis_in}
+        \caption{}
+      \end{subfigure} &
+
+
+      \begin{subfigure}{.3\linewidth}
+        \centering\includegraphics[width=\textwidth]{example-image}
+        \caption{}
+      \end{subfigure}
+
+
+
+
+    \end{tabular}
+    \caption{TODO}
+    %\label{fig:esempi_conformi}
+  \end{center}
+\end{figure}
+
+%\centering\includegraphics[width=\textwidth]{128___14147_1_0_1_OnLineAnalysis_in }
+%\centering\includegraphics[width=\textwidth]{128___22886_1_1_1_OnLineAnalysis_in }
+%\centering\includegraphics[width=\textwidth]{128___33667_0_0_1_OnLineAnalysis_in }
+%\centering\includegraphics[width=\textwidth]{128___5668_1_1_1_OnLineAnalysis_in  }
