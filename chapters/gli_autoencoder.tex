@@ -72,18 +72,19 @@ Come funzione di attivazione viene spesso utilizzata la funzione sigmoidea:
   f(z) = \frac{1}{1 + exp(-z)}
 \end{equation*} %TODO fare plot?
 Notare come $f(z)$ sia una una funzione da $\mathbb{R}$ in $[0,1]$.
-Ciò risulta utile per vari motivi:
-\begin{itemize}
-  \item se il compito del neurone è dividere gli \textit{input} in due classi distinte, cioè $0$ e $1$, basterà verificare se $f(z)>0.5$.
-    In caso affermativo l'\textit{input} verrà associato alla classe con etichetta $1$, altrimenti a $0$;
-  \item un'altra motivazione è evitare che, se la rete è composta da molti strati, i valori in uscita, strato dopo strato, sempre più grandi. Con la funzione sigmoidea gli \textit{output} vengono limitati nell'intervallo $[0,1]$.
-\end{itemize}
+Ciò risulta utile soprattutto se il compito del neurone è dividere gli \textit{input} in due classi distinte, cioè $0$ e $1$, basterà verificare se $f(z)>0.5$.
+In caso affermativo l'\textit{input} verrà associato alla classe con etichetta $1$, altrimenti a $0$;
+Un'altra funzione di attivazione molto utilizzata è la funzione \textit{ReLU}
+\todo[inline]{TODO descrivere relu}
+\todo[inline]{TODO mostrare i grafici si sigmoid e relu?}
+
 
 Quando uno strato della rete è composto da più neuroni, ciascuno di essi riceverà una copia di $x$ e ritornerà un \textit{output} in base ai propri $W$ e $b$.
 In figura~\ref{fig:semplice_ae} si può notare come gli $x_i$ vengano distribuiti su tutti i nodi del primo strato e come il loro risultato venga a sua volta distribuito sulle altre unità.
 Dato che il numero di connessioni cresce rapidamente, essendo pari a $n*m$ per ogni strato (con $n$ la dimensione del vettore in ingresso ed $m$ di quello in uscita), questi strati vengono chiamati densamente connessi o, più semplicemente, densi.
 % TODO qui parentesi sulla back prop?
 \todo[inline]{qui parentesi sulla back prop?}
+\todo[inline]{qui parentesi sulla (MSE)Loss?}
 
 Gli \textit{autoencoder} come quello in figura~\ref{fig:semplice_ae} hanno dato risultati equiparabili, se non migliori, a quelli ottenuti con metodi di \textit{dimensionality reduction} classici (\textit{cfr}. \cite{ng_sparse_ae},\cite{pca_vs_ae_1}).
 Essendo gli AE delle reti neurali, è possibile aggiungere vari strati densi, come si vede in figura~\ref{fig:stacked_ae}.

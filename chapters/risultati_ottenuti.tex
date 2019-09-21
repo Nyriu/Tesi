@@ -22,18 +22,17 @@ In figura~\ref{fig:obbiettivo_in_out_diff} sono riportate tre immagini per chiar
 La figura~\ref{fig:obbiettivo_in} illustra uno Scarto.
 L'immagine riportata in figura~\ref{fig:obbiettivo_out} è quella che si vorrebbe ottenere dall'AE a partire dallo Scarto appena illustrato.
 Notare come si vorrebbe che il pezzo fosse riprodotto il più fedelmente possibile, ma che l'informazione della colla venisse rimossa.
-In questo modo sarebbe possibile effettuare una differenza $pixel$ per $pixel$ tra immagine in ingresso ed immagine in uscita (detta anche ricostruita) ottenendo così un risultato simile a quello in figura~\ref{fig:obbiettivo_diff}.
+In questo modo sarebbe possibile effettuare una differenza \textit{pixel} per \textit{pixel} tra immagine in ingresso ed immagine in uscita (detta anche ricostruita) ottenendo così un risultato simile a quello in figura~\ref{fig:obbiettivo_diff}.
 
 Nel caso migliore possibile la classificazione verrebbe effettuata verificando se nell'immagine differenza tutti i valori sono zero.
 Ossia l'immagine in ingresso appartiene alla classe Conforme ed è stata ricostruito alla perfezione.
-Dato che ci si aspetta che l'autoencoder non ricostruisca la colla nell'immagine in uscita, nell'immagine differenza ci sarà un'area di pixel con valori in assoluto maggiori di zero.
+Dato che ci si aspetta che l'\textit{autoencoder} non ricostruisca la colla nell'immagine in uscita, nell'immagine differenza ci sarà un'area di \textit{pixel} con valori in assoluto maggiori di zero.
 
-Non possiamo aspettarci che l'autoencoder abbia una precisione così alta, ingatti è molto più probaile che l''immaine ricostruita sia soltatnot un''approssimzione dell'immagine in ingresso. \todo{fix here}
-Si ricorda che molto probabilemte l'AE rimuoverà tutte quelle caratteristiche particolari di un pezzo (graffi, macchie, \dots )
+È impossibile che l'\textit{autoencoder} raggiunga una precisione così alta, infatti è molto più infatti che l'immagine ricostruita sia soltanto un'approssimazione dell'immagine in ingresso.
+Si ricorda che molto probabilmente l'AE rimuoverà tutte quelle caratteristiche particolari di un pezzo (graffi, macchie, \dots ), perché sono rumore rispetto ad una carcassa media.
 
-
-
-Quindi la classificazione è divisa in due parti: prima l'immagine viene passata dell'autoencoder; poi viene effettuato del post-processing.
+Quindi si può affermare che la classificazione è divisa in due parti: nella prima l'immagine viene elaborata dall'\textit{autoencoder}; nella seconda l'immagine in ingresso e quella in uscita vengono confrontate, questa parte prende il nome di \textit{post-processing}.
+L'effettiva classificazione viene eseguita in quest'ultima parte.
 
 \begin{figure}[ht] % TODO
   \begin{center}
@@ -63,16 +62,35 @@ Quindi la classificazione è divisa in due parti: prima l'immagine viene passata
   \end{center}
 \end{figure}
 
-
-
 \clearpage
 \section{Metriche di valutazione}
-
-
+Definire delle metriche per stabilire quali architetture preformassero meglio è stata una parte critica.
+Infatti gli \textit{autoencoder} potevano essere confrontati solo tramite due criteri: uno numerico, ossia la \textit{MSE Loss} ottenuta durante l'allenamento, ed uno qualitativo, cioè osservare la qualità generale delle immagini generate.
+Purtroppo nessuna delle due metriche permette di ottenere delle percentuali esatte sull'accuratezza delle classificazioni.
+Tali dati numerici sono stati ottenuti soltanto quando le immagini differenza sono risultate soddisfacenti e si è quindi potuto sviluppare l'algoritmo di \textit{post-processing}.
+\todo[inline]{c'è da dire altro?}
 
 
 \clearpage
-\section{Architettura dell'autoencoder}
+\section{Architettura del modello}
+Dopo molte iterazioni e tentativi si è ottenuta l'architettura in figura~\ref{fig:ae16_arch}. \todo{dire meglio}
+Elenchiamo le sue caratteristiche principali:
+\begin{itemize}
+  \item l'immagine in ingresso è in scala di grigi e di lato $200$ \textit{pixel};
+
+  \item ogni strato convolutivo ha filtri di dimensione $5$x$5$, ha \textit{stride} pari a $1$, non ha nessun \textit{padding} e, tutti tranne il primo e l'ultimo strato, hanno $ch_{in}=ch_{out}=32$.
+    Inoltre tutti i \textit{layer} utilizzano la funzione \textit{ReLU} come funzione di attivazione, fatta eccezione per l'ultimo in cui è presente la funzione sigmoidea.
+    Infatti le immagini, prima di essere passate alla rete, vengono normalizzate in $[0,1]$, cioè facilita i calcoli effettuati all'interno dell'\textit{autoencoder}.
+    L'output della rete verrà mappato nuovamente nell'intervallo $[0,255]$.
+
+  \item i \textit{max-pool}
+
+  \item gli strati densi
+
+  \item gli strati densi
+
+\end{itemize}
+
 
 \begin{figure}[ht]
   \begin{center}
