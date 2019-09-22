@@ -152,11 +152,10 @@ Come ci si poteva aspettare la superficie delle immagini in \textit{output} risu
 \section{Post-Processing}
 Dopo aver osservato la precisione con cui i conformi vengono riprodotti bisogna verificare come l'AE si comporti con le immagini della classe Scarto.
 In figura~\ref{fig:scarti_in_out} si possono osservare alcuni esempi di Scarti all'ingresso e all'uscita dell'\textit{autoencoder}.
-Notare come nelle prime tre coppie la colla sia stata rimossa molto bene e la carcassa ricostruita abbia alcune caratteristiche di quella originale.
+Notare come nelle prima coppia la colla sia stata rimossa molto bene e la carcassa ricostruita abbia alcune caratteristiche di quella originale.
 Purtroppo nell'ultima coppia si vede come le zone più scure tipiche di alcune carcasse con colla, causino la creazione di rumore nell'immagine in \textit{output}.
 Proprio questo motivo ha portato alla creazione degli Scarti Sintetici.
 Si fa subito presente che gli Scarti Sintetici sono stati generati a partire da un gruppo di Conformi differente dall'insieme di immagini usate durante l'allenamento.
-
 
 \begin{figure}[ht] % TODO
   \begin{center}
@@ -239,8 +238,8 @@ Va detto che molti Scarti vengono predetti come tali anche a causa delle fasce p
 
 \clearpage
 \section{I Risultati}
-In conlusione ridire con che numeri è stato allenato e testato l'AE
-e le percentuali ottenute
+Riassumiamo ora brevemente i risultati ottenuti.
+
 
 \begin{table}[ht]
   \centering
@@ -270,3 +269,23 @@ Per avere dei numeri più gradi si è verificato sul Train
   \caption{Predizioni sull'insieme di \textit{Train}}
   \label{tab:train_predicions}
 \end{table}
+
+
+
+\begin{table}[ht]
+  \centering
+%\noindent
+\renewcommand\arraystretch{1.5}
+\setlength\tabcolsep{0pt}
+\begin{tabular}{c >{\bfseries}r @{\hspace{0.7em}}c @{\hspace{0.4em}}c @{\hspace{0.7em}}l}
+  \multirow{10}{*}{\parbox{1.1cm}{\bfseries\raggedleft Valore\\ effettivo}} & 
+    & \multicolumn{2}{c}{\bfseries Predizione} & \\
+  & & \bfseries 60 & \bfseries 314 & \bfseries totale \\
+  & p$'$ & \MyBox{56}{} & \MyBox{4}{} & 60$ \\[2.4em]
+  & n$'$ & \MyBox{0}{} & \MyBox{314}{} & 314$ \\
+  & totale & 56 & 318 &
+\end{tabular}
+\end{table}
+
+sdfsdfkjhsafsd
+
