@@ -155,44 +155,81 @@ Come ci si poteva aspettare la superficie delle immagini in \textit{output} risu
 
 \clearpage
 \section{Post-Processing}
-Dopo aver osservato la precisione con cui i conformi vengono riprodotti
+Dopo aver osservato la precisione con cui i conformi vengono riprodotti bisogna verificare come l'AE si comporti con le immagini della classe Scarto.
+In figura~\ref{fig:scarti_in_out} si possono osservare alcuni esempi di Scarti all'ingresso e all'uscita dell'\textit{autoencoder}.
+Notare come nelle prime tre coppie la colla sia stata rimossa molto bene e la carcassa ricostruita abbia alcune caratteristiche di quella originale.
+Purtroppo nell'ultima coppia si vede come le zone più scure tipiche di alcune carcasse con colla, causino la creazione di rumore nell'immagine in \textit{output}.
+Proprio questo motivo ha portato alla creazione degli Scarti Sintetici.
+Si fa subito presente che gli Scarti Sintetici sono stati generati a partire da un gruppo di Conformi differente dall'insieme di immagini usate durante l'allenamento.
+
+L'algoritmo di post-processing è stato sviluppato sfruttando differenze generate usando Scarti Sintetici, perché risultano più pulite.
+Ma soprattutto perché ci si aspetta che siano anche più verosimili a quelle che si otterrebbero durante la messa in opera del sistema: le carcasse sono state scelte dalla distribuzione dei Conformi. \todo{dire meglio o non dire affatto}
+
+In figura~\ref{fig:post_proc_scarto_sin} 
+
+% scarto sin - ricostruita
+% diff abs   - blob detection
+
+
+
+
+
+
+\begin{figure}[ht] % TODO
+  \begin{center}
+    \begin{tabular}{c}
+
+      \begin{subfigure}{\linewidth}
+        \begin{center}
+          \includegraphics[width=.3\textwidth]{128___1315_1_0_1_OnLineAnalysis_in}
+          \includegraphics[width=.3\textwidth]{128___1315_1_0_1_OnLineAnalysis_out}
+        \end{center}
+      \end{subfigure} \\ \\
+
+      \begin{subfigure}{\linewidth}
+        \begin{center}
+          \includegraphics[width=.3\textwidth]{128___14147_1_0_1_OnLineAnalysis_in}
+          \includegraphics[width=.3\textwidth]{128___14147_1_0_1_OnLineAnalysis_out}
+        \end{center}
+      \end{subfigure} \\ \\
+
+      \begin{subfigure}{\linewidth}
+        \begin{center}
+          \includegraphics[width=.3\textwidth]{128___22886_1_1_1_OnLineAnalysis_in}
+          \includegraphics[width=.3\textwidth]{128___22886_1_1_1_OnLineAnalysis_out}
+        \end{center}
+      \end{subfigure} \\ \\
+
+      \begin{subfigure}{\linewidth}
+        \begin{center}
+          \includegraphics[width=.3\textwidth]{128___33667_0_0_1_OnLineAnalysis_in}
+          \includegraphics[width=.3\textwidth]{128___33667_0_0_1_OnLineAnalysis_out}
+        \end{center}
+      \end{subfigure}
+
+    \end{tabular}
+    \caption{Esempi di Scarti e loro ricostruzione}
+    \label{fig:scarti_in_out}
+  \end{center}
+\end{figure}
 
 \begin{figure}[ht] % TODO
   \begin{center}
     \begin{tabular}{cc}
 
-      \begin{subfigure}{.3\linewidth}
-        \centering\includegraphics[width=\textwidth]{128___1315_1_0_1_OnLineAnalysis_in}
-        \caption{}
-      \end{subfigure} &
-
-
-      \begin{subfigure}{.3\linewidth}
-        \centering\includegraphics[width=\textwidth]{example-image}
-        \caption{}
-      \end{subfigure} \\
-
-      \begin{subfigure}{.3\linewidth}
-        \centering\includegraphics[width=\textwidth]{128___13863_1_0_1_OnLineAnalysis_in}
-        \caption{}
-      \end{subfigure} &
-
-
-      \begin{subfigure}{.3\linewidth}
-        \centering\includegraphics[width=\textwidth]{example-image}
-        \caption{}
-      \end{subfigure}
-
-
-
+      \centtering\includegraphics[width=.3\textwidth]{128___1315_1_0_1_OnLineAnalysis_in} &
+      \centtering\includegraphics[width=.3\textwidth]{128___1315_1_0_1_OnLineAnalysis_out} \\
+      \centtering\includegraphics[width=.3\textwidth]{128___1315_1_0_1_OnLineAnalysis_in} &
+      \centtering\includegraphics[width=.3\textwidth]{128___1315_1_0_1_OnLineAnalysis_out}
 
     \end{tabular}
-    \caption{TODO}
-    %\label{fig:esempi_conformi}
+    \caption{Post-processing applicato ad uno Scarto Sintetico}
+    \label{fig:post_proc_scarto_sin}
   \end{center}
 \end{figure}
 
-%\centering\includegraphics[width=\textwidth]{128___14147_1_0_1_OnLineAnalysis_in }
-%\centering\includegraphics[width=\textwidth]{128___22886_1_1_1_OnLineAnalysis_in }
-%\centering\includegraphics[width=\textwidth]{128___33667_0_0_1_OnLineAnalysis_in }
-%\centering\includegraphics[width=\textwidth]{128___5668_1_1_1_OnLineAnalysis_in  }
+
+\clearpage
+\section{I Risultati}
+In conlusione ridire con che numeri è stato allenato e testato l'AE
+e le percentuali ottenute
