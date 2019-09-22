@@ -112,7 +112,7 @@ I quattro \textit{layer} convolutivi e convolutivi trasposti da 32 canali in ing
 L'allenamento del modello in figura~\ref{fig:ae16_arch} è stato effettuato sui Conformi del \textit{dataset}, processati come descritto a pagina~\pageref{prep} e seguenti.
 In questa fase non sono stati utilizzati né gli Scarti né gli Scarti Sintetici.
 
-Durante l'allenamento si è utilizzata la \textit{MSE Loss} confrontando lo scarto tra l'immagine in ingresso e l'immagine ricostruita.
+Durante l'allenamento si è utilizzata la \textit{MSE Loss} confrontando lo Scarto tra l'immagine in ingresso e l'immagine ricostruita.
 Nel grafico in figura~\ref{fig:loss_plot} si può notare come la \textit{loss} scenda in modo repentino nelle prime 5 epoche per poi stabilizzarsi.
 Il tasso di apprendimento\footnote{In inglese \textit{learning rate}} è stato gestito dinamicamente: se al passare delle epoche la \textit{loss} non è calata, allora il tasso di apprendimento viene diviso per un fattore dieci.
 
@@ -124,7 +124,7 @@ Il tasso di apprendimento\footnote{In inglese \textit{learning rate}} è stato g
   \end{center}
 \end{figure}
 
-Ogni cinque epoche è stata generata un'immagine con alcuni conformi in ingresso  ed in uscita.
+Ogni cinque epoche è stata generata un'immagine con alcuni Conformi in ingresso  ed in uscita.
 È interessante notare, osservando figura~\ref{fig:epoch_0}, come le prime ricostruzioni siano tutte uguali.
 Nella figura sono riportati, in alto, i sei esemplari dati in \textit{input} alla rete, mentre in basso sono mostrate le loro ricostruzioni.
 Probabilmente questo è dovuto al fatto che i pesi si distribuiscono fin da subito in modo da catturare le proprietà comuni a tutte le immagini, ad esempio l'area nera della maschera e gli anelli concentrici.
@@ -150,7 +150,7 @@ Come ci si poteva aspettare la superficie delle immagini in \textit{output} risu
 
 \clearpage
 \section{Post-Processing}
-Dopo aver osservato la precisione con cui i conformi vengono riprodotti bisogna verificare come l'AE si comporti con le immagini della classe Scarto.
+Dopo aver osservato la precisione con cui i Conformi vengono riprodotti bisogna verificare come l'AE si comporti con le immagini della classe Scarto.
 In figura~\ref{fig:scarti_in_out} si possono osservare alcuni esempi di Scarti all'ingresso e all'uscita dell'\textit{autoencoder}.
 Notare come nelle prima coppia la colla sia stata rimossa molto bene e la carcassa ricostruita abbia alcune caratteristiche di quella originale.
 Purtroppo nell'ultima coppia si vede come le zone più scure tipiche di alcune carcasse con colla, causino la creazione di rumore nell'immagine in \textit{output}.
@@ -239,7 +239,14 @@ Va detto che molti Scarti vengono predetti come tali anche a causa delle fasce p
 \clearpage
 \section{I Risultati}
 Riassumiamo ora brevemente i risultati ottenuti.
-
+Come si vede nella tabella~\ref{tab:test_predicions}, tutti i Conformi (che non sono stati usati durante l'allenamento) sono stati classificati correttamente.
+Viceversa non tutti gli Scarti e gli Scarti Sintetici sono stati classificati come tali.
+Per quanto riguarda i secondi va specificato che sono stati scelti a caso trenta Conformi e su ciascuno è stato applicato un ritaglio di colla.
+Osservando gli elementi predetti in modo scorretto e la relativa immagine differenza ci si accorge che la colla può passare inosservata se:
+\begin{itemize}
+  \item ha un colore molto vicino a quello della superficie della carcassa, quindi tende a corrispondere, nell'immagine differenza, ad un area con valori in assoluto piccoli;
+  \item si presenta come una striscia sottile.
+\end{itemize}
 
 \begin{table}[ht]
   \centering
@@ -256,36 +263,55 @@ Riassumiamo ora brevemente i risultati ottenuti.
   \label{tab:test_predicions}
 \end{table}
 
-Per avere dei numeri più gradi si è verificato sul Train
+Questi dati sono riportati anche sotto forma di matrice di confusione in tabella~\ref{tab:confusion_matrix}.
+Possiamo usare la tabella per ricavare le metriche di \textit{accuracy}, \textit{precision} e \textit{recall} definite come:
+\begin{align*} % TODO allineare
+  accuracy &= \frac{\text{TP + TN}}{\text{TP + TN + FP + FN}}
+            = \frac{56 + 314}{56 + 314 + 4} = 0.989
+  \\ \\
+  precison &= \frac{\text{TP}}{\text{TP + FP}} 
+            = \frac{56}{56} = 1.00
+  \\ \\
+  recall   &= \frac{\text{TP}}{\text{TP + FN}} 
+            = \frac{56}{56 + 4} = 0.933
+\end{align*}
+Notiamo come la \textit{accuracy}, che indica quante volte viene predetta la classe corretta, sia molto alta.
+Non ci sorprende che la \textit{precision} sia così alta perché uno dei nostri obbiettivi era evitare che venissero scartati Conformi.
+Quindi si voleva mantenere il numero di Falsi Positivi il più basso possibile.
+Il valore più basso è la \textit{recall} ossia che percentuale degli Scarti è stati effettivamente riconosciuta, valore comunque soddisfacente perché corrisponde al 93.3\%.
+
+\begin{table}[ht]
+  \centering
+  \renewcommand\arraystretch{1.5}
+  \setlength\tabcolsep{0pt}
+  \begin{tabular}{c >{\bfseries}r @{\hspace{0.7em}}c @{\hspace{0.4em}}c @{\hspace{0.7em}}l}
+    \multirow{10}{*}{\parbox{1.1cm}{\bfseries\raggedleft Valore\\ effettivo}} & 
+      & \multicolumn{2}{c}{\bfseries Predizione} & \\
+    & & \bfseries 60 & \bfseries 314 & \bfseries totale \\
+    & p$'$ & \MyBox{56 TP}{} & \MyBox{4 FN}{} & 60 \\[2.4em]
+    & n$'$ & \MyBox{0 FP}{} & \MyBox{314 TN}{} & 314 \\
+    & totale & 56 & 318 &
+  \end{tabular}
+  \caption{Matrice di confusione per l'insieme di \textit{Test}}
+  \label{tab:confusion_matrix}
+\end{table}
+
+Per avere una stima sulle capacità della rete su un numero maggiore di Conformi si è deciso di effettuare delle predizioni anche sulle immagini usate durante l'allenamento.
+Generalmente le immagini differenza della carcasse Conformi si presentano quasi interamente nere.
+Le poche macchie bianche sono di dimensioni ridotte e distanti tra loro.
+Il principale motivo che causa una predizione errata è il fatto che il pezzo sia stato fotografato da una distanza maggiore della media.
+Questo significa che le balze non vengono coperte interamente dalla maschera e quindi, dato che l'AE non le può ricostruire, possono risultare come una macchia sufficientemente grande.
+Nella tabella~\ref{tab:train_predicions} viene illustrato che il 98.9\% dei Conformi viene identificato correttamente.
 
 \begin{table}[ht]
   \centering
   \begin{tabular}{||l r r r||}
     \hline
     Classe           & Elementi & Predetti come KO & Percentuale \\ \hline \hline
-    Conformi         & 1375     & 16               & 98.8\%      \\ \hline
+    Conformi         & 1375     & 15               & 1.1\%       \\ \hline
 
   \end{tabular}
   \caption{Predizioni sull'insieme di \textit{Train}}
   \label{tab:train_predicions}
 \end{table}
-
-
-
-\begin{table}[ht]
-  \centering
-%\noindent
-\renewcommand\arraystretch{1.5}
-\setlength\tabcolsep{0pt}
-\begin{tabular}{c >{\bfseries}r @{\hspace{0.7em}}c @{\hspace{0.4em}}c @{\hspace{0.7em}}l}
-  \multirow{10}{*}{\parbox{1.1cm}{\bfseries\raggedleft Valore\\ effettivo}} & 
-    & \multicolumn{2}{c}{\bfseries Predizione} & \\
-  & & \bfseries 60 & \bfseries 314 & \bfseries totale \\
-  & p$'$ & \MyBox{56}{} & \MyBox{4}{} & 60$ \\[2.4em]
-  & n$'$ & \MyBox{0}{} & \MyBox{314}{} & 314$ \\
-  & totale & 56 & 318 &
-\end{tabular}
-\end{table}
-
-sdfsdfkjhsafsd
 
