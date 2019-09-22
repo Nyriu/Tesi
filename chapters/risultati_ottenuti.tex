@@ -66,12 +66,11 @@ Definire delle metriche per stabilire quali architetture preformassero meglio è
 Infatti gli \textit{autoencoder} potevano essere confrontati solo tramite due criteri: uno numerico, ossia la \textit{MSE Loss} ottenuta durante l'allenamento, ed uno qualitativo, cioè osservare la qualità generale delle immagini generate.
 Purtroppo nessuna delle due metriche permette di ottenere delle percentuali esatte sull'accuratezza delle classificazioni.
 Tali dati numerici sono stati ottenuti soltanto quando le immagini differenza sono risultate soddisfacenti e si è quindi potuto sviluppare l'algoritmo di \textit{post-processing}.
-\todo[inline]{c'è da dire altro?}
+\todo{c'è da dire altro?}
 
 
 \section{Il modello}
-\todo[inline]{dire meglio}
-Dopo molte iterazioni e tentativi si è ottenuta l'architettura in figura~\ref{fig:ae16_arch}\footnote{L'immagine è stata generata usando \url{https://github.com/HarisIqbal88/PlotNeuralNet}}.
+L'architettura illustrata in figura~\ref{fig:ae16_arch}\footnote{L'immagine è stata generata usando \url{https://github.com/HarisIqbal88/PlotNeuralNet}} ha dato i risultati migliori. % TODO dire meglio
 Elenchiamo le sue caratteristiche principali:
 \begin{itemize}
   \item l'immagine in ingresso è in scala di grigi e di lato $200$ \textit{pixel};
@@ -107,7 +106,7 @@ I quattro \textit{layer} convolutivi e convolutivi trasposti da 32 canali in ing
     \label{fig:ae16_arch}
   \end{center}
 \end{figure}
-\todo[noline]{rifai disegno architettura i conv trans sono svaccati}
+\todo{rifai disegno architettura i conv trans sono svaccati}
 
 L'allenamento del modello in figura~\ref{fig:ae16_arch} è stato effettuato sui Conformi del \textit{dataset}, processati come descritto a pagina~\pageref{prep} e seguenti.
 In questa fase non sono stati utilizzati né gli Scarti né gli Scarti Sintetici.
