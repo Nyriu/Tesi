@@ -2,17 +2,40 @@
 %!TEX root = tesi.tex
 %!TEX encoding = UTF-8 Unicode
 
-\chapter{Metodi Alternativi}
+\chapter{Metodi Alternativi Sbagliati}
+%Segue un breve elenco di metodi e tecniche alternative, nell'ordine in cui sono stati provati.
 
-% metrica di valutazione con loss
+
+\section{ResNet e One Class SVM}
+%http://rvlasveld.github.io/blog/2013/07/12/introduction-to-one-class-support-vector-machines/
+Riconoscendo che il principale problema del \textit{dataset} è il fatto che sia sbilanciato, si è pensato a tecniche come la \textit{One Class Support Vector Machine}(OCSVM).
+Questa è una variazione dell'algoritmo di classificazione \textit{Support Vector Machine} pensato per poter essere allenato avendo dati di un'unica classe.
+Il modo più intuitivo per descrivere il funzionamento di una OCSVM è immaginare che il suo scopo sia creare la più piccola sfera contenente tutti i punti del \textit{dataset}.
+Così facendo tutti gli elementi distanti dal \textit{dataset} vengono considerati anomalie perché non cadono all'interno della sfera.
+
+Dato che l'informazione a nostra disposizione è contenuta in immagini si è dovuto deciso di usare una rete ResNet18~\cite{resnet} come \textit{feature extractor}
+
+
+
+
+
+
+
 
 % ResNet + OCSVM 2 pagine
-% Symmetric Skip e come ricrea la colla 1 pagina
-% AE solo fully connected - interessante vedere come l'immagine venisse imparata a pixel - 1pagina + qualche immagine?
-% AE solo convolutivi - incapacità di astrazione - mezza pagina
-
 
 % tecniche classiche come quella roba della texture
+
 % tecniche classiche come HOG
-% logpolar immagini
+
+% AE solo fully connected - interessante vedere come l'immagine venisse imparata a pixel - 1pagina + qualche immagine?
+
+% AE solo convolutivi - incapacità di astrazione - mezza pagina
+
+% Symmetric Skip e come ricrea la colla 1 pagina
+
 % immagini a patch
+
+% logpolar immagini
+
+%\section{Autoencoder e OCSVM}
