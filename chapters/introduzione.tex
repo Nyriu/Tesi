@@ -5,8 +5,6 @@
 \chapter{Introduzione}
 
 \section{Il Problema Affrontato}
-\todo[inline]{l'obbiettivo era ottenere tot}
-
 In questa tesi si affronta il problema di rilevare la presenza di colla sul fondo di carcasse per motori elettrici, per mezzo di fotografie digitali.
 I pezzi da analizzare hanno una forma cilindrica cava con una delle due estremità sigillata.
 All'intero della cavità verrà alloggiato un motore elettrico per tergicristalli.
@@ -23,7 +21,7 @@ In questo caso specifico si vuole che il sistema riconosca il maggior numero di 
 Il lavoro svolto in questa tesi nasce per cercare una risposta ad un problema reale.
 La soluzione che si propone è stata sviluppata durante un tirocinio, della durata di sei mesi, svolto presso beanTech \footnote{Collegamento al sito ufficiale URL: \url{https://www.beantech.it/}}.
 Il principale strumento è stato il linguaggio di programmazione \textit{python}, arricchito da librerie come:
-\textit{opencv} e \textit{pillow} per la manipolazione e trasformazione delle immagini; 
+\textit{opencv}\footnote{TODO mettere tutti i bei link?} e \textit{pillow} per la manipolazione e trasformazione delle immagini; 
 \textit{numpy} e \textit{scikit-learn} per la gestione di dati numerici;
 \textit{pytorch} per tutto ciò che riguarda le reti neurali e convolutive;
 \textit{matplotlib} e \textit{pands} per la visualizzazione dei dati.
@@ -31,16 +29,53 @@ Per l'allenamento dei modelli si è potuto sfruttare una NVIDIA$^{\tiny{\textreg
 Durante il tirocinio si è sviluppata anche una buona conoscenza dello strumento Docker, che permette di creare spazi virtuali in cui sviluppare, testare e distribuire le proprie soluzioni.
 
 
+\clearpage
+
+\section{Primi Tentativi}
+Le prime soluzioni proposte si sono rivelate non soddisfacenti, ma poiché fanno parte del percorso che ha portato allo sviluppo della soluzione descritta in questo documento, si è deciso di dedicare un breve commento a quelle più significative.
+
+\section{ResNet e One Class SVM}
+%http://rvlasveld.github.io/blog/2013/07/12/introduction-to-one-class-support-vector-machines/
+Riconoscendo che il principale problema del \textit{dataset} è il fatto che sia sbilanciato, si è pensato a tecniche come la \textit{One Class Support Vector Machine}(OCSVM).
+Questa è una variazione dell'algoritmo di classificazione \textit{Support Vector Machine} pensato per poter essere allenato avendo dati di un'unica classe.
+Il modo più intuitivo per descrivere il funzionamento di una OCSVM è immaginare che il suo scopo sia creare la più piccola sfera contenente tutti i punti del \textit{dataset}.
+Così facendo tutti gli elementi distanti dal \textit{dataset} vengono considerati anomalie perché non cadono all'interno della sfera.
+
+Dato che l'informazione a nostra disposizione è contenuta in immagini si è dovuto deciso di usare una rete ResNet18~\cite{resnet} come \textit{feature extractor}
+
+
+% ResNet + OCSVM 2 pagine
+
+% tecniche classiche come quella roba della texture
+
+% tecniche classiche come HOG
+
+% AE solo fully connected - interessante vedere come l'immagine venisse imparata a pixel - 1pagina + qualche immagine?
+
+% AE solo convolutivi - incapacità di astrazione - mezza pagina
+
+% Symmetric Skip e come ricrea la colla 1 pagina
+
+% immagini a patch
+
+% logpolar immagini
+
+%\section{Autoencoder e OCSVM}
 
 
 
 
-\section{Metodi Alternativi Falliti}
-Si vuole precisare come il livello di sfida 
-\todo[inline]{si è provato tot e tot}
 
 
 
+
+
+
+
+
+
+
+\clearpage
 \section{Il Metodo Utilizzato}
 \todo{qui dire che librerie sono state usate}
 \todo[inline]{risulta che gli autoencoder vanno bene}
