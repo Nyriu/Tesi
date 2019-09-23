@@ -33,6 +33,13 @@ Soprattutto non è richiesto che il \textit{dataset} sia etichettato a mano, pra
 Inoltre, anche qualora l'inseme di immagini contenesse elementi della classe errata, ciò non sarebbe un problema.
 Queste caratteristiche permettono di creare nuovi \textit{dataset} in un tempo molto ridotto rispetto ad altre tecniche.
 
+
+In conclusione questa soluzione dimostra d'essere valida, permettendo di identificare Conformi e Scarti con una precisione soddisfacente.
+Purtroppo le limitazioni dei dati a nostra disposizione non ci permettono di affermare in maniera definitiva che la soluzione, così com'è stata presentata in questo documento, sia pronta per essere utilizzata in applicazioni reali.
+Bisogna però dire che questo modello, con le dovute modifiche agli algoritmi di \textit{pre} e \textit{post-processing}, grazie alla flessibilità dell'\textit{autoencoder} può essere facilmente adattato a problemi di natura simile a quello descritto.
+
+
+
 \section{Soluzione Alternativa}
 Una soluzione alternativa che merita \todo{forse dire meglio} sicuramente almeno un commento riguarda la segmentazione semantica e più nello specifico le U-Net~\cite{unet}.
 La segmentazione permette di associare ad ogni \textit{pixel} di un'immagine una specifica classe.
@@ -60,8 +67,20 @@ In questo modo il modello è spinto a creare delle relazioni tra ciò che è rap
   \end{center}
 \end{figure}
 
-Nel nostro caso il problema di segmentazione, riconosciuto universalmente come un problema di grande complessità, viene semplificato notevolmente: si vuole riconoscere soltanto i \textit{pixel} relativi alla colla.
-Quindi verranno usati soltanto due colori, uno sarà associato alla colla, mentre il secondo a tutto ciò che non è colla.
-Il principale problema di 
+Nel nostro caso il problema della segmentazione, riconosciuto universalmente come un problema di grande complessità, viene semplificato notevolmente: si vuole riconoscere soltanto i \textit{pixel} relativi alla colla.
+Verranno usati soltanto due colori, uno sarà associato alla colla, mentre il secondo a tutto ciò che non è colla.
+Il principale problema risiede nel \textit{dataset}.
+Disponendo di solo trenta esemplari risulta difficile, se non impossibile, creare un modello che non siano in forte \textit{overfit} rispetto a quelle specifiche istanze di colla.
+Si è deciso di applicare la tecnica del \textit{data augmentation}, escludendo però alcuni esemplari, utilizzati in un secondo momento per effettuare la validazione del modello.
+Questa tecnica ha permesso di aumentare il numero di esemplari ad un valore superiore a 300, combinando in modo causale tecniche come rotazioni, allungamenti ed accorciamenti, ridimensionamenti e cambi di luminosità.
+Per ogni Scarto è stata creata la rispettiva immagine binaria $L$.
+Ad ogni $L$ sono state applicate le stesse trasformazioni dell'immagine originale, così da generare automaticamente le etichette anche per le immagini create con il \textit{data augmentation}.
+
+Risulta che dopo solo due epoche la U-Net ha raggiunto un'accuratezza superiore al 95\%, identificando correttamente anche le colle che le erano mai state sottoposte durante l'allenamento.
+Ciò che più sorprende è la precisione con cui delinea l'area relativa alla colla.
+Per quanto riguarda i Conformi: il modello genera un numero di falsi positivi superiore al 4\%.
+
+Questa tecnica, se si riuscisse a superare l'ostacolo k
+Va detto però che, a causa delle dimensioni \textit{dataset},
 
 
