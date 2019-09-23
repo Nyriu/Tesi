@@ -3,29 +3,49 @@
 %!TEX encoding = UTF-8 Unicode
 
 \chapter{Introduzione}
-\todo[inline]
-{
-  si è provato tot e tot
-  risulta che gli autoencoder vanno bene
-  cos'è un autoencoder
-  come vengono usati di solito
-}
 
 \section{Il Problema Affrontato}
-il probelma era tot \\
-l'obbiettivo era ottenere tot
+\todo[inline]{l'obbiettivo era ottenere tot}
 
-In questa tesi si affronta il problema di riconoscere 
+In questa tesi si affronta il problema di rilevare la presenza di colla sul fondo di carcasse per motori elettrici, per mezzo di fotografie digitali.
+I pezzi da analizzare hanno una forma cilindrica cava con una delle due estremità sigillata.
+All'intero della cavità verrà alloggiato un motore elettrico per tergicristalli.
+Per poter fissare il motorino è richiesto che un anello di colla sia versato sulla parete verticale interna del pezzo.
+Poiché la colla è liquida succede che goccioli fino a raggiungere il fondo del pezzo, questo comporta il malfunzionamento del motore.
+Da ciò la necessita di rilevare in modo automatizzato quali pezzi presentano colla sul fondo, così da poterli scartare.
+
+In campo industriale è sempre più frequente che si decida di integrare processi già esistenti con fotocamere per l'acquisizione di immagini.
+\todo{magari aggiungere ref}
+Le fotocamere, che hanno dimensioni sempre più ridotte ma permettono comunque di scattare fotografie ad ottima risoluzione, possono essere inserite facilmente nella maggior parte dei processi industriali, permettendo di monitorare la produzione senza comprometterla.
+Inoltre le immagini raccolte possono andare a formare un \textit{dataset} che, utilizzato per addestrare algoritmi di \textit{machine learning}, permette non solo di monitorare il processo di produzione ma anche di controllarlo.
+In questo caso specifico si vuole che il sistema riconosca il maggior numero di carcasse che presentano colla sul fondo, queste verranno poi rimosse automaticamente dal processo di produzione.
+
+Il lavoro svolto in questa tesi nasce per cercare una risposta ad un problema reale.
+La soluzione che si propone è stata sviluppata durante un tirocinio, della durata di sei mesi, svolto presso beanTech \footnote{Collegamento al sito ufficiale URL: \url{https://www.beantech.it/}}.
+Il principale strumento è stato il linguaggio di programmazione \textit{python}, arricchito da librerie come:
+\textit{opencv} e \textit{pillow} per la manipolazione e trasformazione delle immagini; 
+\textit{numpy} e \textit{scikit-learn} per la gestione di dati numerici;
+\textit{pytorch} per tutto ciò che riguarda le reti neurali e convolutive;
+\textit{matplotlib} e \textit{pands} per la visualizzazione dei dati.
+Per l'allenamento dei modelli si è potuto sfruttare una NVIDIA$^{\tiny{\textregistered}}$ DGX Station\footnote{https://www.nvidia.com/en-us/data-center/dgx-station/} con quattro NVIDIA$^{\tiny{\textregistered}}$ TESLA$^{\tiny{\textregistered}}$ V100 da 32 GB/GPU l'una.
+Durante il tirocinio si è sviluppata anche una buona conoscenza dello strumento Docker, che permette di creare spazi virtuali in cui sviluppare, testare e distribuire le proprie soluzioni.
+
+
+
 
 
 
 \section{Metodi Alternativi Falliti}
-
+Si vuole precisare come il livello di sfida 
+\todo[inline]{si è provato tot e tot}
 
 
 
 \section{Il Metodo Utilizzato}
-% dire che librerie sono state usate
+\todo{qui dire che librerie sono state usate}
+\todo[inline]{risulta che gli autoencoder vanno bene}
+\todo[inline]{cos'è un autoencoder in maniera spiccia}
+\todo[inline]{come vengono usati di solito}
 
 \paragraph{Dimensionality Reduction}
 
