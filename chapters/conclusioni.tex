@@ -33,8 +33,35 @@ Soprattutto non è richiesto che il \textit{dataset} sia etichettato a mano, pra
 Inoltre, anche qualora l'inseme di immagini contenesse elementi della classe errata, ciò non sarebbe un problema.
 Queste caratteristiche permettono di creare nuovi \textit{dataset} in un tempo molto ridotto rispetto ad altre tecniche.
 
-\clearpage
 \section{Soluzione Alternativa}
+Una soluzione alternativa che merita \todo{forse dire meglio} sicuramente almeno un commento riguarda la segmentazione semantica e più nello specifico le U-Net~\cite{unet}.
+La segmentazione permette di associare ad ogni \textit{pixel} di un'immagine una specifica classe.
+Oggi viene usata nei sistemi di guida autonoma perché permette di identificare e distinguere con precisione la carreggiata, gli eventuali ostacoli, le altre macchine e soprattutto i pedoni e la segnaletica stradale.
+Le reti neurali utilizzate per questo compito vengono chiamate U-Net a causa della loro architettura che, come si vede in figura~\ref{fig:unet}, ricorda la forma di una U.
+Queste reti hanno una struttura simile agli \textit{autoencoder} perché si possono distinguere una fase discendete ed una di risalita.
+Ma ci sono due principali differenze:
+\begin{enumerate}
+  \item si vuole mantenere più informazione possibile.
+    Ciò viene effettuato raddoppiando il numero di canali in corrispondenza di ogni \textit{max-pooling layer}.
 
-Parlare delle UNET
+  \item in corrispondenza di layer con la stessa dimensione $n$ vengono effettuati dei TODO e si appiccica le feature in coda \todo{leggere paper per terminologia}.
+
+\end{enumerate}
+Le U-Net vengono allenate per fornire in \textit{output} un'immagine in cui aree di \textit{pixel} sono colorate con il colore della classe corrispondente.
+Sia $I$ l'immagine in ingresso e sia $L$ una copia di $I$ in cui ogni elemento è stato colorato a mano con il colore della relativa classe.
+Durante l'allenamento si vuole minimizzare la differenza tra l'immagine $L'$ creata dalla rete e la $L$ fornita.
+In questo modo il modello è spinto a creare delle relazioni tra ciò che è rappresentato nell'immagine in ingresso ed i colori attesi in uscita.
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[width=\textwidth]{unet}
+    \caption{Architettura di una U-Net}
+    \label{fig:unet}
+  \end{center}
+\end{figure}
+
+Nel nostro caso il problema di segmentazione, riconosciuto universalmente come un problema di grande complessità, viene semplificato notevolmente: si vuole riconoscere soltanto i \textit{pixel} relativi alla colla.
+Quindi verranno usati soltanto due colori, uno sarà associato alla colla, mentre il secondo a tutto ciò che non è colla.
+Il principale problema di 
+
 
