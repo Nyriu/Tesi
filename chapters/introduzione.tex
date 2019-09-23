@@ -25,13 +25,14 @@ Il principale strumento è stato il linguaggio di programmazione \textit{python}
 \textit{numpy} e \textit{scikit-learn} per la gestione di dati numerici;
 \textit{pytorch} per tutto ciò che riguarda le reti neurali e convolutive;
 \textit{matplotlib} e \textit{pands} per la visualizzazione dei dati.
-Per l'allenamento dei modelli si è potuto sfruttare una NVIDIA$^{\tiny{\textregistered}}$ DGX Station\footnote{https://www.nvidia.com/en-us/data-center/dgx-station/} con quattro NVIDIA$^{\tiny{\textregistered}}$ TESLA$^{\tiny{\textregistered}}$ V100 da 32 GB/GPU l'una.
+Per l'allenamento dei modelli si è potuto sfruttare una NVIDIA$^{\text{\textregistered}}$ DGX Station\footnote{https://www.nvidia.com/en-us/data-center/dgx-station/} con quattro NVIDIA$^{\text{\textregistered}}$ TESLA$^{\text{\textregistered}}$ V100 da 32 GB/GPU l'una.
 Durante il tirocinio si è sviluppata anche una buona conoscenza dello strumento Docker, che permette di creare spazi virtuali in cui sviluppare, testare e distribuire le proprie soluzioni.
 
 \section{Primi Tentativi}
-Le prime soluzioni proposte si sono rivelate non soddisfacenti, ma poiché fanno parte del percorso che ha portato allo sviluppo della soluzione descritta in questo documento, si è deciso di dedicare un breve commento a quelle più significative.
+%Le prime soluzioni proposte si sono rivelate non soddisfacenti, ma poiché fanno parte del percorso che ha portato allo sviluppo della soluzione descritta in questo documento, si è deciso di dedicare un breve commento a quelle più significative.
+Le prime soluzioni proposte si sono rivelate non soddisfacenti, ma poiché fanno parte del percorso che ha portato allo sviluppo della soluzione descritta in questo documento, si è deciso di dedicare un breve commento almeno alla prima di queste.
 
-\paragraph{ResNet e One Class SVM}
+\paragraph{ResNet e One Class SVM} \todo{fix me}
 %http://rvlasveld.github.io/blog/2013/07/12/introduction-to-one-class-support-vector-machines/
 Come si vedrà meglio poi, il \textit{dataset} è fortemente sbilanciato.
 Significa che disponiamo di pochissimi esemplari con colla sul fondo.
@@ -51,41 +52,32 @@ L'insieme di questi vettori andrà a costituire il \textit{dataset} con cui alle
 
 La soluzione appena descritta si è rivelata inadatta ai nostri scopi, fornendo un'accuratezza poco superiore al 60\%, molto inferiore agli obbiettivi che si vogliono raggiungere.
 
-%\paragraph{Histogram of Oriented Gradients e OCSVM}
-%Si è provato ad ottenere 
-%Un'alternativa alla soluzione precedente 
+%%\paragraph{Histogram of Oriented Gradients e OCSVM}
+%%Si è provato ad ottenere 
+%%Un'alternativa alla soluzione precedente 
+%
+%% tecniche classiche come quella roba della texture
+%
+%% tecniche classiche come HOG
+%
+%\paragraph{Manipolazione del Dataset}
+%Poiché, dopo svariati tentativi, si è verificato che utilizzare la \textit{One Class SVM} non 
+%% immagini a patch
+%
+%% logpolar immagini
 
-
-% tecniche classiche come quella roba della texture
-
-% tecniche classiche come HOG
-
-
-\paragraph{Manipolazione del Dataset}
-Poiché, dopo svariati tentativi, si è verificato che utilizzare la \textit{One Class SVM}
-% immagini a patch
-
-% logpolar immagini
-
-
-
-
-
-
-
-
-
-
-\clearpage
 \section{Il Metodo Utilizzato}
-\todo[inline]{risulta che gli autoencoder vanno bene}
-\todo[inline]{cos'è un autoencoder in maniera spiccia}
-\todo[inline]{come vengono usati di solito}
+La soluzione, che verrà descritta con maggiore dettaglio nelle prossime pagine, sfrutta un particolare tipo di rete neurale che prende il nome di \textit{autoencoder}.
+Il funzionamento di un \textit{autoencoder} può essere suddiviso in due momenti:
+nel primo i dati in ingresso vengono mappati in uno spazio con dimensionalità inferiore a quella di partenza, si può dire che il dato venga compresso;
+nel secondo il dato in forma compressa viene riportato nel suo spazio originale, venendo quindi decompresso.
+Un buon \textit{autoencoder} è in grado di fornire in \textit{output} un dato estremamente simile a quello che è stato ricevuto in ingresso, non bisogna pensare però che il suo scopo sia simulare la funzione identità; infatti un compito del genere non sarebbe di alcuna utilità.
+L'origine degli autoencoder non è ben definita però ad oggi hanno sono utilizzati per vari scopi.
+
 
 \paragraph{Dimensionality Reduction}
 
 \paragraph{Denoising}
 
-\paragraph{Anomaly Detection}
-
+\paragraph{Image Restoration}
 
