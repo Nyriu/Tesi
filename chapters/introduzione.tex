@@ -34,14 +34,20 @@ Durante il tirocinio si è sviluppata anche una buona conoscenza dello strumento
 \section{Primi Tentativi}
 Le prime soluzioni proposte si sono rivelate non soddisfacenti, ma poiché fanno parte del percorso che ha portato allo sviluppo della soluzione descritta in questo documento, si è deciso di dedicare un breve commento a quelle più significative.
 
-\section{ResNet e One Class SVM}
+\paragraph{ResNet e One Class SVM}
 %http://rvlasveld.github.io/blog/2013/07/12/introduction-to-one-class-support-vector-machines/
-Riconoscendo che il principale problema del \textit{dataset} è il fatto che sia sbilanciato, si è pensato a tecniche come la \textit{One Class Support Vector Machine}(OCSVM).
-Questa è una variazione dell'algoritmo di classificazione \textit{Support Vector Machine} pensato per poter essere allenato avendo dati di un'unica classe.
+Come si vedrà meglio poi, il \textit{dataset} è fortemente sbilanciato.
+Significa che disponiamo di pochissimi esemplari con colla sul fondo.
+La maggior parte dei modelli di \textit{machine learning} per la classificazione viene allenato con almeno due classi.
+In questo modo il modello, tramite il confronto, può trovare le caratteristiche che distinguono gli elementi di una classe dall'altra e quindi imparare a riconoscerli.
+Quando si dispone di una sola classe ciò non è possibile, bisogna quindi applicare metodi alternativi come la \textit{One Class Support Vector Machine}(OCSVM).
+Variazione dell'algoritmo di classificazione \textit{Support Vector Machine}, è stato pensato per poter essere allenato avendo dati di un'unica classe.
 Il modo più intuitivo per descrivere il funzionamento di una OCSVM è immaginare che il suo scopo sia creare la più piccola sfera contenente tutti i punti del \textit{dataset}.
-Così facendo tutti gli elementi distanti dal \textit{dataset} vengono considerati anomalie perché non cadono all'interno della sfera.
+Così facendo tutti gli elementi con caratteristiche differenti da quelle degli elementi del \textit{dataset} saranno posizionati a grande distanza dal centro della sfera, probabilmente cadranno all'esterno della sfera.
+La classificazione viene effettuata verificando se l'elemento cade entro i confini della sfera, in caso affermativo l'elemento appartiene alla classe utilizzata durante l'allenamento.
 
-Dato che l'informazione a nostra disposizione è contenuta in immagini si è dovuto deciso di usare una rete ResNet18~\cite{resnet} come \textit{feature extractor}
+Dato che l'informazione a nostra disposizione è contenuta in immagini si è deciso di usare una rete ResNet18~\cite{resnet} a cui è stato rimosso l'ultimo strato.
+La rete convolutiva permette di sintetizzare i dati contenuti in un'immagine 
 
 
 % ResNet + OCSVM 2 pagine
