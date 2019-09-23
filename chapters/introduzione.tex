@@ -28,9 +28,6 @@ Il principale strumento è stato il linguaggio di programmazione \textit{python}
 Per l'allenamento dei modelli si è potuto sfruttare una NVIDIA$^{\tiny{\textregistered}}$ DGX Station\footnote{https://www.nvidia.com/en-us/data-center/dgx-station/} con quattro NVIDIA$^{\tiny{\textregistered}}$ TESLA$^{\tiny{\textregistered}}$ V100 da 32 GB/GPU l'una.
 Durante il tirocinio si è sviluppata anche una buona conoscenza dello strumento Docker, che permette di creare spazi virtuali in cui sviluppare, testare e distribuire le proprie soluzioni.
 
-
-\clearpage
-
 \section{Primi Tentativi}
 Le prime soluzioni proposte si sono rivelate non soddisfacenti, ma poiché fanno parte del percorso che ha portato allo sviluppo della soluzione descritta in questo documento, si è deciso di dedicare un breve commento a quelle più significative.
 
@@ -46,31 +43,29 @@ Il modo più intuitivo per descrivere il funzionamento di una OCSVM è immaginar
 Così facendo tutti gli elementi con caratteristiche differenti da quelle degli elementi del \textit{dataset} saranno posizionati a grande distanza dal centro della sfera, probabilmente cadranno all'esterno della sfera.
 La classificazione viene effettuata verificando se l'elemento cade entro i confini della sfera, in caso affermativo l'elemento appartiene alla classe utilizzata durante l'allenamento.
 
-Dato che l'informazione a nostra disposizione è contenuta in immagini si è deciso di usare una rete ResNet18~\cite{resnet} a cui è stato rimosso l'ultimo strato.
-La rete convolutiva permette di sintetizzare i dati contenuti in un'immagine 
+\todo[inline]{dire che non si vuole che la OCSVM dia peso ai singoli pixel}
+Poiché l'informazione a nostra disposizione è contenuta in immagini si è deciso di usare una rete ResNet18~\cite{resnet} a cui è stato rimosso l'ultimo strato, in questo modo ritornerà vettori di 512 elementi.
+Solitamente una rete convolutiva sintetizza i dati contenuti in un'immagine e ritorna il valore della classe più probabile, ma rimuovendo l'ultimo strato si vanno a rimuovere quei neuroni che trasformano un vettore di 512 elementi nel valore della classe più probabile. % TODO non propriamente corretto
+Così facendo è possibile, per ogni immagine, ottenere un vettore di dimensioni ridotte.
+L'insieme di questi vettori andrà a costituire il \textit{dataset} con cui allenare la OCSVM.
 
+La soluzione appena descritta si è rivelata inadatta ai nostri scopi, fornendo un'accuratezza poco superiore al 60\%, molto inferiore agli obbiettivi che si vogliono raggiungere.
 
-% ResNet + OCSVM 2 pagine
+%\paragraph{Histogram of Oriented Gradients e OCSVM}
+%Si è provato ad ottenere 
+%Un'alternativa alla soluzione precedente 
+
 
 % tecniche classiche come quella roba della texture
 
 % tecniche classiche come HOG
 
-% AE solo fully connected - interessante vedere come l'immagine venisse imparata a pixel - 1pagina + qualche immagine?
 
-% AE solo convolutivi - incapacità di astrazione - mezza pagina
-
-% Symmetric Skip e come ricrea la colla 1 pagina
-
+\paragraph{Manipolazione del Dataset}
+Poiché, dopo svariati tentativi, si è verificato che utilizzare la \textit{One Class SVM}
 % immagini a patch
 
 % logpolar immagini
-
-%\section{Autoencoder e OCSVM}
-
-
-
-
 
 
 
@@ -83,7 +78,6 @@ La rete convolutiva permette di sintetizzare i dati contenuti in un'immagine
 
 \clearpage
 \section{Il Metodo Utilizzato}
-\todo{qui dire che librerie sono state usate}
 \todo[inline]{risulta che gli autoencoder vanno bene}
 \todo[inline]{cos'è un autoencoder in maniera spiccia}
 \todo[inline]{come vengono usati di solito}
