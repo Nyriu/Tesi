@@ -13,7 +13,7 @@ Poiché la colla è liquida succede che goccioli fino a raggiungere il fondo del
 Da ciò la necessita di rilevare in modo automatizzato quali pezzi presentano colla sul fondo, così da poterli scartare.
 
 In campo industriale è sempre più frequente che si decida di integrare processi già esistenti con fotocamere per l'acquisizione di immagini.
-\todo{magari aggiungere ref}
+%\todo{magari aggiungere ref}
 Le fotocamere, che hanno dimensioni sempre più ridotte ma permettono comunque di scattare fotografie ad ottima risoluzione, possono essere inserite facilmente nella maggior parte dei processi industriali, permettendo di monitorare la produzione senza comprometterla.
 Inoltre le immagini raccolte possono andare a formare un \textit{dataset} che, utilizzato per addestrare algoritmi di \textit{machine learning}, permette non solo di monitorare il processo di produzione ma anche di controllarlo.
 In questo caso specifico si vuole che il sistema riconosca il maggior numero di carcasse che presentano colla sul fondo, queste verranno poi rimosse automaticamente dal processo di produzione.
@@ -32,7 +32,7 @@ Durante il tirocinio si è sviluppata anche una buona conoscenza dello strumento
 %Le prime soluzioni proposte si sono rivelate non soddisfacenti, ma poiché fanno parte del percorso che ha portato allo sviluppo della soluzione descritta in questo documento, si è deciso di dedicare un breve commento a quelle più significative.
 Le prime soluzioni proposte si sono rivelate non soddisfacenti, ma poiché fanno parte del percorso che ha portato allo sviluppo della soluzione descritta in questo documento, si è deciso di dedicare un breve commento almeno alla prima di queste.
 
-\paragraph{ResNet e One Class SVM} \todo{fix me}
+\paragraph{ResNet e One Class SVM} %\todo{fix me}
 %http://rvlasveld.github.io/blog/2013/07/12/introduction-to-one-class-support-vector-machines/
 Come si vedrà meglio poi, il \textit{dataset} è fortemente sbilanciato.
 Significa che disponiamo di pochissimi esemplari con colla sul fondo.
@@ -44,7 +44,7 @@ Il modo più intuitivo per descrivere il funzionamento di una OCSVM è immaginar
 Così facendo tutti gli elementi con caratteristiche differenti da quelle degli elementi del \textit{dataset} saranno posizionati a grande distanza dal centro della sfera, probabilmente cadranno all'esterno della sfera.
 La classificazione viene effettuata verificando se l'elemento cade entro i confini della sfera, in caso affermativo l'elemento appartiene alla classe utilizzata durante l'allenamento.
 
-\todo[inline]{dire che non si vuole che la OCSVM dia peso ai singoli pixel}
+%\todo[inline]{dire che non si vuole che la OCSVM dia peso ai singoli pixel}
 Poiché l'informazione a nostra disposizione è contenuta in immagini si è deciso di usare una rete ResNet18~\cite{resnet} a cui è stato rimosso l'ultimo strato, in questo modo ritornerà vettori di 512 elementi.
 Solitamente una rete convolutiva sintetizza i dati contenuti in un'immagine e ritorna il valore della classe più probabile, ma rimuovendo l'ultimo strato si vanno a rimuovere quei neuroni che trasformano un vettore di 512 elementi nel valore della classe più probabile. % TODO non propriamente corretto
 Così facendo è possibile, per ogni immagine, ottenere un vettore di dimensioni ridotte.
@@ -103,3 +103,5 @@ Poiché un \textit{autoencoder} può essere facilmente allenato con la classe di
 Questo significa che la rete fornirà un \textit{output} molto simile a ciò che ha ricevuto in ingresso, se e solo se l'\textit{input} ha caratteristiche simili agli elementi del \textit{dataset}.
 Il dato in ingresso, se molto distante dai valori abituali, sarà compresso in un modo che, probabilmente, non ne mantiene le caratteristiche principali.
 Ciò comporta, dopo la decompressione, ad ottenere un \textit{output} distante dal dato originale, permettendo di classificare quest'ultimo come anomalia.
+
+Il problema descritto in questa tesi si presta per essere affrontato come un problema di \textit{anomaly detection}.
