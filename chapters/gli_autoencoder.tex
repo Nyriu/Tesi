@@ -130,15 +130,11 @@ Si vede chiaramente come valori troppo piccoli di $\alpha$ fanno in modo che i p
 Chiarito il modo in cui la rete apprende, resta da specificare il modo in cui il \textit{dataset} venga fornito alla rete durante l'allenamento.
 Un allenamento è composto da svariate epoche ed ogni epoca è suddivisa in \textit{batch}.
 Un \textit{batch} è un gruppo di elementi, questi gruppi sono creati in modo da formare una partizione del \textit{dataset}.
-Dopo che la rete ha elaborato i dati contenuti in un singolo \textit{batch} viene utilizzato l'lagoritmo di \textit{backpropagation} per aggironane i pesi.
+Dopo che la rete ha elaborato i dati contenuti in un singolo \textit{batch} viene utilizzato l'algoritmo di \textit{backpropagation} per aggiornane i pesi.
 Un epoca si conclude soltanto quando questo procedimento è stato effettuato per tutti i gruppi.
 Quindi ad ogni epoca corrisponde la predizione e l'aggiornamento dei pesi per ciascun elemento del \textit{dataset}.
-Il numero delle epoche e la dimensione dei \textit{batch} devono essere determinati in modo empirico.
+Il numero delle epoche e la dimensione dei \textit{batch} devono essere determinati in modo empirico. %, solitamente entrambi sono si aggirano nell'ordine delle centinaia mentre la dimensione dei \textit{batch}.
 
-Gli \textit{autoencoder} come quello in figura~\ref{fig:semplice_ae} hanno dato risultati equiparabili, se non migliori, a quelli ottenuti con metodi di \textit{dimensionality reduction} classici (\textit{cfr}. \cite{ng_sparse_ae},\cite{pca_vs_ae_1}).
-Essendo gli AE delle reti neurali, è possibile aggiungere vari strati densi, come si vede in figura~\ref{fig:stacked_ae}.
-Questi \textit{autoencoder} prendono il nome di AE multi-strato o \textit{stacked autoencoder} ed hanno capacità astrattive maggiori. % TODO stai attento
-Allo stesso modo è anche possibile aggiungere strati convolutivi, convolutivi trasposti oppure di \textit{down} e di \textit{up-sampling}.
 
 \begin{figure}[ht] % TODO rifare con tikz
   \begin{center}
@@ -148,6 +144,10 @@ Allo stesso modo è anche possibile aggiungere strati convolutivi, convolutivi t
   \caption{Architettura di un \textit{stacked autoencoder}}
   \label{fig:stacked_ae}
 \end{figure}
+Gli \textit{autoencoder} come quello in figura~\ref{fig:semplice_ae} hanno dato risultati equiparabili, se non migliori, a quelli ottenuti con metodi di \textit{dimensionality reduction} classici (\textit{cfr}. \cite{ng_sparse_ae},\cite{pca_vs_ae_1}).
+Essendo gli AE delle reti neurali, è possibile aggiungere vari strati densi, come si vede in figura~\ref{fig:stacked_ae}.
+Questi \textit{autoencoder} prendono il nome di AE multi-strato o \textit{stacked autoencoder} ed hanno capacità astrattive maggiori. % TODO stai attento
+Allo stesso modo è anche possibile aggiungere strati convolutivi, convolutivi trasposti oppure di \textit{down} e di \textit{up-sampling}.
 
 \paragraph{Strati Convolutivi}
 Un \textit{convolutional layer} è uno strato in cui i pesi hanno la forma di un filtro convolutivo, in questo modo verrà mantenuta anche dell'informazione spaziale.
@@ -259,6 +259,6 @@ Lo scopo di questi strati è simulare l'opposto di un'operazione convolutiva: se
 Il modo più semplice per ottenere questo effetto è effettuare una convoluzione con un \textit{zero padding} sufficientemente grande, come si vede in figura~\ref{fig:conv-transposed}.
 % TODO spiegare perché trasposto
 %Viene usato il termine trasposto perché una convoluzione può 
-\todo[inline]{spiegare come i convolutivi possono essere rappresentati da matrici}
+%\todo[inline]{spiegare come i convolutivi possono essere rappresentati da matrici}
 
 
