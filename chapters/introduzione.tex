@@ -9,44 +9,45 @@ In questa tesi si affronta il problema di rilevare la presenza di colla sul fond
 I pezzi da analizzare hanno una forma cilindrica cava con una delle due estremità sigillata.
 All'intero della cavità verrà alloggiato un motore elettrico per tergicristalli.
 Per poter fissare il motorino è richiesto che un anello di colla sia versato sulla parete verticale interna del pezzo.
-Poiché la colla è liquida succede che goccioli fino a raggiungere il fondo del pezzo, questo comporta il malfunzionamento del motore.
-Da ciò la necessita di rilevare in modo automatizzato quali pezzi presentano colla sul fondo, così da poterli scartare.
+Poiché la colla è liquida è possibile che goccioli fino a raggiungere il fondo del pezzo, questo comporta il malfunzionamento del motore.
+Da ciò nasce la necessità di rilevare in modo automatizzato quali pezzi presentano colla sul fondo, così da poterli scartare.
 
-In campo industriale è sempre più frequente che si decida di integrare processi già esistenti con fotocamere per l'acquisizione di immagini.
+In campo industriale è sempre più frequente la scelta di integrare processi già esistenti con fotocamere per l'acquisizione di immagini.
 %\todo{magari aggiungere ref}
 Le fotocamere, che hanno dimensioni sempre più ridotte ma permettono comunque di scattare fotografie ad ottima risoluzione, possono essere inserite facilmente nella maggior parte dei processi industriali, permettendo di monitorare la produzione senza comprometterla.
-Inoltre le immagini raccolte possono andare a formare un \textit{dataset} che, utilizzato per addestrare algoritmi di \textit{machine learning}, permette non solo di monitorare il processo di produzione ma anche di controllarlo.
+Inoltre, le immagini raccolte possono andare a formare un \textit{dataset} che, utilizzato per addestrare algoritmi di \textit{machine learning}, permette non solo di monitorare il processo di produzione, ma anche di controllarlo.
 In questo caso specifico si vuole che il sistema riconosca il maggior numero di carcasse che presentano colla sul fondo, queste verranno poi rimosse automaticamente dal processo di produzione.
 
 Il lavoro svolto in questa tesi nasce per cercare una risposta ad un problema reale.
 La soluzione che si propone è stata sviluppata durante un tirocinio, della durata di sei mesi, svolto presso beanTech \footnote{Collegamento al sito ufficiale URL: \url{https://www.beantech.it/}}.
-Il principale strumento è stato il linguaggio di programmazione \textit{python}, arricchito da librerie come:
-\textit{opencv}\footnote{TODO mettere tutti i bei link?} e \textit{pillow} per la manipolazione e trasformazione delle immagini; 
-\textit{numpy} e \textit{scikit-learn} per la gestione di dati numerici;
-\textit{pytorch} per tutto ciò che riguarda le reti neurali e convolutive;
-\textit{matplotlib} e \textit{pands} per la visualizzazione dei dati.
-Per l'allenamento dei modelli si è potuto sfruttare una NVIDIA$^{\text{\textregistered}}$ DGX Station\footnote{https://www.nvidia.com/en-us/data-center/dgx-station/} con quattro NVIDIA$^{\text{\textregistered}}$ TESLA$^{\text{\textregistered}}$ V100 da 32 GB/GPU l'una.
+Il principale strumento utilizzato è stato il linguaggio di programmazione \textit{python}, arricchito da librerie come:
+\todo{mettere link}
+\textit{opencv}\footnote{URL: \url{https://opencv.org/}} e \textit{pillow}\footnote{URL: \utl{https://pillow.readthedocs.io/en/stable/}} per la manipolazione e trasformazione delle immagini; 
+\textit{numpy}\footnote{URL: \url{https://numpy.org/}} e \textit{scikit-learn}\footnote{URL: \url{https://scikit-learn.org/}} per la gestione di dati numerici;
+\textit{pytorch}\footnote{URL: \url{https://pytorch.org/}} per tutto ciò che riguarda le reti neurali e convolutive;
+\textit{matplotlib}\footnote{URL: \url{https://matplotlib.org/}} e \textit{pandas}\footnote{URL: \url{https://pandas.pydata.org/}} per la visualizzazione dei dati.
+Per l'allenamento dei modelli si è potuto sfruttare una NVIDIA$^{\text{\textregistered}}$ DGX Station\footnote{URL: \url{https://www.nvidia.com/en-us/data-center/dgx-station/}} con quattro NVIDIA$^{\text{\textregistered}}$ TESLA$^{\text{\textregistered}}$ V100 da 32 GB/GPU l'una.
 Durante il tirocinio si è sviluppata anche una buona conoscenza dello strumento Docker, che permette di creare spazi virtuali in cui sviluppare, testare e distribuire le proprie soluzioni.
 
 \section{Primi Tentativi}
 %Le prime soluzioni proposte si sono rivelate non soddisfacenti, ma poiché fanno parte del percorso che ha portato allo sviluppo della soluzione descritta in questo documento, si è deciso di dedicare un breve commento a quelle più significative.
-Le prime soluzioni proposte si sono rivelate non soddisfacenti, ma poiché fanno parte del percorso che ha portato allo sviluppo della soluzione descritta in questo documento, si è deciso di dedicare un breve commento almeno alla prima di queste.
+Le prime soluzioni proposte si sono rivelate non soddisfacenti, ma poiché fanno parte del percorso che ha portato allo sviluppo della soluzione descritta in questo documento, si è deciso di dedicare un breve commento alla tecnica che più si discosta dalla soluzione finale.
 
 \paragraph{ResNet e One Class SVM} %\todo{fix me}
 %http://rvlasveld.github.io/blog/2013/07/12/introduction-to-one-class-support-vector-machines/
 Come si vedrà meglio poi, il \textit{dataset} è fortemente sbilanciato.
-Significa che disponiamo di pochissimi esemplari con colla sul fondo.
+Si dispone di pochissimi esemplari con colla sul fondo, per cui si è considerata soltanto la classe di carcasse idonee.
 La maggior parte dei modelli di \textit{machine learning} per la classificazione viene allenato con almeno due classi.
 In questo modo il modello, tramite il confronto, può trovare le caratteristiche che distinguono gli elementi di una classe dall'altra e quindi imparare a riconoscerli.
 Quando si dispone di una sola classe ciò non è possibile, bisogna quindi applicare metodi alternativi come la \textit{One Class Support Vector Machine}(OCSVM).
 Variazione dell'algoritmo di classificazione \textit{Support Vector Machine}, è stato pensato per poter essere allenato avendo dati di un'unica classe.
 Il modo più intuitivo per descrivere il funzionamento di una OCSVM è immaginare che il suo scopo sia creare la più piccola sfera contenente tutti i punti del \textit{dataset}.
-Così facendo tutti gli elementi con caratteristiche differenti da quelle degli elementi del \textit{dataset} saranno posizionati a grande distanza dal centro della sfera, probabilmente cadranno all'esterno della sfera.
+Così facendo tutti gli elementi con caratteristiche differenti da quelle degli elementi del \textit{dataset} saranno posizionati a grande distanza dal centro della sfera, probabilmente cadranno all'esterno di essa.
 La classificazione viene effettuata verificando se l'elemento cade entro i confini della sfera, in caso affermativo l'elemento appartiene alla classe utilizzata durante l'allenamento.
 
 %\todo[inline]{dire che non si vuole che la OCSVM dia peso ai singoli pixel}
-Poiché l'informazione a nostra disposizione è contenuta in immagini si è deciso di usare una rete ResNet18~\cite{resnet} a cui è stato rimosso l'ultimo strato, in questo modo ritornerà vettori di 512 elementi.
-Solitamente una rete convolutiva sintetizza i dati contenuti in un'immagine e ritorna il valore della classe più probabile, ma rimuovendo l'ultimo strato si vanno a rimuovere quei neuroni che trasformano un vettore di 512 elementi nel valore della classe più probabile. % TODO non propriamente corretto
+Poiché l'informazione a nostra disposizione è contenuta in immagini, si è deciso di usare una rete ResNet18~\cite{resnet} a cui è stato rimosso l'ultimo strato, in questo modo ritornerà vettori di 512 elementi.
+Solitamente una rete convolutiva sintetizza i dati contenuti in un'immagine e ritorna il valore della classe più probabile, ma rimuovendo l'ultimo strato si vanno a rimuovere quei neuroni che trasformano il vettore di 512 elementi nel valore della classe più probabile. % TODO non propriamente corretto
 Così facendo è possibile, per ogni immagine, ottenere un vettore di dimensioni ridotte.
 L'insieme di questi vettori andrà a costituire il \textit{dataset} con cui allenare la OCSVM.
 
