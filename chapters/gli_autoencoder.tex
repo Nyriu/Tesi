@@ -80,13 +80,57 @@ Un'altra funzione di attivazione, molto utilizzata nei nodi interni delle reti, 
   f(z) = max(0,z)
 \end{equation*} %TODO fare plot?
 La funzione \textit{ReLU}, che significa \textit{Rectified Linear Unit}, è stata pensata per simulare ciò che avviene in un vero neurone:
-fino a che il segnale in ingresso non supera una certa soglia il neurone rione inattivo, ciò corrisponde a valori di $z$ inferiori o pari a zero;
-appena il segnale diventa abbastanza intenso, allora il neurone inizia a trasmettere 
-
+fino a che il segnale in ingresso non supera una certa soglia il neurone rimane inattivo, ciò corrisponde a valori di $z$ inferiori o pari a zero;
+appena il segnale diventa abbastanza intenso, allora il neurone inizia a trasmettere.
+All'aumentare della potenza del segnale in ingresso corrisponde un aumento proporzionale anche in uscita.
 
 Quando uno strato della rete è composto da più neuroni, ciascuno di essi riceverà una copia di $x$ e ritornerà un \textit{output} in base ai propri $W$ e $b$.
 %In figura~\ref{fig:semplice_ae} si può notare come gli $x_i$ vengano distribuiti su tutti i nodi del primo strato e come il loro risultato venga a sua volta distribuito sulle altre unità.
 Dato che il numero di connessioni cresce rapidamente, essendo pari a $n*m$ per ogni strato (con $n$ la dimensione del vettore in ingresso ed $m$ di quello in uscita), questi strati vengono chiamati densamente connessi o, più semplicemente, densi.
+
+Dato che l'\textit{input} di una funzione d'attivazione è il risultato del prodotto vettoriale tra $x$ e i pesi del neurone, bisogna chiarire come questi pesi vengano aggiustati.
+In altre parole bisogna definire in che modo la rete venga allenata.
+
+Facendo rifermento a quanto spigato in \cite{ng_deep_learning}, si consideri una rete il cui scopo è determinare se in un'immagine è raffigurato un gatto.
+Il caso affermativo corrisponde a 1, quello negativo a 0.
+Se si effettua una linearizzazione dell'immagine in un vettore $x$, è possibile fornire il vettore appena creato in ingesso alla rete neurale in figura~\ref{fig:nn}.
+\begin{figure}[ht]
+  \begin{center}
+    \centering\includegraphics[width=0.55\textwidth]{nn}
+  \end{center}
+  \caption{Semplice rete neurale}
+  \label{fig:nn}
+\end{figure}
+Il \textit{dataset} sarà quindi formato da vettori $x$ etichettati con valori $y \in {0,1}$.
+Si fa notare che l'allenamento di una rete neurale può essere ricondotto ad un problema di minimizzazione, in cui si vuole minimizzare le predizioni sbagliate.
+L'algoritmo con cui si allenano le reti neurali viene chiamato \textit{backpropagation} e può essere diviso in due momenti:
+nel primo i calcoli vengono effettuati da sinistra a destra, così da ottenere la predizione $\hat y$;
+nel secondo, dopo aver calcolato l'errore della predizione, i pesi, partendo da destra, vengono aggiornati.
+In questo esempio lo scarto verrà calcolato usando la funzione di costo logaritmica, definita come:
+\begin{equation} \label{eq:log-cost}
+  L(\hat y, y) = - ln(\hat y) - (1-y) ln(1- \hat y)
+\end{equation}
+Si può notare come l'equazione~\ref{eq:log-cost} tenda a 0 quando i valori di $\hat y$ e $y$ sono simili, mentre tenderà a valori molto grandi se la predizione non è corretta; infatti $L(\hat y, y)= + \infty$.
+A questo punto i pesi di ogni \textit{layer} $l$ possono essere aggiornati con:
+\begin{align} \label{eq:grad-desc}
+  W^{[l]} &= W^{[l]} - \alpha \frac{\partial L}{\partial W^{[l]}} \\ \\
+  b^{[l]} &= b^{[l]} - \alpha \frac{\partial L}{\partial b^{[l]}}
+\end{align}
+Il parametro $\alpha$ prende il nome di tasso di apprendimento, in inglese \textit{learning rate}, mentre $\partial L / \partial W^{[l]} $ e $\partial L / \partial b^{[l]}$ sono dei gradienti.
+In pratica si sta applicando l'algoritmo di \textit{gradient descent} ad ogni neurone della rete.
+L'intuizione con cui quest'ultimo opera è sfruttare la derivata di una funzione $f(x)$ per avvicinarsi, al crescere delle iterazioni, al suo minimo.
+Se il segno della derivata $f'(x)$ è negativo significa che il valore di $f$, calcolato nell'immediato intorno destro di $x$, sarà minore di $f(x)$.
+Viceversa, se la derivata ha segno positivo, $f$ sarà più piccola per valori a sinistra di $x$.
+
+Nell'equazione~\ref{eq:grad-desc} si può vedere come il valore del gradiente vada a modificare i pesi, proprio con le modalità appena descritte.
+Ora anche lo scopo del parametro $\alpha$ risulta più chiaro: definisce quanto aggiornare i pesi del neurone.
+Trovare un adeguato tasso di apprendimento è fondamentale se si vuole alleare correttamente una rete.
+Si vede chiaramente come valori troppo piccoli di $\alpha$ fanno in modo che i pesi non vengono aggiornati affatto, mentre valori troppo grandi potrebbero portare l'algoritmo di \textit{backpropagation} a non convergere. % TODO va giustificato?
+
+Chiarito il modo in cui la rete apprende, resta da specificare il modo in cui il \textit{dataset} viene fornito alla rete durante l'allenamento.
+Un allenamento è composto da svariate epoche, ad ogni 
+
+
 % TODO qui parentesi sulla back prop?
 \todo[inline]{qui parentesi sulla back prop?}
 \todo[inline]{qui parentesi sulla (MSE)Loss?}
