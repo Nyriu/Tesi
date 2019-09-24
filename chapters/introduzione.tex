@@ -97,4 +97,9 @@ Questo tipo di applicazione può essere sfruttato per effettuare denoising ad im
 %\paragraph{Image Restoration}
 
 \paragraph{Anomaly Detection}
-Anomaly detection
+\textit{Anomaly detection} significa letteralmente rilevamento delle anomalie.
+Questa tecnica permette, dopo aver definito quali sono i valori attesi, di riconoscere quando i dati ricevuti si allontanano da quelli che ci si aspettava.
+Poiché un \textit{autoencoder} può essere facilmente allenato con la classe di valori canonici, imparerà una funzione di compressione adatta a comprimere i valori più frequenti.
+Questo significa che la rete fornirà un \textit{output} molto simile a ciò che ha ricevuto in ingresso, se e solo se l'\textit{input} ha caratteristiche simili agli elementi del \textit{dataset}.
+Il dato in ingresso, se molto distante dai valori abituali, sarà compresso in un modo che, probabilmente, non ne mantiene le caratteristiche principali.
+Ciò comporta, dopo la decompressione, ad ottenere un \textit{output} distante dal dato originale, permettendo di classificare quest'ultimo come anomalia.
