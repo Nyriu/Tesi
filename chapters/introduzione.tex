@@ -72,12 +72,29 @@ Il funzionamento di un \textit{autoencoder} può essere suddiviso in due momenti
 nel primo i dati in ingresso vengono mappati in uno spazio con dimensionalità inferiore a quella di partenza, si può dire che il dato venga compresso;
 nel secondo il dato in forma compressa viene riportato nel suo spazio originale, venendo quindi decompresso.
 Un buon \textit{autoencoder} è in grado di fornire in \textit{output} un dato estremamente simile a quello che è stato ricevuto in ingresso, non bisogna pensare però che il suo scopo sia simulare la funzione identità; infatti un compito del genere non sarebbe di alcuna utilità.
-L'origine degli autoencoder non è ben definita però ad oggi hanno sono utilizzati per vari scopi.
-
+L'origine degli autoencoder non è ben definita però ad oggi sono utilizzati per vari scopi.
 
 \paragraph{Dimensionality Reduction}
+Sappiamo che gli \textit{autoencoder} possono essere sfruttati per trovare, fissata una dimensionalità, spazi latenti efficaci.
+Questa capacità ricorda tecniche di \textit{dimensionality reduction} come la \textit{Principal Component Analysis}(PCA).
+Non a caso infatti molti studi, come ad esempio quello intitolato \textit{PCA vs Autoencoders for Dimensionality Reduction}~\cite{pca_vs_ae_1} mettono in luce come gli \textit{autoencoder} siano in grado di equiparare, se non superare, gli approcci classici.
+Il principale vantaggio degli \textit{autoencoder} è la possibilità di creare una funzione di compressione specifica per il problema che si vuole risolvere.
+Mentre gli approcci come la PCA operano, definita una dimensione da raggiungere, seguendo uno stesso algoritmo per ogni applicazione.
 
 \paragraph{Denoising}
+Il \textit{denoising} è una tecnica con cui si rimuove, a partire da un dato non puro, tutta l'informazione considerata rumore.
+In figura~\ref{fig:denoise_example} si può vedere come dopo aver introdotto del rumore alle immagini più a sinistra, ottenendo quelle nella seconda colonna, un autoencoder sia in grado di ripristinarle.
+L'ultima colonna mostra le immagini generate dalla rete.
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics{denoise}
+  \end{center}
+  \caption{Esempio di applicazione di un \textit{Denoising Autoencoder} URL:\url{http://users.cecs.anu.edu.au/~Tom.Gedeon/conf/ABCs2018/paper/ABCs2018_paper_20.pdf}}
+  \label{fig:denoise_example}
+\end{figure}
+Questo tipo di applicazione può essere sfruttato per effettuare denoising ad immagini di radiografie in campo medico.
 
-\paragraph{Image Restoration}
+%\paragraph{Image Restoration}
 
+\paragraph{Anomaly Detection}
+Anomaly detection
