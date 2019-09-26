@@ -1010,6 +1010,95 @@ Si può dire che gli scarti sintetici siano indistinguibili dagli scarti origina
   \end{center}
 \end{figure}
 
+\section{Post-Processing}
+\todo[inline]{sistemare}
+Dopo aver osservato la precisione con cui i Conformi vengono riprodotti bisogna verificare come l'AE si comporti con le immagini della classe Scarto.
+In figura~\ref{fig:scarti_in_out} si possono osservare alcuni esempi di Scarti all'ingresso e all'uscita dell'\textit{autoencoder}.
+Notare come nelle prima coppia la colla sia stata rimossa molto bene e la carcassa ricostruita abbia le caratteristiche di quella originale.
+Purtroppo nella seconda coppia si vede come le zone più scure tipiche di alcune carcasse con colla, causino la creazione di rumore nell'immagine in \textit{output}.
+Proprio questo motivo ha portato alla creazione degli Scarti Sintetici.
+Si fa subito presente che gli Scarti Sintetici sono stati generati a partire da un gruppo di Conformi differente dall'insieme di immagini usate durante l'allenamento.
+
+\begin{figure}[ht] % TODO
+  \begin{center}
+    \begin{tabular}{c}
+
+      %\begin{subfigure}{\linewidth}
+      %  \begin{center}
+      %    \includegraphics[width=.3\textwidth]{128___1315_1_0_1_OnLineAnalysis_in}
+      %    \includegraphics[width=.3\textwidth]{128___1315_1_0_1_OnLineAnalysis_out}
+      %  \end{center}
+      %\end{subfigure} \\ \\
+
+      %\begin{subfigure}{\linewidth}
+      %  \begin{center}
+      %    \includegraphics[width=.3\textwidth]{128___14147_1_0_1_OnLineAnalysis_in}
+      %    \includegraphics[width=.3\textwidth]{128___14147_1_0_1_OnLineAnalysis_out}
+      %  \end{center}
+      %\end{subfigure} \\ \\
+
+      \begin{subfigure}{\linewidth}
+        \begin{center}
+          \includegraphics[width=.24\textwidth]{128___22886_1_1_1_OnLineAnalysis_in}
+          \includegraphics[width=.24\textwidth]{128___22886_1_1_1_OnLineAnalysis_out}
+        \end{center}
+      \end{subfigure} \\ \\
+
+      \begin{subfigure}{\linewidth}
+        \begin{center}
+          \includegraphics[width=.24\textwidth]{128___33667_0_0_1_OnLineAnalysis_in}
+          \includegraphics[width=.24\textwidth]{128___33667_0_0_1_OnLineAnalysis_out}
+        \end{center}
+      \end{subfigure}
+
+    \end{tabular}
+    \caption{Esempi di Scarti e loro ricostruzione}
+    \label{fig:scarti_in_out}
+  \end{center}
+\end{figure}
+
+L'algoritmo di \textit{post-processing} è stato sviluppato usando immagini-differenza generate da Scarti Sintetici, perché risultano più pulite.
+Inoltre in questo modo ci si aspetta che siano siano più verosimili a quelle che si otterrebbero durante la messa in opera del sistema.
+
+In figura~\ref{fig:post_proc_scarto_sin} si possono vedere l'immagine di partenza (in alto a sinistra), l'immagine ricostruita dall'\textit{autoencoder} (in alto a destra), il risultato del post-processing della differenza fra le due (in basso a destra) e la predizione finale.
+L'algoritmo di \textit{post-processing}, ottenuto con metodi empirici, opera in questo modo:
+\begin{itemize}
+  \item viene calcolato il valore assoluto della differenza \textit{pixel} per \textit{pixel} tra le immagini d'\textit{input} e d'\textit{output}.
+    Il risultato di questo passaggio non è stato mostrato, perché i valori non sono molto grandi.
+    Ciò significa che l'immagine, principalmente nera, contiene alcune aree con \textit{pixel} di colore grigio scuro;
+
+  \item viene effettuata una doppia sogliatura sull'immagine-differenza.
+    In questo modo tutti i \textit{pixel} con valori sufficientemente grandi vengono ricolorati di bianco, mentre i restanti sono mappati a $0$;
+
+  %\item viene applicato un filtro che rimuove tutti i \textit{pixel} isolati o che compongono un gruppo troppo piccolo TODO in caso estendere...
+
+  \item viene utilizzato un algoritmo di rilevamento di macchie che sfrutta la differenza di gaussiane.
+    Si effettuano varie convoluzioni con filtro di Gauss, in questo modo le macchie più piccole verranno sfumate sempre più fino a scomparire.
+    Effettuando differenze tra immagini più o meno sfumate si può determinare se la macchia ha dimensioni sufficientemente grandi e stimarne il centro.
+  %https://en.wikipedia.org/wiki/Difference_of_Gaussians
+
+\end{itemize}
+
+Si è verificato che questo tipo di manipolazione non generasse falsi positivi: i valori delle soglie e la dimensione minima delle macchie che si rilevano sono tali da rimuovere il rumore delle immagini-differenza.
+
+Va detto che molti Scarti vengono predetti come tali anche a causa delle fasce più scure, che non permettono una ricostruzione fedele  della carcassa oppure risultano grandi a sufficienza nell'immagine-differenza.
+
+\begin{figure}[ht] % TODO
+  \begin{center}
+    \begin{tabular}{cc}
+
+      \includegraphics[width=.24\textwidth]{128___17299_0_1_1_OnLineAnalysis_con_colla_in} &
+      \includegraphics[width=.24\textwidth]{128___17299_0_1_1_OnLineAnalysis_con_colla_out} \\
+      \includegraphics[width=.24\textwidth]{128___17299_0_1_1_OnLineAnalysis_con_colla_to_blob} &
+      \includegraphics[width=.24\textwidth]{128___17299_0_1_1_OnLineAnalysis_con_colla_detected}
+
+    \end{tabular}
+    \caption{Post-processing applicato ad uno Scarto Sintetico}
+    \label{fig:post_proc_scarto_sin}
+  \end{center}
+\end{figure}
+
+\clearpage
 
 
 

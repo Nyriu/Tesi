@@ -293,3 +293,42 @@ Il modo più semplice per ottenere questo risultato è effettuare una convoluzio
 
 
 \todo[inline]{spostare qua architettura}
+\section{Il modello}
+\todo[inline]{spostare dettagli dell'archittura il autoendoer}
+\todo[inline]{lasciare qua i dettagli sull'addestramento}
+L'architettura illustrata in figura~\ref{fig:ae16_arch}\footnote{L'immagine è stata generata usando \url{https://github.com/HarisIqbal88/PlotNeuralNet}} ha dato i risultati migliori. % TODO dire meglio
+Elenchiamo le sue caratteristiche principali:
+\begin{itemize}
+  \item l'immagine in ingresso è in scala di grigi e di lato $200$ \textit{pixel};
+
+  \item ogni strato convolutivo o convolutivo trasposto ha filtri di dimensione $5$x$5$, ha \textit{stride} pari a $1$, non ha nessun \textit{padding} e tutti (tranne il primo e l'ultimo strato) hanno $ch_{in}=ch_{out}=32$.
+    %Il primo strato ha un canale ingresso, dato che l'\textit{input} non è a colori,
+    Inoltre tutti i \textit{layer} utilizzano la funzione di attivazione \textit{ReLU}, fatta eccezione per l'ultimo in cui è presente la funzione sigmoidea.
+    Infatti, le immagini, prima di essere passate alla rete, vengono normalizzate in $[0,1]$, ciò facilita i calcoli effettuati all'interno dell'\textit{autoencoder}.
+    L'output della rete, appartenente a $[0,1]$, verrà mappato nuovamente nell'intervallo $[0,255]$.
+
+  \item tutti i \textit{max-pool layer} hanno sia il filtro che il passo pari a 2;
+
+  \item il primo strato denso prende un vettore di $24*24*32=18432$ valori e lo mappa in uno spazio $2000$-dimensionale.
+    Questa corrisponde alla massima compressione dell'informazione;
+
+  \item il secondo strato denso effettua l'operazione opposta, mappando il vettore dello spazio latente in uno che possa avere le dimensioni di $24*24*32$.
+
+\end{itemize}
+%TODO fare tabella con i parametri di ogni strato?
+Complessivamente la rete deve imparare  $73 832 000$ parametri.
+Di questi metà si trovano nell'\textit{encoder} e metà nel \textit{decoder}.
+Questo valore potrebbe sembrare grande ma, osservando che la VGG11~\cite{vgg} ha più di 130 milioni di parametri, risulta ragionevole.
+Si fa notare che la maggior parte dei parametri è contenuto nei due strati densi.
+Sappiamo che il numero di parametri di uno strato denso è dato da $n * m$, con $n$ ed $m$ le dimensioni dei vettori in ingresso ed in uscita.
+Nel nostro caso abbiamo due strati da $18432 * 2000 = 36 864 000$ parametri l'uno.
+I quattro \textit{layer} convolutivi e convolutivi trasposti da 32 canali in ingresso ed in uscita hanno $25600$ parametri ciascuno.
+
+\begin{figure}[ht]
+  \begin{center}
+    \includegraphics[width=.58\textwidth]{ae16}
+    \caption{L'architettura della rete proposta}
+    \label{fig:ae16_arch}
+  \end{center}
+\end{figure}
+
