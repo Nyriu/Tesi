@@ -6,8 +6,8 @@
 In questo capitolo verranno descritti la struttura ed il funzionamento degli autoencoder.
 La parte centrale del capitolo è dedicata alle modalità con cui una rete neurale viene allenata.
 
-\section{La Struttura di un Autoencoder}
-Un \textit{Autoencoder}(AE) è un particolare tipo di rete neurale.
+\section{La struttura di un autoencoder}
+Un \textit{autoencoder}(AE) è un particolare tipo di rete neurale.
 Può essere diviso in due componenti: il primo viene chiamato \textit{encoder}, mentre il secondo prende il nome di \textit{decoder}.
 Lo scopo dell'\textit{encoder} è codificare il dato in ingresso in una versione compressa.
 Sia $n$ la dimensionalità dell'\textit{input}, quando il dato raggiunge il collo di bottiglia dell'AE, ovvero la parte centrale della rete, ha raggiunto il livello di massima compressione, sia $m$ la sua nuova dimensionalità con $m<n$.
@@ -253,3 +253,7 @@ Il modo più semplice per ottenere questo risultato è effettuare una convoluzio
     \caption{Esempio di strato convolutivo trasposto}
     \label{fig:conv-transposed}
 \end{figure}
+
+
+
+\todo[inline]{spostare qua architettura}

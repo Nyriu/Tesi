@@ -3,10 +3,10 @@
 %!TEX encoding = UTF-8 Unicode
 
 \chapter{Risultati Ottenuti}
-In questo capitolo verranno illustrati gli obbiettivi che si vogliono raggiungere con gli \textit{autoencoder}, le metriche con cui sono stai valutati.
+In questo capitolo verranno illustrati gli obiettivi che si vogliono raggiungere con gli \textit{autoencoder}, le metriche con cui sono stai valutati.
 Ed infine il \textit{post-processing} applicato alle immagini ricostruite.
 
-\section{Obbiettivo}
+\section{Obiettivo}
 In figura~\ref{fig:obbiettivo_in_out_diff} sono riportate tre immagini per chiarire in che modo gli \textit{autoencoder} sono stati sfruttati per classificare Conformi e Scarti.
 La figura~\ref{fig:obbiettivo_in} illustra uno Scarto.
 L'immagine riportata in figura~\ref{fig:obbiettivo_out} è quella che si vorrebbe ottenere dall'AE a partire dallo Scarto appena illustrato.
@@ -59,6 +59,8 @@ Purtroppo nessuna delle due metriche permette di ottenere delle percentuali esat
 Tali dati numerici sono stati ottenuti soltanto quando le immagini-differenza sono risultate soddisfacenti e si è quindi potuto sviluppare l'algoritmo di \textit{post-processing}.
 
 \section{Il modello}
+\todo[inline]{spostare dettagli dell'archittura il autoendoer}
+\todo[inline]{lasciare qua i dettagli sull'addestramento}
 L'architettura illustrata in figura~\ref{fig:ae16_arch}\footnote{L'immagine è stata generata usando \url{https://github.com/HarisIqbal88/PlotNeuralNet}} ha dato i risultati migliori. % TODO dire meglio
 Elenchiamo le sue caratteristiche principali:
 \begin{itemize}
@@ -135,6 +137,7 @@ Come ci si poteva aspettare la superficie delle immagini in \textit{output} risu
 
 \clearpage
 \section{Post-Processing}
+\todo[inline]{spostare Post-poressig nella parte del dataset}
 Dopo aver osservato la precisione con cui i Conformi vengono riprodotti bisogna verificare come l'AE si comporti con le immagini della classe Scarto.
 In figura~\ref{fig:scarti_in_out} si possono osservare alcuni esempi di Scarti all'ingresso e all'uscita dell'\textit{autoencoder}.
 Notare come nelle prima coppia la colla sia stata rimossa molto bene e la carcassa ricostruita abbia le caratteristiche di quella originale.
@@ -261,7 +264,7 @@ Possiamo usare la tabella per ricavare le metriche di \textit{accuracy}, \textit
             = \frac{56}{56 + 4} = 0.933
 \end{align*}
 Notiamo come la \textit{accuracy}, che indica quante volte viene predetta la classe corretta, sia molto alta.
-Non ci sorprende che la \textit{precision} sia così alta perché uno dei nostri obbiettivi era evitare che venissero scartati Conformi.
+Non ci sorprende che la \textit{precision} sia così alta perché uno dei nostri obiettivi era evitare che venissero scartati Conformi.
 Infatti, si è mantenuto il numero di Falsi Positivi il più basso possibile.
 Il valore più basso è la \textit{recall} ossia che percentuale degli Scarti è stati effettivamente riconosciuta, valore comunque soddisfacente perché corrisponde al 93.3\%.
 
