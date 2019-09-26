@@ -7,14 +7,14 @@ In questo capitolo verranno illustrati gli obiettivi che si vogliono raggiungere
 Ed infine il \textit{post-processing} applicato alle immagini ricostruite.
 
 \section{Obiettivo}
-In figura~\ref{fig:obbiettivo_in_out_diff} sono riportate tre immagini per chiarire in che modo gli \textit{autoencoder} sono stati sfruttati per classificare Conformi e Scarti.
-La figura~\ref{fig:obbiettivo_in} illustra uno Scarto.
-L'immagine riportata in figura~\ref{fig:obbiettivo_out} è quella che si vorrebbe ottenere dall'AE a partire dallo Scarto appena illustrato.
+In figura~\ref{fig:obbiettivo_in_out_diff} sono riportate tre immagini per chiarire in che modo gli \textit{autoencoder} sono stati sfruttati per classificare conformi e scarti.
+La figura~\ref{fig:obbiettivo_in} illustra uno scarto.
+L'immagine riportata in figura~\ref{fig:obbiettivo_out} è quella che si vorrebbe ottenere dall'AE a partire dallo scarto appena illustrato.
 Notare come si vorrebbe che il pezzo fosse riprodotto il più fedelmente possibile, ma che l'informazione della colla venisse rimossa.
 In questo modo sarebbe possibile effettuare una differenza \textit{pixel} per \textit{pixel} tra immagine in ingresso ed immagine in uscita (detta anche ricostruita) ottenendo così un risultato simile a quello in figura~\ref{fig:obbiettivo_diff}.
 
 Nel caso migliore possibile la classificazione verrebbe effettuata verificando se nell'immagine-differenza tutti i valori sono zero.
-Ossia l'immagine in ingresso appartiene alla classe Conforme ed è stata ricostruito alla perfezione.
+Ossia l'immagine in ingresso appartiene alla classe conforme ed è stata ricostruito alla perfezione.
 Dato che ci si aspetta che l'\textit{autoencoder} non ricostruisca la colla nell'immagine in uscita, nell'immagine-differenza ci sarà un'area di \textit{pixel} con valori in assoluto maggiori di zero.
 
 È impossibile che l'\textit{autoencoder} raggiunga una precisione così alta, infatti è molto più verosimile che l'immagine ricostruita sia soltanto un'approssimazione dell'immagine in ingresso.
@@ -58,18 +58,18 @@ Infatti, gli \textit{autoencoder} potevano essere confrontati solo tramite due c
 Purtroppo nessuna delle due metriche permette di ottenere delle percentuali esatte sull'accuratezza delle classificazioni.
 Tali dati numerici sono stati ottenuti soltanto quando le immagini-differenza sono risultate soddisfacenti e si è quindi potuto sviluppare l'algoritmo di \textit{post-processing}. \todo{ref a pagina di descrizione del post-processing}
 
-L'allenamento del modello in figura~\ref{fig:ae16_arch} è stato effettuato sui Conformi del \textit{dataset}, processati come descritto a pagina~\pageref{prep} e seguenti.
+L'allenamento del modello in figura~\ref{fig:ae16_arch} è stato effettuato sui conformi del \textit{dataset}, processati come descritto a pagina~\pageref{prep} e seguenti.
 \todo{rimuovere ref a figura e dire "al modello descritto precedentemente/a pagina tot bla bla"}
-In questa fase non sono stati utilizzati né gli Scarti né gli Scarti Sintetici.
+In questa fase non sono stati utilizzati né gli scarti né gli scarti sintetici.
 
 Nel grafico in figura~\ref{fig:loss_plot} si può notare come la funzione di costo scenda in modo repentino nelle prime cinque epoche per poi stabilizzarsi.
 Il tasso di apprendimento è stato gestito dinamicamente: se al passare delle epoche il valore della funzione di costo non cala, allora il tasso di apprendimento viene diviso per un fattore dieci.
 
-Ogni cinque epoche è stata generata un'immagine con alcuni Conformi in ingresso  ed in uscita.
+Ogni cinque epoche è stata generata un'immagine con alcuni conformi in ingresso  ed in uscita.
 È interessante notare, osservando figura~\ref{fig:epoch_0}, come le prime ricostruzioni siano tutte uguali.
 Nella figura sono riportati, in alto, i sei esemplari dati in \textit{input} alla rete, mentre in basso sono mostrate le loro ricostruzioni.
 Probabilmente questo è dovuto al fatto che i pesi si distribuiscono fin da subito in modo da catturare le proprietà comuni a tutte le immagini, ad esempio l'area nera della maschera e gli anelli concentrici.
-In figura~\ref{fig:epoch_45} è riportato un altro gruppo di Conformi assieme alle ricostruzioni relative all'epoca numero quarantacinque.
+In figura~\ref{fig:epoch_45} è riportato un altro gruppo di conformi assieme alle ricostruzioni relative all'epoca numero quarantacinque.
 Ci si accorge subito che le immagini in uscita risultano meno sgranate e che in alcune di esse sono state generate perfino macchie ed aree più scure.
 Come ci si poteva aspettare la superficie delle immagini in \textit{output} risulta molto più lisca e priva della maggior parte dei graffi.
 
@@ -84,7 +84,7 @@ Come ci si poteva aspettare la superficie delle immagini in \textit{output} risu
 \begin{figure}[ht] % TODO sarebbe da cambiare
   \begin{center}
     \includegraphics[width=.65\textwidth]{in_out_epoch_0}
-    \caption{In alto 6 immagini Conformi in \textit{input}, in basso la loro ricostruzione alla prima epoca}
+    \caption{In alto 6 immagini conformi in \textit{input}, in basso la loro ricostruzione alla prima epoca}
     \label{fig:epoch_0}
   \end{center}
 \end{figure}
@@ -92,7 +92,7 @@ Come ci si poteva aspettare la superficie delle immagini in \textit{output} risu
 \begin{figure}[ht] % TODO sarebbe da cambiare
   \begin{center}
     \includegraphics[width=.65\textwidth]{in_out_epoch_45}
-    \caption{In alto 6 immagini Conformi in \textit{input}, in basso la loro ricostruzione alla 45-esima epoca}
+    \caption{In alto 6 immagini conformi in \textit{input}, in basso la loro ricostruzione alla 45-esima epoca}
     \label{fig:epoch_45}
   \end{center}
 \end{figure}
@@ -100,9 +100,9 @@ Come ci si poteva aspettare la superficie delle immagini in \textit{output} risu
 \clearpage
 \section{I Risultati}
 Riassumiamo ora brevemente i risultati ottenuti.
-Come si vede nella tabella~\ref{tab:test_predicions}, tutti i Conformi (che non sono stati usati durante l'allenamento) sono stati classificati correttamente.
-Viceversa non tutti gli Scarti e gli Scarti Sintetici sono stati classificati come tali.
-Per quanto riguarda i secondi va specificato che sono stati scelti a caso trenta Conformi e su ciascuno è stato applicato un ritaglio di colla.
+Come si vede nella tabella~\ref{tab:test_predicions}, tutti i conformi (che non sono stati usati durante l'allenamento) sono stati classificati correttamente.
+Viceversa non tutti gli scarti e gli scarti sintetici sono stati classificati come tali.
+Per quanto riguarda i secondi va specificato che sono stati scelti a caso trenta conformi e su ciascuno è stato applicato un ritaglio di colla.
 Osservando gli elementi predetti in modo scorretto e la relativa immagine-differenza ci si accorge che la colla può passare inosservata se:
 \begin{itemize}
   \item ha un colore molto vicino a quello della superficie della carcassa, quindi tende a corrispondere, nell'immagine-differenza, ad un area con valori in assoluto piccoli;
@@ -117,7 +117,7 @@ Osservando gli elementi predetti in modo scorretto e la relativa immagine-differ
     Classe           & Elementi & Predetti come KO & Percentuale \\ \hline \hline
     Conformi         & 314      & 0                & 0\%         \\ \hline
     Scarti           & 30       & 28               & 93.3\%      \\ \hline
-    Scarti Sintetici & 30       & 28               & 93.3\%      \\ \hline
+    Scarti sintetici & 30       & 28               & 93.3\%      \\ \hline
 
   \end{tabular}
   \caption{Predizioni sull'insieme di \textit{Test}}
@@ -137,9 +137,9 @@ Possiamo usare la tabella per ricavare le metriche di \textit{accuracy}, \textit
             = \frac{56}{56 + 4} = 0.933
 \end{align*}
 Notiamo come la \textit{accuracy}, che indica quante volte viene predetta la classe corretta, sia molto alta.
-Non ci sorprende che la \textit{precision} sia così alta perché uno dei nostri obiettivi era evitare che venissero scartati Conformi.
+Non ci sorprende che la \textit{precision} sia così alta perché uno dei nostri obiettivi era evitare che venissero scartati conformi.
 Infatti, si è mantenuto il numero di Falsi Positivi il più basso possibile.
-Il valore più basso è la \textit{recall} ossia che percentuale degli Scarti è stati effettivamente riconosciuta, valore comunque soddisfacente perché corrisponde al 93.3\%.
+Il valore più basso è la \textit{recall} ossia che percentuale degli scarti è stati effettivamente riconosciuta, valore comunque soddisfacente perché corrisponde al 93.3\%.
 
 \begin{table}[ht]
   \centering
@@ -157,19 +157,19 @@ Il valore più basso è la \textit{recall} ossia che percentuale degli Scarti è
   \label{tab:confusion_matrix}
 \end{table}
 
-Per avere una stima sulle capacità della rete su un numero maggiore di Conformi si è deciso di effettuare delle predizioni anche sulle immagini usate durante l'allenamento.
-Generalmente le immagini-differenza della carcasse Conformi si presentano quasi interamente nere.
+Per avere una stima sulle capacità della rete su un numero maggiore di conformi si è deciso di effettuare delle predizioni anche sulle immagini usate durante l'allenamento.
+Generalmente le immagini-differenza della carcasse conformi si presentano quasi interamente nere.
 Le poche macchie bianche sono di dimensioni ridotte e distanti tra loro.
 Il principale motivo che causa una predizione errata è il fatto che il pezzo sia stato fotografato da una distanza maggiore della media.
 Questo significa che le balze non vengono coperte interamente dalla maschera e quindi, dato che l'AE non le può ricostruire, possono risultare come una macchia sufficientemente grande.
-Nella tabella~\ref{tab:train_predicions} viene illustrato che il 98.9\% dei Conformi viene identificato correttamente.
+Nella tabella~\ref{tab:train_predicions} viene illustrato che il 98.9\% dei conformi viene identificato correttamente.
 
 \begin{table}[ht]
   \centering
   \begin{tabular}{||l r r r||}
     \hline
     Classe           & Elementi & Predetti come KO & Percentuale \\ \hline \hline
-    Conformi         & 1375     & 15               & 1.1\%       \\ \hline
+    conformi         & 1375     & 15               & 1.1\%       \\ \hline
 
   \end{tabular}
   \caption{Predizioni sull'insieme di \textit{Train}}

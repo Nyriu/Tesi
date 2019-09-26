@@ -1012,12 +1012,13 @@ Si può dire che gli scarti sintetici siano indistinguibili dagli scarti origina
 
 \section{Post-Processing}
 \todo[inline]{sistemare}
-Dopo aver osservato la precisione con cui i Conformi vengono riprodotti bisogna verificare come l'AE si comporti con le immagini della classe Scarto.
-In figura~\ref{fig:scarti_in_out} si possono osservare alcuni esempi di Scarti all'ingresso e all'uscita dell'\textit{autoencoder}.
+Dopo aver osservato la precisione con cui i conformi vengono riprodotti bisogna verificare come l'AE si comporti con le immagini della classe scarto.
+In figura~\ref{fig:scarti_in_out} si possono osservare alcuni esempi di scarti all'ingresso e all'uscita dell'\textit{autoencoder}.
 Notare come nelle prima coppia la colla sia stata rimossa molto bene e la carcassa ricostruita abbia le caratteristiche di quella originale.
 Purtroppo nella seconda coppia si vede come le zone più scure tipiche di alcune carcasse con colla, causino la creazione di rumore nell'immagine in \textit{output}.
-Proprio questo motivo ha portato alla creazione degli Scarti Sintetici.
-Si fa subito presente che gli Scarti Sintetici sono stati generati a partire da un gruppo di Conformi differente dall'insieme di immagini usate durante l'allenamento.
+Proprio questo motivo ha portato alla creazione degli scarti sintetici.
+Si fa subito presente che gli scarti sintetici sono stati generati a partire da un gruppo di conformi differente dall'insieme di immagini usate durante l'allenamento.
+
 
 \begin{figure}[ht] % TODO
   \begin{center}
@@ -1052,12 +1053,12 @@ Si fa subito presente che gli Scarti Sintetici sono stati generati a partire da 
       \end{subfigure}
 
     \end{tabular}
-    \caption{Esempi di Scarti e loro ricostruzione}
+    \caption{Esempi di scarti e loro ricostruzione}
     \label{fig:scarti_in_out}
   \end{center}
 \end{figure}
 
-L'algoritmo di \textit{post-processing} è stato sviluppato usando immagini-differenza generate da Scarti Sintetici, perché risultano più pulite.
+L'algoritmo di \textit{post-processing} è stato sviluppato usando immagini-differenza generate da scarti sintetici, perché risultano più pulite.
 Inoltre in questo modo ci si aspetta che siano siano più verosimili a quelle che si otterrebbero durante la messa in opera del sistema.
 
 In figura~\ref{fig:post_proc_scarto_sin} si possono vedere l'immagine di partenza (in alto a sinistra), l'immagine ricostruita dall'\textit{autoencoder} (in alto a destra), il risultato del post-processing della differenza fra le due (in basso a destra) e la predizione finale.
@@ -1081,7 +1082,7 @@ L'algoritmo di \textit{post-processing}, ottenuto con metodi empirici, opera in 
 
 Si è verificato che questo tipo di manipolazione non generasse falsi positivi: i valori delle soglie e la dimensione minima delle macchie che si rilevano sono tali da rimuovere il rumore delle immagini-differenza.
 
-Va detto che molti Scarti vengono predetti come tali anche a causa delle fasce più scure, che non permettono una ricostruzione fedele  della carcassa oppure risultano grandi a sufficienza nell'immagine-differenza.
+Va detto che molti scarti vengono predetti come tali anche a causa delle fasce più scure, che non permettono una ricostruzione fedele  della carcassa oppure risultano grandi a sufficienza nell'immagine-differenza.
 
 \begin{figure}[ht] % TODO
   \begin{center}
@@ -1093,44 +1094,8 @@ Va detto che molti Scarti vengono predetti come tali anche a causa delle fasce p
       \includegraphics[width=.24\textwidth]{128___17299_0_1_1_OnLineAnalysis_con_colla_detected}
 
     \end{tabular}
-    \caption{Post-processing applicato ad uno Scarto Sintetico}
+    \caption{Post-processing applicato ad uno scarto sintetico}
     \label{fig:post_proc_scarto_sin}
   \end{center}
 \end{figure}
 
-\clearpage
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-% TODO in caso sarebe un Chapter a sé
-%\section {La strada proposta}
-% Simile a quanto detto in considerazioni_pixelwise_diff
-%Mostrare qual'è l'obiettivo che si vuole raggiungere con gli AE
-%Spiegare che sono elastici e facili da allenare
-%Il dataset non richiede dispendioso labeling

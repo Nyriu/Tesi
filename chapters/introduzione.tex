@@ -47,9 +47,8 @@ La classificazione viene effettuata verificando se l'elemento cade entro i confi
 Poiché l'informazione a nostra disposizione è contenuta in immagini, si è deciso di usare una rete ResNet18~\cite{resnet} a cui è stato rimosso l'ultimo strato, in questo modo ritornerà vettori di 512 elementi.
 Solitamente una rete convolutiva sintetizza i dati contenuti in un'immagine e ritorna il valore della classe più probabile, ma rimuovendo l'ultimo strato si vanno a rimuovere quei neuroni che trasformano il vettore di 512 elementi nel valore della classe più probabile. % TODO non propriamente corretto
 Così facendo è possibile, per ogni immagine, ottenere un vettore di dimensioni ridotte.
-L'insieme di questi vettori andrà a costituire il \textit{dataset} con cui allenare la OCSVM.
-
-La soluzione appena descritta si è rivelata inadatta ai nostri scopi, fornendo un'accuratezza poco superiore al 60\%, molto inferiore agli obiettivi che si vogliono raggiungere.
+L'insieme di questi vettori andrà a costituire il \textit{dataset} con cui allenare la OCSVM.  
+Il metodo appena descritto si è rivelato inadatto ai nostri scopi, fornendo un'accuratezza poco superiore al 60\%, molto inferiore agli obiettivi che si vogliono raggiungere.
 
 %%\paragraph{Histogram of Oriented Gradients e OCSVM}
 %%Si è provato ad ottenere 
@@ -66,37 +65,37 @@ La soluzione appena descritta si è rivelata inadatta ai nostri scopi, fornendo 
 %% logpolar immagini
 
 %\section{Il Metodo Utilizzato}
-La soluzione, che verrà descritta con maggiore dettaglio nelle prossime pagine, sfrutta un particolare tipo di rete neurale che prende il nome di \textit{autoencoder}.
+La soluzione che verrà descritta nelle prossime pagine sfrutta un particolare tipo di rete neurale che prende il nome di \textit{autoencoder}.
 Il funzionamento di un \textit{autoencoder} può essere suddiviso in due momenti:
 nel primo i dati in ingresso vengono mappati in uno spazio con dimensionalità inferiore a quella di partenza, si può dire che il dato venga compresso;
 nel secondo il dato in forma compressa viene riportato nel suo spazio originale, venendo quindi decompresso.
 Un buon \textit{autoencoder} è in grado di fornire in \textit{output} un dato estremamente simile a quello che è stato ricevuto in ingresso, non bisogna pensare però che il suo scopo sia simulare la funzione identità; infatti un compito del genere non sarebbe di alcuna utilità.
 L'origine degli autoencoder non è ben definita però ad oggi sono utilizzati per vari scopi.
-
 \todo{ampliare in modo non tecnico}
+\todo[inline]{ipotizzo 4 righe}
+\todo[inline]{ipotizzo 4 righe}
+\todo[inline]{ipotizzo 4 righe}
+\todo[inline]{ipotizzo 4 righe}
 
-\clearpage
-\section{Gli Obiettivi da Raggiungere}
-\todo[inline]{togliere titolo e sistemare nell'introduzione}
-% TODO confrontarsi per veridicità
-Di seguito sono riportati alcuni dati numerici riguardo i processi appena descritti.
-
-La colla viene depositata su circa $5000$ pezzi al giorno, la probabilità che gocce di colla cadano sul fondo delle carcasse è estremamente bassa.
-Purtroppo non esistono dati numerici esatti ma si stima che il macchinario abbia un tasso d'errore di una carcassa al mese o poco più.
+Per quanto riguarda gli obiettivi che si vogliono raggiungere sappiamo che:
+\begin{itemize}
+  \item la colla viene depositata su circa $5000$ pezzi al giorno;
+  \item la probabilità che gocce di colla cadano sul fondo delle carcasse è estremamente bassa.
+\end{itemize}
+Purtroppo non esistono dati numerici esatti ma si stima che il processo di produzione abbia un tasso d'errore di una carcassa al mese o poco più.
 Questi dati possono essere trasformati in probabilità approssimative osservando che:
-
 \begin{center}
   \begin{tabular}{ l c r }
     colla depositata al mese: & $5000 * 31 =$& $155000$ \\
     colla depositata male al mese: && $2$
   \end{tabular}
 \end{center}
-Quindi la probabilità che il macchinario sbagli e pari allo $0.00001\%$.
+Quindi la probabilità che venga prodotta una carcassa non idonea è pari allo $0.00001\%$.
 %Tenendo ben presente questa probabilità, si vorrebbe riconoscere, e quindi scartare, le carcasse che presentano colla sul fondo.
 
 Il sistema di intelligenza artificiale deve riconoscere i pezzi non conformi ma soprattutto, tenendo conto della probabilità di cui sopra, deve generare un numero bassissimo di falsi positivi.
 Ricordano che per falsi positivi (detti anche FP o \textit{False Positive}) si intendono tutte le carcasse che il sistema considera non conformi ma che in realtà non presentano difetti.
-Una AI troppo rigida, che, quando indecisa, propende per scartare il pezzo, inciderebbe negativamente sulla produzione.
+Un'intelligenza artificiale troppo rigida, che, quando indecisa, propende per scartare il pezzo, inciderebbe negativamente sulla produzione.
 Si rischierebbe infatti di creare un enorme danno economico andando a scartare molte più carcasse del necessario.
 % TODO usare teorema di bayes per dim che un modello aggressivo è peggio di uno che lascia passare
 
