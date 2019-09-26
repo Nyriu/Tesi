@@ -168,14 +168,15 @@ Ora è doveroso spendere alcune parole per commentare la colorazione delle immag
 In figura~\ref{fig:carc} a pagina \pageref{fig:carc} abbiamo visto che la superficie del pezzo è di colore grigio ma nella foto risulta di colore verdastro.
 Allo stesso modo anche la colla, in realtà di colore bianco sporco, nella fotografia assume tonalità verdognole.
 Per certi compiti possedere immagini in falsi colori può risultare problematico ma fortunatamente non è questo il caso: l'importante è che venga mantenuta l'informazione che ci permette di distinguere la colla dalla superficie della carcassa.
-Come vedremo poi le immagini verranno trasformate in scala di grigi quindi, nonostante sarebbe stato preferibile avere immagini a colori reali, i falsi colori non sono da considerarsi problematici.
+Come vedremo poi, le immagini verranno trasformate in scala di grigi.
+Quindi, nonostante sia preferibile avere immagini a colori reali, i falsi colori non sono da considerarsi problematici.
 
 \subsection{Differenze tra Immagini}
 Ora che abbiamo una visione d'insieme sul dataset possiamo concentrare la nostra attenzione sulle proprietà principali delle immagini.
 Innanzitutto ogni immagine ha una risoluzione di $896$x$896$ $pixel$, dimensione che ci permette di esplorare varie possibilità.
-Ad esempio si può pensare di ridurre l'immagine ad una dimensione tale da: occupare meno spazio in memoria, quindi in RAM durante l'allenamento della rete ed allo stesso tempo di mantenere un livello di dettaglio sufficiente ai nostri scopi.
-Oppure di suddividere l'immagine in quadranti da analizzare singolarmente così da mantenere la qualità dell'immagine originale ma senza dover creare una rete che accetti immagini troppo grandi.
-Infatti una rete che prende in input immagini di grandi dimensioni, solitamente, avrà un numero di parametri maggiore di una che accetta immagini piccole.
+Ad esempio, si può pensare di ridurre l'immagine ad una dimensione tale da occupare meno spazio in memoria, quindi in RAM durante l'allenamento della rete, ed allo stesso tempo di mantenere un livello di dettaglio sufficiente ai nostri scopi.
+Oppure si può pensare di suddividere l'immagine in quadranti da analizzare singolarmente, così da mantenere la qualità dell'immagine originale ma senza dover creare una rete che accetti immagini troppo grandi.
+Infatti, una rete che prende in input immagini di grandi dimensioni, solitamente avrà un numero di parametri maggiore di una che accetta immagini piccole.
 Questo porta non solo ad occupare più spazio in memoria, ma significa anche che la rete impiegherà più tempo in fase d'allenamento, perché dovranno essere trovati un maggior numero di parametri.
 Per avere un termine di paragone basti pensare che le immagini di MNIST sono $64$x$64$ $pixel$ mentre quelle di ImageNet, che ricordiamo hanno dimensioni variabili, vengono solitamente scalate a $224$x$224px$.
 Quest'ultima è la dimensione accettata da due delle reti che storicamente hanno ottenuto risultati allo stato dell'arte su ImageNet.
@@ -208,7 +209,7 @@ Verranno ora elencate a partire da quella da considerarsi meno problematica fino
     Queste caratteristiche superficiali non saranno da sottovalutare in fase di elaborazione delle immagini.
 
   \item Ad un primo sguardo potrebbe sembrare che le immagini siano tutte centrate allo stesso modo, invece in molte il centro dell'immagine non corrisponde con il centro del pezzo.
-    Nonostante la distanza massima tra centro del pezzo e centro dell'immagine è tale che il fondo della carcassa sia sempre visibile interamente, sarebbe stato preferibile fossero centrate tutte correttamente.
+    Nonostante la distanza massima tra centro del pezzo e centro dell'immagine sia tale per cui il fondo della carcassa sia sempre visibile interamente, sarebbe stato preferibile fossero centrate tutte correttamente.
   
   % TODO decidere se metterlo
   %\item La luminosità del gradino più piccolo, quello al centro dell'immagine, varia di molto.
@@ -217,8 +218,8 @@ Verranno ora elencate a partire da quella da considerarsi meno problematica fino
   %  Questo sarebbe una problematica secondaria se non fosse che la colla può colare fino al centro.
   %  Poiché la colorazione della colla è nell'intorno del bianco bisognerà trovare un modo per smorzare la luminosità del fondo.
 
-  \item La variazione di luminosità tra le varie foto è una problematica da gestire assolutamente.
-    Infatti alcune immagini hanno una luminosità così alta da far risultare alcune superfici bianche.
+  \item La variazione di luminosità tra le varie foto è una problematica.
+    Infatti, alcune immagini hanno una luminosità così alta da far risultare alcune superfici bianche.
     Altre immagini, invece, sono molto più scure, tanto che anche le zone che normalmente rifletterebbero sono illuminate appena.
 
 \end{itemize}
@@ -232,7 +233,7 @@ In questo caso sono tutte non problematiche, anzi sono sfruttabili poiché rappr
   \item La colla è localizzata.
     Significa che, se presente, non appare come tante gocce sparse, ma come un corpo unico più o meno allungato.
 
-  \item Tracciando una diametro a piacere ci si accorge che gli Scarti sono sempre asimmetrici, invece i conformi, a meno di piccole differenze superficiali, sono sempre simmetrici.
+  \item Tracciando un diametro a piacere ci si accorge che gli Scarti sono sempre asimmetrici; invece i conformi, a meno di piccole differenze superficiali, sono sempre simmetrici.
 
 \end{itemize}
 
@@ -245,9 +246,9 @@ In questo caso sono tutte non problematiche, anzi sono sfruttabili poiché rappr
 Questa sezione è divisa in due parti: nella prima verranno illustrate alcune tra le principali tecniche di elaborazione digitale delle immagini, esponendo i dettagli matematici ed esplorando le loro applicazioni; nella seconda si spiegherà quali di queste tecniche, in che ordine e per quali motivi sono state utilizzate.
 
 Come prima cosa è bene ricordare che con \textit{elaborazione digitale delle immagini} si intende il modificare immagini digitali per mezzo di algoritmi eseguibili da un calcolatore.
-Mentre con \textit{pre-processing} si indica il manipolare le immagini digitali per renderle utilizzabili da altri algoritmi.
+Mentre con \textit{pre-processing} si indica la manipolazione delle immagini digitali per renderle utilizzabili da altri algoritmi.
 
-Gli algoritmi utilizzati hanno precise formulazioni matematiche perché ogni immagine viene rappresentata come una matrice bidimensionale, se in scala di grigi, oppure tridimensionale se a colori.
+Gli algoritmi utilizzati hanno precise formulazioni matematiche, perché ogni immagine viene rappresentata come una matrice bidimensionale se in scala di grigi, oppure tridimensionale se a colori.
 Gli elementi di una matrice bidimensionale appartengono all'intervallo $[0,255]$, nel quale $0$ corrisponde al colore nero mentre $255$ corrisponde al bianco.
 Disponendo una sopra l'altra tre matrici come quelle appena descritte si ottiene un'immagine a colori: ogni matrice rappresenta uno dei canali principali (\textit{Red}, \textit{Green}, \textit{Blue} da cui il famoso acronimo RGB) dell'immagine.
 Sia $I$ un'immagine a tre canali (RGB), il colore del \textit{pixel} in posizione $(i,j)$ è dato dalla tripletta $(I[i,j,0], I[i,j,1], I[i,j,2])$, in cui: $(0,0,0)$ indica il colore nero, $(255,255,255)$ indica il colore bianco, $(255,0,0)$ indica il colore rosso, $(0,255,0)$ indica il colore verde, e così via.
@@ -279,9 +280,9 @@ Citando parte della definizione data in \cite{deepai-feat-ext} :
 \begin{quote}
   \textit{Feature extraction is the name for methods that select and/or combine variables into features, effectively reducing the amount of data that must be processed, while still accurately and completely describing the original data set.}
 \end{quote}
-Quindi, in generale, indica un procedimento con cui, da un'insieme di dati complesso, si estrapola un gruppo di informazioni ridotte ma con la stessa capacità espressiva.
+Quindi, in generale, indica un procedimento con cui, da un insieme di dati complesso, si estrapola un gruppo di informazioni ridotte, ma con la stessa capacità espressiva.
 Nell'ambito dell'elaborazione digitale delle immagini le tecniche di estrazione delle caratteristiche possono essere raccolte in varie categorie.
-Ciascuna permette di ottenere, a partire da immagini digitali, nuove immagini oppure coordinate di zone d'interesse dell'immagine in ingresso.
+Ciascuna permette di ottenere nuove immagini a partire da immagini digitali, oppure coordinate di zone d'interesse dell'immagine in ingresso.
 Noi esploreremo tecniche come: il rilevamento dei contorni o \textit{edge detection}, la sogliatura o \textit{thresholding} e le trasformate di Hough.
 
 % TODO aggiungere applicazioni principali per ogni tecnica?
@@ -289,7 +290,7 @@ Noi esploreremo tecniche come: il rilevamento dei contorni o \textit{edge detect
 
 \subsection {Passaggio da RGB a GrayScale}
 La conversione di un'immagine da RGB in scala di grigi è un'operazione estremamente facile, ma rimane comunque alla base di molti algoritmi di elaborazione delle immagini.
-Infatti per molti compiti l'informazione sul colore non è necessaria, basti pensare al rilevamento di forme od il riconoscimento di testo.
+Infatti, per molti compiti l'informazione sul colore non è necessaria, basti pensare al rilevamento di forme od il riconoscimento di testo.
 Il modo più semplice per combinare i tre canali RGB in un unico canale è quello di effettuare la media dei valori \textit{pixel} per \textit{pixel}.
 Siano $R$, $G$ e $B$ i tre canali di un immagine a colori $I$ e sia $Y$ l'immagine in bianco e nero che si vuole ottenere:
 \begin{equation}
@@ -297,7 +298,7 @@ Siano $R$, $G$ e $B$ i tre canali di un immagine a colori $I$ e sia $Y$ l'immagi
 \end{equation}
 \label{eq:rgb2gray_avg}
 Nell'equazione~\ref{eq:rgb2gray_avg} ogni canale partecipa allo stesso modo, quindi $Y$ è semplicemente la media aritmetica dei tre canali di partenza.
-Sappiamo però che l'occhio umano è più sensibile ai colori verdi, quindi per certe applicazioni potrebbe essere preferibile dare più importanza al secondo canale:
+Sappiamo, però, che l'occhio umano è più sensibile ai colori verdi, quindi per certe applicazioni potrebbe essere preferibile dare più importanza al secondo canale:
 \begin{equation}
   Y = 0.299*R + 0.587*G + 0.114*B
 \end{equation}
@@ -319,9 +320,9 @@ Un esempio di applicazione dell'equazione~\ref{eq:rgb2gray} è illustrato in fig
 
 \subsection {Masking}
 La tecnica del \textit{masking} permette di nascondere parti di immagine a cui non siamo interessati.
-Abbiamo bisogno di una maschera binaria e dell'immagine che si vuole mascherare.
+Per fare questo abbiamo bisogno di una maschera binaria e dell'immagine che si vuole mascherare.
 Per immagine binaria si intende un'immagine in cui ogni \textit{pixel} appartiene all'insieme $\{0,1\}$, cioè è nero oppure bianco.
-Solitamente la maschera viene generata a mano con semplici editor.
+Solitamente la maschera viene generata a mano con semplici \textit{editor}.
 Si fa notare che quest'ultima deve avere le stesse dimensioni dell'immagine di partenza.
 L'operazione consiste nell'effettuare un AND logico, \textit{pixel} per \textit{pixel},  tra l'immagine e la maschera.
 Così facendo tutti i \textit{pixel} dell'immagine di partenza corrispondenti a zone di valore $0$ della maschera verranno impostati a $0$, diventando quindi neri.
@@ -383,11 +384,11 @@ Una matrice di questo tipo viene anche chiamata vista o \textit{view}.
 % https://en.wikipedia.org/wiki/Cropping_(image)
 
 Con l'\textit{image resizing} si aumentano (o diminuiscono) le dimensioni di un'immagine.
-Nel primo caso, poiché si vuole aumentare il numero di \textit{pixel} dell'immagine finale,bisognerà utilizzare tecniche di \textit{upsampling} ed interpolare i dati a disposizione per generarne di nuovi che siano verosimili.
+Nel primo caso, poiché si vuole aumentare il numero di \textit{pixel} dell'immagine finale, bisognerà utilizzare tecniche di \textit{upsampling} ed interpolare i dati a disposizione per generarne di nuovi che siano verosimili.
 
 Uno fra gli algoritmi più semplici è \textit{Nearest-Neighbor Interpolation}:
 il \textit{pixel} che deve essere aggiunto ottiene il valore del \textit{pixel} a lui più vicino.
-Un criterio di scelta dovrà essere definito nel caso in cui ci siano più \textit{pixel} alla stessa distanza ma con valori differenti.
+Un criterio di scelta dovrà essere definito nel caso in cui ci siano più \textit{pixel} alla stessa distanza, ma con valori differenti.
 Un criterio possibile è quello di assegnare al nuovo \textit{pixel} il valore del \textit{pixel} alla sua sinistra ed in alto.
 % https://en.wikipedia.org/wiki/Nearest-neighbor_interpolation
 % https://docs.opencv.org/2.4/modules/imgproc/doc/geometric_transformations.html
@@ -395,10 +396,10 @@ Un criterio possibile è quello di assegnare al nuovo \textit{pixel} il valore d
 % https://en.wikipedia.org/wiki/Scale_(ratio)
 
 Una tecnica leggermente più complessa, ma che fornisce risultati soddisfacenti nella maggior parte delle occasioni, è l'interpolazione bilineare.
-Con questa tecnica si effettuano, in cascata, due interpolazioni lineari, una orizzontale ed una verticale.
+Con questa tecnica si effettuano due interpolazioni lineari in cascata, una orizzontale ed una verticale.
 Con l'interpolazione bilineare i nuovi \textit{pixel} si ottengono come media dei valori noti, pesata rispetto allo loro distanza dal \textit{pixel} che si vuole colorare.
 In questo modo si ottengono immagini con transazioni di colore più dolci.
-Maggiori informazioni ed immagini esemplificative possono essere trovate, per quanto riguarda l'interpolazione lineare, in \cite{linear-interpolation} e, per l'interpolazione bilineare, in \cite{bilinear-interpolation}.
+Maggiori informazioni ed immagini esemplificative possono essere trovate, per quanto riguarda l'interpolazione lineare, in \cite{linear-interpolation} e per l'interpolazione bilineare, in \cite{bilinear-interpolation}.
 
 Nel caso in cui si voglia ridurre le dimensioni dell'immagine si dovranno usare tecniche di \textit{downsampling} ed \textit{anti-aliasing}.
 % https://en.wikipedia.org/wiki/Anti-aliasing_filter
@@ -419,7 +420,7 @@ Citando Wikipedia~\cite{wikipedia-hist-eq}:
   \textit{Histogram equalization is a method in image processing of contrast adjustment using the image's histogram.}
 \end{quote}
 Si ricorda che il contrasto è definito come la differenza in intensità luminosa e colore che permette di distinguere gli oggetti in un'immagine.
-In figura~\ref{fig:hist_eq_example} sono stati riporta un'immagine a basso contrasto e l'immagine risultato dopo l'applicazione della \textit{histogram equalization}.
+In figura~\ref{fig:hist_eq_example} sono state riportate un'immagine a basso contrasto e l'immagine risultato dopo l'applicazione della \textit{histogram equalization}.
 Nella figura si possono osservare anche gli istogrammi relativi alle immagini: sull'asse delle $x$ abbiamo ogni possibile valore di un \textit{pixel}, quindi nell'intervallo da 0 a 255; sull'asse delle $y$ è riportato il numero di occorrenze di quel colore nell'immagine.
 Notare che l'immagine in ingresso deve essere in scala di grigi.
 
@@ -429,7 +430,7 @@ Facendo riferimento a quanto scritto nel documento~\cite{hist-eq} l'istogramma p
 \begin{equation*}
 p_n = \frac{\text{numero di pixel di colore $n$}}{\text{numero totale di pixel}} \quad \text{con $n$} \in [0,255]
 \end{equation*}
-Poiché $p_n$ descrive la probabilità che un \textit{pixel}, scelto a caso dall'immagine, abbia valore $n$, possiamo considerare $X$ una variabile casuale discreta in $[0,255]$.
+Poiché $p_n$ descrive la probabilità che un \textit{pixel} scelto a caso dall'immagine abbia valore $n$, possiamo considerare $X$ una variabile casuale discreta in $[0,255]$.
 Quindi $X$ avrà funzione di ripartizione, tracciata in blu nel grafico in figura~\ref{fig:hist_pre_eq_example}, pari ad:
 \begin{equation*}
   F_X(x) = \sum_{n=0}^{x} p_n
@@ -523,11 +524,12 @@ La matrice sottostante rappresenta un'approssimazione di un filtro gaussiano qua
 % http://dev.theomader.com/gaussian-kernel-calculator/
 
 Ricordiamo che durante una convoluzione si effettua la somma dei prodotti elemento per elemento, ossia una media pesata in cui i pesi sono definiti nel kernel.
-Dato che i valori al centro del filtro sono più grandi di quelli ai bordi, daremo maggior peso ai pixel nell'intorno dell'elemento su cui il kernel viene centrato.
-All'aumentare di $\sigma$ cresce il raggio alla base della campana di Gauss, questo significa che, con $\sigma$ grandi, verrà data importanza anche ai pixel distanti.
-Ciò farà risultare l'immagine in uscita molto più sfocata.
+Dato che i valori al centro del filtro sono più grandi di quelli ai bordi, daremo maggior peso ai \textit{pixel} nell'intorno dell'elemento su cui il kernel viene centrato.
+All'aumentare di $\sigma$ cresce il raggio alla base della campana di Gauss.
+Questo significa che, con $\sigma$ grandi, verrà data importanza anche ai \textit{pixel} distanti,ciò farà risultare l'immagine in uscita molto più sfocata.
 
-In figura~\ref{fig:gaussian_blur_example} è riportata un'immagine prima e dopo l'applicazione del filtro riportato in \ref{eq:gauss_kernel}, si fa notare come i dettagli più piccoli sono stati rimossi, mentre l'oggetto dell'immagine rimane distinguibile.
+In figura~\ref{fig:gaussian_blur_example} è riportata un'immagine prima e dopo l'applicazione del filtro riportato in \ref{eq:gauss_kernel}.
+Si fa notare come i dettagli più piccoli sono stati rimossi, mentre l'oggetto dell'immagine rimane distinguibile.
 
 \begin{figure}[ht] % TODO
   \begin{center}
@@ -617,7 +619,7 @@ Con l'equazione~\ref{eq:sobel_angle} si ottiene la direzione del gradiente.
 \end{equation}
 
 Ora verranno fatte delle considerazioni sul kernel mostrato nella formula~\ref{eq:sobel_gx}.
-Poiché il filtro nell'equazione~\ref{eq:sobel_gy} è una semplice trasposta del precedente, tali considerazioni sono, facendo riferimento all'asse delle $y$, valide anche per questo filtro.
+Poiché il filtro nell'equazione~\ref{eq:sobel_gy} è una semplice trasposta del precedente, tali considerazioni sono valide anche per questo filtro, facendo riferimento all'asse delle $y$.
 Il kernel nell'equazione~\ref{eq:sobel_gx} assegnerà valori in assoluto più grandi a \textit{pixel} in una posizione di transizione di colore, rispetto a \textit{pixel} posizionati in una zona con colorazione uniforme.
 %TODO forse si può dire meglio
 Prendiamo un \textit{pixel} $p$ di colore bianco posizionato in una zona in cui tutti i \textit{pixel} sono di colore bianco, si avrà che il \textit{kernel}, pesando i \textit{pixel} a destra allo stesso modo di quelli a sinistra ma con segno opposto, attribuisce un valore pari a $0$ a $p$.
@@ -707,7 +709,7 @@ In figura~\ref{fig:canny_example} è illustrata l'applicazione del \textit{Sobel
 \subsection {Hough Circle Transform}
 Prima di poter spiegare questa tecnica si devono introdurre alcuni concetti come la \textit{Hough Line Transform}, lo \textit{Hough Parameter Space} e la parametrizzazione raggio-angolo di una retta.
 Le trasformate di Hough sono largamente usate come metodi di estrazione delle caratteristiche, permettono di rilevare semplici figure come linee e cerchi.
-Il loro obbiettivo è raggruppare correttamente un'insieme di pixel in modo che l'insieme raffiguri la forma che si vuole trovare.
+Il loro obbiettivo è raggruppare correttamente un insieme di pixel in modo che l'insieme raffiguri la forma che si vuole trovare.
 Una delle problematiche principali è la possibilità che nell'immagine la forma da rilevare sia discontinua o deformata.
 
 Esploriamo, facendo riferimento a quanto illustrato in \cite{hough-line}, come il metodo di \textit{Hough Line Transform} permette di trovare una linea retta in un'immagine.
@@ -724,7 +726,7 @@ Questo è dovuto al fatto che sappiamo che deve esistere una coppia di parametri
 L'idea alla base della \textit{Hough Line Transform} è quella di, definito un range di valori per $m$ e per $c$, trovare quello che soddisfa il maggior numero di equazioni.
 In pratica ad ogni cella nello spazio $m$-$c$ viene associato un intero che indica quante delle rette di equazione~\ref{eq:cm_lines} passano per quella cella.
 
-Ci si accorge facilmente che questo metodo non ci permette di rilevare rette parallele all'asse delle $y$, infatti bisognerebbe avere un parametro $m$ con valore che tende all'infinito.
+Ci si accorge facilmente che questo metodo non ci permette di rilevare rette parallele all'asse delle $y$; infatti, bisognerebbe avere un parametro $m$ con valore che tende all'infinito.
 Per risolvere questa problematica viene usata la parametrizzazione raggio-angolo.
 Come si vede in figura~\ref{fig:hough_parametr_parametr}, ogni retta viene identificata da una coppia univoca $(r,\theta)$.
 Nella coppia $r$ indica la distanza dall'origine al punto più vicino della retta, mentre $\theta$ indica l'angolo tra il segmento appena generato e l'asse delle $x$.
@@ -734,7 +736,7 @@ Ogni retta viene identificata dall'equazione:
 \end{equation}
 ottenibile con semplici calcoli geometrici.
 Questo significa che il fascio di rette nello spazio di partenza verrà descritto da curve nello spazio dei parametri di Hough con assi $\theta$-$r$, come si vede in figura~\ref{fig:hough_parametr_curve}.
-Valutando le celle nello stesso modo di prima si ottiene la retta passante per i tre punti ma identificata dalla coppia $(r_0,\theta_0)$.
+Valutando le celle nello stesso modo di prima si ottiene la retta passante per i tre punti, ma identificata dalla coppia $(r_0,\theta_0)$.
 
 \begin{figure}[ht]
   \begin{center}
@@ -819,7 +821,7 @@ Ottenere un algoritmo che fosse capace di centrare correttamente tutte le immagi
   \item equalizzazione dell'istogramma della copia;
   \item ottenimento di alcuni cerchi candidati tramite trasformate di Hough applicate alla copia, qui si sfrutta l'informazione circa le dimensioni tipiche della circonferenza dello scalino più grande;
   \item viene effettuata la media tra i centri dei cerchi ottenuti nel passaggio precedente;
-  \item l'immagine originale viene traslata in modo che il centro stimato si trovi in mezzo all'immagine;
+  \item l'immagine originale viene traslata in modo che il centro stimato si trovi in mezzo all'immagine.
 \end{itemize}
 
 Nella figura~\ref{fig:centramento} sono $illustrate$ l'immagine prima e dopo il centramento ed il cerchio rilevato.
@@ -853,7 +855,7 @@ In questo modo le immagini in bianco e nero delle carcasse risultano molto più 
 D'ora in poi verranno manipolate immagini in scala di grigi.
 Questa scelta, validata dagli esperimenti, nasce principalmente considerando il fatto che le immagini sono in falsi colori.
 Mantenendo il \textit{dataset} a colori manterremmo dell'informazione che non ci è di alcuna utilità, ma soprattutto richiederemmo alla nostra rete neurale uno sforzo maggiore.
-La rete infatti dovrebbe imparare a gestire, non solo le forme geometriche del pezzo, ma anche le sue colorazioni.
+La rete, infatti, dovrebbe imparare a gestire non solo le forme geometriche del pezzo, ma anche le sue colorazioni.
 
 Nella figura~\ref{fig:equalizzazione} sono illustrate due carcasse conformi con luminosità differenti, affiancate dalla loro trasformazione.
 % TODO mostrare l'immagine gray scale prima e dopo
@@ -903,8 +905,7 @@ In figura~\ref{fig:smooth} si mostra l'effetto dell'applicazione del \textit{ker
 
 \subsubsection{4 Mascheramento}
 L'area che nell'immagine corrisponde alla parete verticale della carcassa, ed in particolar modo alle due balze, deve essere rimossa.
-Come abbiamo già sottolineato la posizione delle balze non è correlata alla presenza della colla.
-Mentre si suppone che la colla non si presenti soltanto sulla parete verticale, ma che coli almeno fino a raggiungere il gradino più ampio.
+Come abbiamo già sottolineato, la posizione delle balze non è correlata alla presenza della colla; mentre si suppone che la colla non si presenti soltanto sulla parete verticale, ma che coli almeno fino a raggiungere il gradino più ampio.
 
 Nella figura~\ref{fig:mask} è illustrato un conforme prima e dopo il mascheramento.
 
@@ -919,7 +920,7 @@ Nella figura~\ref{fig:mask} è illustrato un conforme prima e dopo il mascherame
 
 \subsubsection{5 Crop}
 A questo punto l'immagine contiene una grande porzione di pixel di colore nero, a causa del mascheramento.
-Possiamo effettuare in operazione di \textit{crop} sapendo che il pezzo è centrato nell'immagine e conoscendo il raggio dell'area nera.
+Possiamo effettuare un operazione di \textit{crop} sapendo che il pezzo è centrato nell'immagine e conoscendo il raggio dell'area nera.
 Osservando figura~\ref{fig:crop} ci si accorge che dopo il ritaglio l'immagine trasporta, in proporzione, molta più informazione.
 
 \begin{figure}[ht] % TODO
