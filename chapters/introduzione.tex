@@ -4,19 +4,18 @@
 
 \chapter{Introduzione}
 
-\section{Il Problema Affrontato}
+In campo industriale è sempre più frequente la scelta di integrare processi già esistenti con fotocamere per l'acquisizione di immagini.
+%\todo{magari aggiungere ref}
+Le fotocamere, che hanno dimensioni sempre più ridotte ma permettono comunque di scattare fotografie ad ottima risoluzione, possono essere inserite facilmente nella maggior parte dei processi industriali, permettendo di monitorare la produzione senza comprometterla.
+Inoltre, le immagini raccolte possono andare a formare un \textit{dataset} che, utilizzato per addestrare algoritmi di \textit{machine learning}, permette non solo di monitorare il processo di produzione, ma anche di controllarlo.
+
 In questa tesi si affronta il problema di rilevare la presenza di colla sul fondo di carcasse per motori elettrici, per mezzo di fotografie digitali.
 I pezzi da analizzare hanno una forma cilindrica cava con una delle due estremità sigillata.
 All'intero della cavità verrà alloggiato un motore elettrico per tergicristalli.
 Per poter fissare il motorino è richiesto che un anello di colla sia versato sulla parete verticale interna del pezzo.
 Poiché la colla è liquida è possibile che goccioli fino a raggiungere il fondo del pezzo, questo comporta il malfunzionamento del motore.
 Da ciò nasce la necessità di rilevare in modo automatizzato quali pezzi presentano colla sul fondo, così da poterli scartare.
-
-In campo industriale è sempre più frequente la scelta di integrare processi già esistenti con fotocamere per l'acquisizione di immagini.
-%\todo{magari aggiungere ref}
-Le fotocamere, che hanno dimensioni sempre più ridotte ma permettono comunque di scattare fotografie ad ottima risoluzione, possono essere inserite facilmente nella maggior parte dei processi industriali, permettendo di monitorare la produzione senza comprometterla.
-Inoltre, le immagini raccolte possono andare a formare un \textit{dataset} che, utilizzato per addestrare algoritmi di \textit{machine learning}, permette non solo di monitorare il processo di produzione, ma anche di controllarlo.
-In questo caso specifico si vuole che il sistema riconosca il maggior numero di carcasse che presentano colla sul fondo, queste verranno poi rimosse automaticamente dal processo di produzione.
+Nello specifico si vuole che il sistema riconosca il maggior numero di carcasse che presentano colla sul fondo, queste verranno poi rimosse automaticamente dal processo di produzione.
 
 Il lavoro svolto in questa tesi nasce per cercare una risposta ad un problema reale.
 La soluzione che si propone è stata sviluppata durante un tirocinio, della durata di sei mesi, svolto presso beanTech \footnote{Collegamento al sito ufficiale URL: \url{https://www.beantech.it/}}.
@@ -28,7 +27,7 @@ Il principale strumento utilizzato è stato il linguaggio di programmazione \tex
 Per l'allenamento dei modelli si è potuto sfruttare una NVIDIA$^{\text{\textregistered}}$ DGX Station\footnote{URL: \url{https://www.nvidia.com/en-us/data-center/dgx-station/}} con quattro NVIDIA$^{\text{\textregistered}}$ TESLA$^{\text{\textregistered}}$ V100 da 32 GB/GPU l'una.
 Durante il tirocinio si è sviluppata anche una buona conoscenza dello strumento Docker, che permette di creare spazi virtuali in cui sviluppare, testare e distribuire le proprie soluzioni.
 
-\section{Primi Tentativi}
+%\section{Primi Tentativi}
 %Le prime soluzioni proposte si sono rivelate non soddisfacenti, ma poiché fanno parte del percorso che ha portato allo sviluppo della soluzione descritta in questo documento, si è deciso di dedicare un breve commento a quelle più significative.
 Le prime soluzioni proposte si sono rivelate non soddisfacenti, ma poiché fanno parte del percorso che ha portato allo sviluppo della soluzione descritta in questo documento, si è deciso di dedicare un breve commento alla tecnica che più si discosta dalla soluzione finale.
 
@@ -38,7 +37,7 @@ Come si vedrà meglio poi, il \textit{dataset} è fortemente sbilanciato.
 Si dispone di pochissimi esemplari con colla sul fondo, per cui si è considerata soltanto la classe di carcasse idonee.
 La maggior parte dei modelli di \textit{machine learning} per la classificazione viene allenato con almeno due classi.
 In questo modo il modello, tramite il confronto, può trovare le caratteristiche che distinguono gli elementi di una classe dall'altra e quindi imparare a riconoscerli.
-Quando si dispone di una sola classe ciò non è possibile, bisogna quindi applicare metodi alternativi come la \textit{One Class Support Vector Machine}(OCSVM).
+Quando si dispone di una sola classe ciò non è possibile, bisogna quindi applicare metodi alternativi come la \textit{One Class Support Vector Machine} (OCSVM).
 Variazione dell'algoritmo di classificazione \textit{Support Vector Machine}, è stato pensato per poter essere allenato avendo dati di un'unica classe.
 Il modo più intuitivo per descrivere il funzionamento di una OCSVM è immaginare che il suo scopo sia creare la più piccola sfera contenente tutti i punti del \textit{dataset}.
 Così facendo tutti gli elementi con caratteristiche differenti da quelle degli elementi del \textit{dataset} saranno posizionati a grande distanza dal centro della sfera, probabilmente cadranno all'esterno di essa.
@@ -66,13 +65,16 @@ La soluzione appena descritta si è rivelata inadatta ai nostri scopi, fornendo 
 %
 %% logpolar immagini
 
-\section{Il Metodo Utilizzato}
+%\section{Il Metodo Utilizzato}
 La soluzione, che verrà descritta con maggiore dettaglio nelle prossime pagine, sfrutta un particolare tipo di rete neurale che prende il nome di \textit{autoencoder}.
 Il funzionamento di un \textit{autoencoder} può essere suddiviso in due momenti:
 nel primo i dati in ingresso vengono mappati in uno spazio con dimensionalità inferiore a quella di partenza, si può dire che il dato venga compresso;
 nel secondo il dato in forma compressa viene riportato nel suo spazio originale, venendo quindi decompresso.
 Un buon \textit{autoencoder} è in grado di fornire in \textit{output} un dato estremamente simile a quello che è stato ricevuto in ingresso, non bisogna pensare però che il suo scopo sia simulare la funzione identità; infatti un compito del genere non sarebbe di alcuna utilità.
 L'origine degli autoencoder non è ben definita però ad oggi sono utilizzati per vari scopi.
+
+\todo{ampliare in modo non tecnico}
+\todo{Le robe tecniche spostarle nella parte AE}
 
 \paragraph{Dimensionality Reduction}
 Sappiamo che gli \textit{autoencoder} possono essere sfruttati per trovare, fissata una dimensionalità, spazi latenti efficaci.
@@ -105,3 +107,49 @@ Il dato in ingresso, se molto distante dai valori abituali, sarà compresso in m
 Ciò porta, dopo la decompressione, ad ottenere un \textit{output} distante dal dato originale, permettendo di classificare quest'ultimo come anomalia.
 
 Il problema descritto in questa tesi si presta per essere affrontato come un problema di \textit{anomaly detection}.
+
+
+
+
+
+
+\clearpage
+\section{Gli Obiettivi da Raggiungere}
+\todo[inline]{togliere titolo e sistemare nell'introduzione}
+% TODO confrontarsi per veridicità
+Di seguito sono riportati alcuni dati numerici riguardo i processi appena descritti.
+
+La colla viene depositata su circa $5000$ pezzi al giorno, la probabilità che gocce di colla cadano sul fondo delle carcasse è estremamente bassa.
+Purtroppo non esistono dati numerici esatti ma si stima che il macchinario abbia un tasso d'errore di una carcassa al mese o poco più.
+Questi dati possono essere trasformati in probabilità approssimative osservando che:
+
+\begin{center}
+  \begin{tabular}{ l c r }
+    colla depositata al mese: & $5000 * 31 =$& $155000$ \\
+    colla depositata male al mese: && $2$
+  \end{tabular}
+\end{center}
+Quindi la probabilità che il macchinario sbagli e pari allo $0.00001\%$.
+%Tenendo ben presente questa probabilità, si vorrebbe riconoscere, e quindi scartare, le carcasse che presentano colla sul fondo.
+
+Il sistema di intelligenza artificiale deve riconoscere i pezzi non conformi ma soprattutto, tenendo conto della probabilità di cui sopra, deve generare un numero bassissimo di falsi positivi.
+Ricordano che per falsi positivi (detti anche FP o \textit{False Positive}) si intendono tutte le carcasse che il sistema considera non conformi ma che in realtà non presentano difetti.
+Una AI troppo rigida, che, quando indecisa, propende per scartare il pezzo, inciderebbe negativamente sulla produzione.
+Si rischierebbe infatti di creare un enorme danno economico andando a scartare molte più carcasse del necessario.
+% TODO usare teorema di bayes per dim che un modello aggressivo è peggio di uno che lascia passare
+
+Il nostro obbiettivo è creare un sistema che generi un numero di falsi positivi che sia inferiore al $2\%$, cercando di riconoscere più carcasse non conformi possibili.
+
+% TODO numericamente vogliamo il 98 sui conformi e il 100 sugli scarti
+% Si da notare che queste 
+
+% L'obbiettivo è riconoscere i pezzi che presentano colla sul fondo
+% Acc sugli scarti $100\%$
+% fp sui conformi $2\%$
+
+
+% \section {L'attuale soluzione}
+% " Tutti i vecchi metodi si arenavano causa differenze di tinta e luminosita' e rumorosita'"
+
+%\cleardoublepage
+% Riassunto sul dominio, obiettivi, strade già provate
