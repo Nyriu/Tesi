@@ -680,15 +680,15 @@ Ora verranno elencati in ordine i vari passaggi del rilevatore:
   %\item Con il \textit{non-maximum suppression}  % TODO fare se c'e spazio
 
   \item Con una doppia sogliatura si ottengono due effetti:
-    come prima cosa vengono rimossi tutti quegli edge con magnitudine troppo bassa, perché considerati rumore;
-    successivamente gli edge sopravvissuti vengono classificati come forti e deboli, questa informazione verrà sfruttata nel prossimo passaggio.
+    come prima cosa vengono rimossi tutti quegli \textit{edge} con magnitudine troppo bassa, perché considerati rumore.
+    Successivamente gli \textit{edge} sopravvissuti vengono classificati come forti e deboli, questa informazione verrà sfruttata nel prossimo passaggio.
     Effettuare una sogliatura significa semplicemente osservare ogni valore di un'immagine (nel nostro caso ogni \textit{pixel} indica il modulo del gradiente) e mapparlo ad un valore dato se soddisfa determinate condizioni.
     In questo passaggio sono presenti due soglie.
-    La prima ci permette di annullare tutti gli edge con valori troppo piccoli.
+    La prima ci permette di annullare tutti gli \textit{edge} con valori troppo piccoli.
     La seconda viene usata per etichettare i \textit{pixel} superiori alla soglia come \textit{edge} forti.
     Tutti i \textit{pixel} intermedi vengono considerati \textit{edge} deboli.
 
-  \item A questo punto si procede con il rimuovere tutti gli \textit{edge} deboli che non facciamo parte di nessun \textit{edge} forte.
+  \item A questo punto si procede con il rimuovere tutti gli \textit{edge} deboli che non facciano parte di nessun \textit{edge} forte.
     Significa che, per ogni \textit{pixel} etichettato come \textit{edge} debole, vengono osservati gli otto \textit{pixel} circostanti.
     Se nessuno di questi è un \textit{edge} forte allora il \textit{pixel} centrale viene annullato.
     % TODO cfr Connected Componets
@@ -708,7 +708,7 @@ In figura~\ref{fig:canny_example} è illustrata l'applicazione del \textit{Sobel
 
 \subsection {Hough Circle Transform}
 Prima di poter spiegare questa tecnica si devono introdurre alcuni concetti come la \textit{Hough Line Transform}, lo \textit{Hough Parameter Space} e la parametrizzazione raggio-angolo di una retta.
-Le trasformate di Hough sono largamente usate come metodi di estrazione delle caratteristiche, permettono di rilevare semplici figure come linee e cerchi.
+Le trasformate di Hough sono largamente usate come metodi di estrazione delle caratteristiche permettono di rilevare semplici figure come linee e cerchi.
 Il loro obbiettivo è raggruppare correttamente un insieme di pixel in modo che l'insieme raffiguri la forma che si vuole trovare.
 Una delle problematiche principali è la possibilità che nell'immagine la forma da rilevare sia discontinua o deformata.
 
@@ -723,7 +723,7 @@ risulta più facile immaginarla (fissato un $i$) come una retta in uno spazio in
 Lo spazio appena descritto prende il nome di \textit{Hough Parameter Space}, in cui ogni punto $(m,c)$ descrive una retta nello spazio di partenza.
 Nello spazio dei parametri di Hough, le tre rette della formula \ref{eq:cm_lines} si devono necessariamente incontrare in esattamente un punto, sia $(m_0,c_0)$.
 Questo è dovuto al fatto che sappiamo che deve esistere una coppia di parametri per cui la retta $y = m_0 x + c_0$, nello spazio originale, passa per tutti i $P_i$.
-L'idea alla base della \textit{Hough Line Transform} è quella di, definito un range di valori per $m$ e per $c$, trovare quello che soddisfa il maggior numero di equazioni.
+L'idea alla base della \textit{Hough Line Transform} è quella di trovare quello che soddisfa il maggior numero di equazioni, definito un range di valori per $m$ e per $c$.
 In pratica ad ogni cella nello spazio $m$-$c$ viene associato un intero che indica quante delle rette di equazione~\ref{eq:cm_lines} passano per quella cella.
 
 Ci si accorge facilmente che questo metodo non ci permette di rilevare rette parallele all'asse delle $y$; infatti, bisognerebbe avere un parametro $m$ con valore che tende all'infinito.
@@ -793,13 +793,13 @@ Ciascun elemento è un intero con valore iniziale zero, che verrà incrementato 
 % https://en.wikipedia.org/wiki/Circle_Hough_Transform
 
 \clearpage
-\subsection {Applicazione degli algoritmi descritti} \label{prep}
+\section {Applicazione degli algoritmi descritti} \label{prep}
 Si fa notare che prima di ottenere immagini come quella illustrata in figura~\ref{fig:prima_dopo_prep} e soprattutto prima di essere sicuri che questo è il tipo di immagine migliore per i nostri scopi, sono stati necessari numerosi esperimenti e tentativi.
 In particolar modo è stato importante capire che tipo di informazione potesse essere gestita interamente dalla rete neurale e quale invece dovesse essere rimossa o modificata.
 Lo scopo del nostro \textit{pre-processing} è quello di fornire un'immagine contenente solo l'informazione necessaria e sufficiente per poter discriminare un pezzo Conforme da uno Scarto.
 
 Nonostante in questa sezione vengano mostrate solo immagini di carcasse conformi, il processo iterativo appena descritto è stato eseguito confrontando costantemente immagini Conformi e Scarto.
-Immagini scarto verranno mostrate nella prossima sezione, interamente dedicata a loro.
+Immagini scarto verranno mostrate nella prossima sezione, a loro interamente dedicata.
 
 % https://tex.stackexchange.com/questions/343605/latex-code-for-subcaption-of-image
 \begin{figure}[ht] % TODO
@@ -962,10 +962,10 @@ Si può notare che alcuni Scarti presentano degli anelli di colore più scuro, c
 Questa caratteristica non compare in nessuna immagine della classe Conforme e sappiamo non essere in relazione con la presenza di colla.
 Alcuni esemplari appartengono a lotti di carcasse molto più vecchi di quelli fotografati nei Conformi, per questo motivo si è cercato di ricreare degli Scarti che fossero più vicini ai pezzi recenti.
 Si è prestata particolare attenzione a non generare immagini irreali, perché avrebbero invalidato qualsiasi tipo di risultato.
-Infatti allenare un modello su un \textit{dataset} che non rispecchia la realtà renderebbe impossibile prevedere che il suo comportamento a livello applicativo.
+Infatti, allenare un modello su un \textit{dataset} che non rispecchia la realtà renderebbe impossibile prevedere che il suo comportamento a livello applicativo.
 
 In figura~\ref{fig:esempi_scarti_sintetici} è illustrato uno Scarto, il ritaglio della sua colla ed il risultato dell'applicazione di questa su due Conformi.
-Innanzitutto tutte i tipi di colla sono stati ritagliati manualmente con un programma di manipolazione di immagini digitali.
+Innanzitutto, tutti i tipi di colla sono stati ritagliati manualmente con un programma di manipolazione di immagini digitali.
 Per ogni Scarto si è ottenuta un'immagine come quella riportata in figura~\ref{fig:ritaglio_colla}.
 Notare come sia stato importante mantenere l'informazione riguardo la posizione della colla:
 certe forme sono dovute al fatto che la colla è scivolata lungo i gradini del pezzo.
