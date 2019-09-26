@@ -175,3 +175,25 @@ Nella tabella~\ref{tab:train_predicions} viene illustrato che il 98.9\% dei conf
   \label{tab:train_predicions}
 \end{table}
 
+
+Va fatto notare che difficilmente un sistema è perfetto: infatti di solito richiedere un'alta capacità di riconoscimento per una classe porta ad un calo di accuratezza per un'altra.
+Avere come obbiettivo un sistema che lasci passare tutti i conformi e allo stesso tempo sia chirurgico nell'identificazione degli scarti significa porsi di fronte ad una sfida notevole.
+Purtroppo il numero limitato di esemplari scarto non ci permette di tracciare delle percentuali che possano definirsi accurate, infatti quel 6.7\% di predizioni false negative è rappresentato da appena quattro carcasse.
+Si suppone però che gli scarti a nostra disposizione catturino sufficientemente bene la forma più frequente di colla, concludiamo che questo risultato sia soddisfacente.
+
+Inoltre si ritiene necessaria una considerazione su adattabilità e flessibilità della soluzione proposta.
+Entrambi gli algoritmi di \textit{pre} e \textit{post-processing} hanno flessibilità ridotta perché sono stati creati ed impostati manualmente.
+È possibile che, al variare della calibratura del processo di raccolta immagini, si ottengano risultati inaspettati.
+Basti pensare che le dimensioni della maschera applicata in fase di \textit{pre-processing} non sono adattative, ciò significa che, ad esempio, al variare della distanza della fotocamere dal fondo della carcassa, non si possa esser certi né che tutti i gradini siano visibili, né che le balze vengano nascoste completamente.
+Infatti, proprio quest'ultimo è il principale motivo di classificazione errata di alcuni conformi.
+Va però fatto notare che sono algoritmi facilmente modificabili e che la loro calibratura potrebbe essere effettuata durante la calibratura del macchinario, dato che il risultato dipende da pochi parametri.
+
+Per quanto riguarda l'\textit{autoencoder}, il suo allenamento risulta rapido e richiede un numero esiguo di risorse.
+In particolar modo non è richiesto che il \textit{dataset} sia etichettato a mano, pratica dispendiosa e prona ad errori.
+Inoltre, anche qualora l'inseme di immagini contenesse elementi della classe errata, ciò non sarebbe un problema, perché l'\textit{autoencoder} si adatta agli elementi più frequenti.
+Di conseguenza queste caratteristiche permettono di creare nuovi \textit{dataset} in un tempo molto ridotto rispetto ad altre tecniche.
+
+In generale questa soluzione dimostra d'essere valida, permettendo di identificare conformi e scarti con una precisione soddisfacente.
+Purtroppo le limitazioni dei dati a nostra disposizione non ci permettono di affermare in maniera definitiva che la soluzione, così com'è stata presentata in questo documento, sia pronta per essere utilizzata in applicazioni reali.
+Bisogna però dire che questo modello, con le dovute modifiche agli algoritmi di \textit{pre} e \textit{post-processing}, può essere facilmente adattato a problemi di natura simile a quello descritto, grazie alla flessibilità dell'\textit{autoencoder}.
+
