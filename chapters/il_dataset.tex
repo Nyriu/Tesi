@@ -4,8 +4,8 @@
 
 \chapter{Il Dataset}
 
-Innanzitutto si specifica che con la parola "scarto" si indica l'immagine di una carcassa che presenta colla sul fondo, pezzo che quindi dovrà essere scartato.
-Invece con la parola "conforme" si indica l'immagine di una carcassa nella quale la colla è stata depositata correttamente, quindi con fondo pulito.
+Innanzitutto si specifica che con la parola ``scarto'' si indica l'immagine di una carcassa che presenta colla sul fondo, pezzo che quindi dovrà essere scartato.
+Invece con la parola ``conforme'' si indica l'immagine di una carcassa nella quale la colla è stata depositata correttamente, quindi con fondo pulito.
 
 In questo capitolo verranno descritti il \textit{dataset}, le problematiche più importanti delle immagini e gli algoritmi principali con cui sono state manipolate.
 Il capitolo si chiude con la tecnica del \textit{data augmentation}.
@@ -610,7 +610,6 @@ L'applicazione del filtro Sobel avviene come mostrato nelle equazioni \ref{eq:so
 L'equazione~\ref{eq:sobel_gx} fornisce un'approssimazione del gradiente rispetto all'asse $x$, mentre l'equazione~\ref{eq:sobel_gy} rispetto ad $y$.
 L'equazione~\ref{eq:sobel_g}, invece, combina le precedenti fornendo informazione riguardo al modulo del gradiente dell'immagine.
 Con l'equazione~\ref{eq:sobel_angle} si ottiene la direzione del gradiente.
-% TODO c'è un modo per non ripetere "equazione" tante volte?
 \begin{equation} \label{eq:sobel_g}
   G = \sqrt{G_x^2 + G_y^2}
 \end{equation}
@@ -1011,33 +1010,16 @@ Si può dire che gli scarti sintetici siano indistinguibili dagli scarti origina
 \end{figure}
 
 \section{Post-Processing}
-\todo[inline]{sistemare}
-Dopo aver osservato la precisione con cui i conformi vengono riprodotti bisogna verificare come l'AE si comporti con le immagini della classe scarto.
+Si è dovuto sviluppare anche un algoritmo che confrontasse le immagini in ingresso con quelle generate dalla rete neurale, chiamate anche ``ricostruite''.
 In figura~\ref{fig:scarti_in_out} si possono osservare alcuni esempi di scarti all'ingresso e all'uscita dell'\textit{autoencoder}.
 Notare come nelle prima coppia la colla sia stata rimossa molto bene e la carcassa ricostruita abbia le caratteristiche di quella originale.
 Purtroppo nella seconda coppia si vede come le zone più scure tipiche di alcune carcasse con colla, causino la creazione di rumore nell'immagine in \textit{output}.
-Proprio questo motivo ha portato alla creazione degli scarti sintetici.
-Si fa subito presente che gli scarti sintetici sono stati generati a partire da un gruppo di conformi differente dall'insieme di immagini usate durante l'allenamento.
-
+Proprio questo motivo ha portato alla creazione degli ``scarti sintetici''.
+%Si fa subito presente che gli scarti sintetici sono stati generati a partire da un gruppo di conformi differente dall'insieme di immagini usate durante l'allenamento.
 
 \begin{figure}[ht] % TODO
   \begin{center}
     \begin{tabular}{c}
-
-      %\begin{subfigure}{\linewidth}
-      %  \begin{center}
-      %    \includegraphics[width=.3\textwidth]{128___1315_1_0_1_OnLineAnalysis_in}
-      %    \includegraphics[width=.3\textwidth]{128___1315_1_0_1_OnLineAnalysis_out}
-      %  \end{center}
-      %\end{subfigure} \\ \\
-
-      %\begin{subfigure}{\linewidth}
-      %  \begin{center}
-      %    \includegraphics[width=.3\textwidth]{128___14147_1_0_1_OnLineAnalysis_in}
-      %    \includegraphics[width=.3\textwidth]{128___14147_1_0_1_OnLineAnalysis_out}
-      %  \end{center}
-      %\end{subfigure} \\ \\
-
       \begin{subfigure}{\linewidth}
         \begin{center}
           \includegraphics[width=.24\textwidth]{128___22886_1_1_1_OnLineAnalysis_in}
@@ -1053,19 +1035,19 @@ Si fa subito presente che gli scarti sintetici sono stati generati a partire da 
       \end{subfigure}
 
     \end{tabular}
-    \caption{Esempi di scarti e loro ricostruzione}
+    \caption{Esempi di scarti e relativo \textit{output} dell'\textit{autoencoder}}
     \label{fig:scarti_in_out}
   \end{center}
 \end{figure}
 
-L'algoritmo di \textit{post-processing} è stato sviluppato usando immagini-differenza generate da scarti sintetici, perché risultano più pulite.
-Inoltre in questo modo ci si aspetta che siano siano più verosimili a quelle che si otterrebbero durante la messa in opera del sistema.
+%L'algoritmo di \textit{post-processing} è stato sviluppato usando immagini-differenza generate da scarti sintetici, perché risultano più pulite.
+%Inoltre in questo modo ci si aspetta che siano siano più verosimili a quelle che si otterrebbero durante la messa in opera del sistema.
 
 In figura~\ref{fig:post_proc_scarto_sin} si possono vedere l'immagine di partenza (in alto a sinistra), l'immagine ricostruita dall'\textit{autoencoder} (in alto a destra), il risultato del post-processing della differenza fra le due (in basso a destra) e la predizione finale.
 L'algoritmo di \textit{post-processing}, ottenuto con metodi empirici, opera in questo modo:
 \begin{itemize}
   \item viene calcolato il valore assoluto della differenza \textit{pixel} per \textit{pixel} tra le immagini d'\textit{input} e d'\textit{output}.
-    Il risultato di questo passaggio non è stato mostrato, perché i valori non sono molto grandi.
+    Il risultato di questo passaggio, che chiameremo immagine-differenza, non viene mostrato in nessuna figura, perché i valori non sono molto grandi.
     Ciò significa che l'immagine, principalmente nera, contiene alcune aree con \textit{pixel} di colore grigio scuro;
 
   \item viene effettuata una doppia sogliatura sull'immagine-differenza.
