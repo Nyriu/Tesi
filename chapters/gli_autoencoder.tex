@@ -19,6 +19,42 @@ Visto dall'esterno, il compito di un \textit{autoencoder} è quello di ritornare
 Durante l'allenamento, fissato $m$ con un valore che dipende dalla forma della rete, si vuole trovare il miglior spazio latente possibile; dove con migliore si intende quello spazio di cardinalità $m$ che permette di mantenere tutte le informazioni caratterizzanti dell'input.
 Riformulando quanto detto: un \textit{autoencoder} può essere visto come una funzione $f$ rassomigliante la funzione identità, ma al cui intero c'è un vincolo tale da rendere il compito di restituzione dell'\textit{input} non banale.
 
+\todo[inline]{Qua aggiungere principali applicazioni}
+
+% TODO sistema qua
+%\paragraph{Dimensionality Reduction}
+%Sappiamo che gli \textit{autoencoder} possono essere sfruttati per trovare, fissata una dimensionalità, spazi latenti efficaci.
+%Questa capacità ricorda tecniche di \textit{dimensionality reduction} come la \textit{Principal Component Analysis}(PCA).
+%Non a caso infatti molti studi, come ad esempio quello intitolato \textit{PCA vs Autoencoders for Dimensionality Reduction}~\cite{pca_vs_ae_1} mettono in luce come gli \textit{autoencoder} siano in grado di equiparare, se non superare, gli approcci classici.
+%Il principale vantaggio degli \textit{autoencoder} è la possibilità di creare una funzione di compressione specifica per il problema che si vuole risolvere.
+%Mentre gli approcci come la PCA operano seguendo uno stesso algoritmo per ogni applicazione.
+%
+%\paragraph{Denoising}
+%Il \textit{denoising} è una tecnica con cui si rimuove, a partire da un dato non puro, tutta l'informazione considerata rumore.
+%In figura~\ref{fig:denoise_example} si può vedere come dopo aver introdotto del rumore alle immagini più a sinistra, ottenendo quelle nella seconda colonna, un autoencoder sia in grado di ripristinarle.
+%L'ultima colonna mostra le immagini generate dalla rete.
+%Questo tipo di applicazione può essere sfruttato per effettuare \textit{denoising} ad immagini di radiografie in campo medico.
+%\begin{figure}[ht]
+%  \begin{center}
+%    \includegraphics{denoise}
+%  \end{center}
+%  \caption{Esempio di applicazione di un \textit{Denoising Autoencoder} URL: \url{http://users.cecs.anu.edu.au/~Tom.Gedeon/conf/ABCs2018/paper/ABCs2018_paper_20.pdf}}
+%  \label{fig:denoise_example}
+%\end{figure}
+%
+%%\paragraph{Image Restoration}
+%
+%\paragraph{Anomaly Detection}
+%\textit{Anomaly detection} significa letteralmente rilevamento delle anomalie.
+%Questa tecnica permette, dopo aver definito quali sono i valori attesi, di riconoscere quando i dati ricevuti si allontanano da quelli che ci si aspettava.
+%Poiché un \textit{autoencoder} può essere facilmente allenato con la classe di valori canonici, imparerà una funzione di compressione adatta a comprimere i valori più frequenti.
+%Questo significa che la rete fornirà un \textit{output} molto simile a ciò che ha ricevuto in ingresso, se e solo se l'\textit{input} ha caratteristiche simili agli elementi del \textit{dataset}.
+%Il dato in ingresso, se molto distante dai valori abituali, sarà compresso in modo che, probabilmente, non ne mantenga le caratteristiche principali.
+%Ciò porta, dopo la decompressione, ad ottenere un \textit{output} distante dal dato originale, permettendo di classificare quest'ultimo come anomalia.
+%
+%Il problema descritto in questa tesi si presta per essere affrontato come un problema di \textit{anomaly detection}.
+
+
 Come viene spiegato da Andrew Ng in \cite{ng_sparse_ae}, gli \textit{autoencoder} fanno parte degli algoritmi di apprendimento non supervisionato: cioè di quella classe di algoritmi, in contrapposizione a quelli ad apprendimento supervisionato, che non ha bisogno di dati etichettati.
 Anzi, vengono usati proprio per trovare nuovi \textit{pattern} e correlazioni tra gli elementi del \textit{dataset}, come gli algoritmi \textit{K-Means} e \textit{DBSCAN}, entrambi di \textit{clustering}, permettono di raggruppare nuvole di punti con caratteristiche simili. % TODO citare?
 %I gruppi così creati possono far risaltare degli andamenti dei dati 
