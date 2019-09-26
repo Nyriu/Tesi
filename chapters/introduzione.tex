@@ -4,7 +4,6 @@
 
 \chapter{Introduzione}
 In campo industriale è sempre più frequente la scelta di integrare processi già esistenti con fotocamere per l'acquisizione di immagini.
-%\todo{magari aggiungere ref}
 Le fotocamere, che hanno dimensioni sempre più ridotte ma permettono comunque di scattare fotografie ad ottima risoluzione, possono essere inserite facilmente nella maggior parte dei processi industriali, permettendo di monitorare la produzione senza comprometterla.
 Inoltre, le immagini raccolte possono andare a formare un \textit{dataset} che, utilizzato per addestrare algoritmi di \textit{machine learning}, permette non solo di monitorare il processo di produzione, ma anche di controllarlo.
 
@@ -69,12 +68,20 @@ Il funzionamento di un \textit{autoencoder} può essere suddiviso in due momenti
 nel primo i dati in ingresso vengono mappati in uno spazio con dimensionalità inferiore a quella di partenza, si può dire che il dato venga compresso;
 nel secondo il dato in forma compressa viene riportato nel suo spazio originale, venendo quindi decompresso.
 Un buon \textit{autoencoder} è in grado di fornire in \textit{output} un dato estremamente simile a quello che è stato ricevuto in ingresso, non bisogna pensare però che il suo scopo sia simulare la funzione identità; infatti un compito del genere non sarebbe di alcuna utilità.
-L'origine degli autoencoder non è ben definita però ad oggi sono utilizzati per vari scopi.
-\todo{ampliare in modo non tecnico}
-\todo[inline]{ipotizzo 4 righe}
-\todo[inline]{ipotizzo 4 righe}
-\todo[inline]{ipotizzo 4 righe}
-\todo[inline]{ipotizzo 4 righe}
+L'origine degli \textit{autoencoder} non è ben definita però ad oggi sono utilizzati per vari scopi:
+\begin{itemize}
+  \item \textit{dimensionality reduction}, ossia comprimere efficacemente un tipo di dato.
+    Un'\textit{autoencoder} può essere modificato in modo che restituisca il risultato della compressione, questa contiene tutta l'informazione caratterizzante del dato in ingresso, ma occupa uno spazio inferiore;
+
+  \item colorazione di immagini in bianco e nero.
+    Questo tipo di reti neurali può essere allenato per predire i colori più probabili di un immagine in bianco e nero, così facendo è possibile ottenere immagini a colori con risultati soddisfacenti;
+
+  \item rimozione di rumore dai dati.
+    Poiché durante la compressione vengono mantenute soltanto le informazioni caratterizzanti, in fase di decompressione verrà generato un \textit{output} molto simile all'input ma privo di rumore;
+
+
+  %\item Watermark Removal
+\end{itemize}
 
 Per quanto riguarda gli obiettivi che si vogliono raggiungere sappiamo che:
 \begin{itemize}
