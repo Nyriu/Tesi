@@ -141,10 +141,8 @@ Il principale strumento utilizzato è stato il linguaggio di programmazione \tex
 \color{DarkSlateGray} % DarkSlateGray color for the rest of the content
 \section*{Obiettivi}
 Per quanto riguarda gli obiettivi che si vogliono raggiungere sappiamo che:
-\begin{itemize}
-  \item la colla viene depositata su circa $5000$ pezzi al giorno;
-  \item la probabilità che gocce di colla cadano sul fondo delle carcasse è estremamente bassa.
-\end{itemize}
+la colla viene depositata su circa $5000$ pezzi al giorno;
+la probabilità che gocce di colla cadano sul fondo delle carcasse è estremamente bassa.
 Purtroppo non esistono dati numerici esatti ma si stima che il processo di produzione abbia un tasso d'errore di una carcassa al mese o poco più.
 Questi dati possono essere trasformati in probabilità approssimative osservando che:
 \begin{center}
@@ -172,15 +170,25 @@ Il nostro obiettivo è creare un sistema che generi un numero di falsi positivi 
 %    \end{tabular}
 %    \captionof{figure}{Immagini di: ingresso, \\ uscita, differenza, risultato}
 %  \end{center}
-Il \textit{dataset} comprende 2000 immagini di cui solo 30 sono scarto, ovvero presentano colla sul fondo.
-Da finire
-
+Il \textit{dataset} comprende 1749 immagini di cui solo 30 sono scarto, ovvero presentano colla sul fondo.
+In casi come questo si dice che il \textit{dataset} è sbilanciato.
+%Nel campo del \textit{machine learning} avere soltanto 2000 immagini 
+Solitamente un \textit{dataset} comprende centinaia di migliaia di immagini ed le classi di cui è composto sono distribuite equamente.
+Ulteriori problematiche delle immagini fornite riguardano:
+centratura e distanza dal fondo differenti;
+il pezzo si presenta ruotato in modo casuale;
+le superfici delle carcasse sono simili ma hanno delle caratteristiche (macchie, effetto ``sale e pepe'', \dots) uniche;
+luminosità variabile.
+Quest'ultimo punto, assieme alla rotazione, ha rappresentato una delle difficoltà principali.
+\\
 \begin{center}
-    \begin{tabular}{cc} \label{griglia_dataset}
+    \begin{tabular}{cccc} \label{griglia_dataset}
       \includegraphics[width=.1\textwidth]{128___16760_0_0_1_OnLineAnalysis} &
-      \includegraphics[width=.1\textwidth]{128___14097_1_0_1_OnLineAnalysis}
+      \includegraphics[width=.1\textwidth]{128___17986_1_1_1_OnLineAnalysis} &
+      \includegraphics[width=.1\textwidth]{128___14097_1_0_1_OnLineAnalysis} &
+      \includegraphics[width=.1\textwidth]{128___14177_1_0_1_OnLineAnalysis}
     \end{tabular}
-    \captionof{figure}{Un conforme ed uno scarto}
+    \captionof{figure}{Due conformi e due scarti}
 \end{center}
   
 
@@ -190,7 +198,15 @@ La soluzione proposta può essere divisa in tre momenti:
 nel primo l'immagine in ingresso viene manipolata da algoritmi creati appositamente, così da ottenere un'immagine che favorisce le future trasformazioni;
 l'immagine appena generata viene fornita in ingresso ad un \textit{autoencoder} con una specifica architettura;
 l'\textit{output} della rete neurale viene gestito da un ulteriore algoritmo che permette di sintetizzare una classificazione binaria.
-
+Si è deciso di utilizzare gli \textit{autoencoder} perché possono essere allenati utilizzando una sola classe, il nostro scopo è quello di creare una rete capace di ``rimuovere'' la colla dalle immagini.
+Un \textit{autoencoder} è formato da due componenti principali:
+l'\textit{encoder} comprime il dato in ingresso, mappandolo in uno spazio di dimensionalità inferiore;
+il \textit{decoder} prende il dato compresso e lo rimappa nello spazio di partenza.
+Poiché la rete viene allenata solo sui conformi è lecito pensare che, in fase di compressione, l'informazione della colla non venga codificata.
+Quindi non è possibile che uno scarto venga ricostruito interamente.
+Un algoritmo di \textit{post-processing} verifica dove \textit{input} ed \textit{output} differiscono, sintetizzando la classificazione binaria definitiva.
+\\
+[1cm]
 \begin{minipage}[c]{0.25\textwidth}
 \centering\includegraphics[width=0.9\textwidth]{ae16}
     \label{ae}
@@ -204,12 +220,15 @@ l'\textit{output} della rete neurale viene gestito da un ulteriore algoritmo che
       \includegraphics[width=.25\textwidth]{128___17299_0_1_1_OnLineAnalysis_con_colla_to_blob} &
       \includegraphics[width=.25\textwidth]{128___17299_0_1_1_OnLineAnalysis_con_colla_detected}
     \end{tabular}
-    \captionof{figure}{Immagini di: ingresso, \\ uscita, differenza, risultato}
+    \captionof{figure}{Immagini di: ingresso, \\ uscita, differenza e risultato}
 \end{minipage}
 
 
 \section*{Risultati Ottenuti}
-
+Nelle tabelle sono riportati i risultati della soluzione proposta.
+Si fa notare che con \textit{recall} si indica la percentuale di scarti effettivamente riconosciuta.
+\\
+[1cm]
 \begin{minipage}[c]{0.37\textwidth}
   \begin{tabular}{||l r r r||}
     \hline
