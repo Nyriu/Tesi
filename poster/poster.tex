@@ -48,27 +48,14 @@
 \usepackage[utf8]{inputenc}
 \usepackage[italian]{babel}
 
+
+
+
+
+
 \begin{document}
 
-%----------------------------------------------------------------------------------------
-%	POSTER HEADER 
-%----------------------------------------------------------------------------------------
-
-% The header is divided into two boxes:
-% The first is 75% wide and houses the title, subtitle, names, university/organization and contact information
-% The second is 25% wide and houses a logo for your university/organization or a photo of you
-% The widths of these boxes can be easily edited to accommodate your content as you see fit
-
-% SAREBBERO DA AGGIUNGERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-% SAREBBERO DA AGGIUNGERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-% SAREBBERO DA AGGIUNGERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-%  \annoaccademico{2018-2019}
-%  \corsodilaureatriennalein{Informatica}
-% SAREBBERO DA AGGIUNGERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-% SAREBBERO DA AGGIUNGERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-% SAREBBERO DA AGGIUNGERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
+% HEADER
 \begin{minipage}[cr]{0.7\linewidth}
 \veryHuge \color{NavyBlue} \textbf{Autoencoder per l'Anomaly Detection applicati in ambito AutoMotive} \color{Black}\\ % Title
 [.9cm]
@@ -103,12 +90,6 @@
 
 \begin{multicols}{2} % This is how many columns your poster will be broken into, a portrait poster is generally split into 2 columns
 
-%----------------------------------------------------------------------------------------
-%	ABSTRACT
-%----------------------------------------------------------------------------------------
-
-\color{Navy} % Navy color for the abstract
-
 \begin{abstract}
 In questa tesi si affronta il problema di rilevare la presenza di colla sul fondo di carcasse metalliche per motori elettrici.
 Il \textit{dataset} fornito, composto da qualche migliaio di immagini, comprende due classi, ma una di queste è rappresentata da un numero veramente esiguo di esemplari.
@@ -121,7 +102,6 @@ A tal fine sarebbe necessario ampliare il \textit{dataset} ed effettuare delle v
 Il lavoro viene comunque considerato positivo perché ha permesso di esplorare le capacità combinate di algoritmi di manipolazione immagini e degli \textit{autoencoder}.
 \end{abstract}
 
-\color{SaddleBrown} % SaddleBrown color for the introduction
 \section*{Introduzione}
 
 %In campo industriale è sempre più frequente la scelta di integrare processi già esistenti con fotocamere per l'acquisizione di immagini.
@@ -138,7 +118,6 @@ La soluzione proposta è stata sviluppata durante un tirocinio della durata di s
 Il principale strumento utilizzato è stato il linguaggio di programmazione \textit{python}, arricchito da librerie come: \textit{opencv}, \textit{numpy}, \textit{pytorch}, \textit{matplotlib}.
 
 
-\color{DarkSlateGray} % DarkSlateGray color for the rest of the content
 \section*{Obiettivi}
 Per quanto riguarda gli obiettivi che si vogliono raggiungere sappiamo che:
 la colla viene depositata su circa $5000$ pezzi al giorno;
@@ -159,8 +138,39 @@ Si rischierebbe infatti di creare un enorme danno economico andando a scartare m
 % TODO usare teorema di bayes per dim che un modello aggressivo è peggio di uno che lascia passare
 Il nostro obiettivo è creare un sistema che generi un numero di falsi positivi che sia inferiore al $2\%$, cercando di riconoscere più carcasse non conformi possibili.
 
+\section*{Soluzione Proposta}
+La soluzione proposta può essere divisa in tre momenti:
+nel primo l'immagine in ingresso viene manipolata da algoritmi creati appositamente, così da ottenere un'immagine che favorisce le future trasformazioni;
+l'immagine appena generata viene fornita in ingresso ad un \textit{autoencoder} con una specifica architettura;
+l'\textit{output} della rete neurale viene gestito da un ulteriore algoritmo che permette di sintetizzare una classificazione binaria.
+Si è deciso di utilizzare gli \textit{autoencoder} perché possono essere allenati utilizzando una sola classe, il nostro scopo è quello di creare una rete capace di ``rimuovere'' la colla dalle immagini.
+Un \textit{autoencoder} è formato da due componenti principali:
+l'\textit{encoder} comprime il dato in ingresso, mappandolo in uno spazio di dimensionalità inferiore;
+il \textit{decoder} prende il dato compresso e lo rimappa nello spazio di partenza.
+Poiché la rete viene allenata solo sui conformi è lecito pensare che, in fase di compressione, l'informazione della colla non venga codificata.
+Quindi non è possibile che uno scarto venga ricostruito interamente.
+Un algoritmo di \textit{post-processing} verifica dove \textit{input} ed \textit{output} differiscono, sintetizzando la classificazione binaria definitiva.
+\\
+[1cm]
+\begin{minipage}[c]{0.25\textwidth}
+\centering\includegraphics[width=0.9\textwidth]{ae16}
+    \label{ae}
+    \captionof{figure}{Architettura della rete proposta}
+\end{minipage}
+\begin{minipage}[c]{0.29\textwidth}
+  \centering
+    \begin{tabular}{cc} \label{griglia_fig}
+      \includegraphics[width=.25\textwidth]{128___17299_0_1_1_OnLineAnalysis_con_colla_in} &
+      \includegraphics[width=.25\textwidth]{128___17299_0_1_1_OnLineAnalysis_con_colla_out} \\
+      \includegraphics[width=.25\textwidth]{128___17299_0_1_1_OnLineAnalysis_con_colla_to_blob} &
+      \includegraphics[width=.25\textwidth]{128___17299_0_1_1_OnLineAnalysis_con_colla_detected}
+    \end{tabular}
+    \captionof{figure}{Immagini di: ingresso, \\ uscita, differenza e risultato}
+\end{minipage}
 
-\section*{Dataset}
+
+\section*{Analisi Sperimentale}
+\paragraph{Dataset}
 %  \begin{center}
 %    \begin{tabular}{cc} \label{griglia_fig_data}
 %      \includegraphics[width=.25\textwidth]{128___16760_0_0_1_OnLineAnalysis} &
@@ -193,38 +203,8 @@ Quest'ultimo punto, assieme alla rotazione, ha rappresentato una delle difficolt
   
 
 
-\subsection*{Soluzione Proposta}
-La soluzione proposta può essere divisa in tre momenti:
-nel primo l'immagine in ingresso viene manipolata da algoritmi creati appositamente, così da ottenere un'immagine che favorisce le future trasformazioni;
-l'immagine appena generata viene fornita in ingresso ad un \textit{autoencoder} con una specifica architettura;
-l'\textit{output} della rete neurale viene gestito da un ulteriore algoritmo che permette di sintetizzare una classificazione binaria.
-Si è deciso di utilizzare gli \textit{autoencoder} perché possono essere allenati utilizzando una sola classe, il nostro scopo è quello di creare una rete capace di ``rimuovere'' la colla dalle immagini.
-Un \textit{autoencoder} è formato da due componenti principali:
-l'\textit{encoder} comprime il dato in ingresso, mappandolo in uno spazio di dimensionalità inferiore;
-il \textit{decoder} prende il dato compresso e lo rimappa nello spazio di partenza.
-Poiché la rete viene allenata solo sui conformi è lecito pensare che, in fase di compressione, l'informazione della colla non venga codificata.
-Quindi non è possibile che uno scarto venga ricostruito interamente.
-Un algoritmo di \textit{post-processing} verifica dove \textit{input} ed \textit{output} differiscono, sintetizzando la classificazione binaria definitiva.
-\\
-[1cm]
-\begin{minipage}[c]{0.25\textwidth}
-\centering\includegraphics[width=0.9\textwidth]{ae16}
-    \label{ae}
-    \captionof{figure}{Architettura della rete proposta}
-\end{minipage}
-\begin{minipage}[c]{0.29\textwidth}
-  \centering
-    \begin{tabular}{cc} \label{griglia_fig}
-      \includegraphics[width=.25\textwidth]{128___17299_0_1_1_OnLineAnalysis_con_colla_in} &
-      \includegraphics[width=.25\textwidth]{128___17299_0_1_1_OnLineAnalysis_con_colla_out} \\
-      \includegraphics[width=.25\textwidth]{128___17299_0_1_1_OnLineAnalysis_con_colla_to_blob} &
-      \includegraphics[width=.25\textwidth]{128___17299_0_1_1_OnLineAnalysis_con_colla_detected}
-    \end{tabular}
-    \captionof{figure}{Immagini di: ingresso, \\ uscita, differenza e risultato}
-\end{minipage}
 
-
-\section*{Risultati Ottenuti}
+\paragraph{Risultati Ottenuti}
 Nelle tabelle sono riportati i risultati della soluzione proposta.
 Si fa notare che con \textit{recall} si indica la percentuale di scarti effettivamente riconosciuta.
 \\
@@ -248,7 +228,6 @@ Si fa notare che con \textit{recall} si indica la percentuale di scarti effettiv
   \end{tabular}
 \end{minipage}
 
-\color{SaddleBrown} % SaddleBrown color for the conclusions to make them stand out
 \section*{Conclusioni}
 Osservando i risultati ottenuti si può vedere che, nonostante il campione a disposizione abbia una numerosità ridotta, nessun conforme dell'insieme di \textit{test} è stato classificato in modo scorretto.
 Questo significa che c'è una quantità di falsi positivi, cioè di carcasse conformi che verrebbero scartate, pari allo 0\%.
